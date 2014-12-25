@@ -17,7 +17,7 @@
 ;;; You should have received a copy of the GNU General Public License along
 ;;; with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(cl:defpackage  #:shtookovina
+(cl:defpackage  #:shtk
   (:use         #:common-lisp
                 #:alexandria
                 #:anaphora
@@ -25,3 +25,4 @@
                 #:cl-store
                 #:mk-string-metrics
                 #:trivial-update))
+;; interface?

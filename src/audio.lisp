@@ -1,7 +1,6 @@
 ;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; -*-
 ;;;
-;;; Basic interaction for Shtookovina. Currently it's OK to use the program
-;;; directly from REPL just calling necessary functions.
+;;; This module defines functions to play audio recordings of given words.
 ;;;
 ;;; Copyright (c) 2014 Mark Karpov
 ;;;
@@ -18,36 +17,7 @@
 ;;; You should have received a copy of the GNU General Public License along
 ;;; with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(in-package #:shtookovina)
-
-(defmacro define-language (lang-name) ; we should think about concept
-  nil)
-
-(defmacro select-lang (lang-name)
-  nil)
-
-(defmacro interface-lang (lang-name)
-  nil)
-
-(defun add-item (type form)
-  nil)
-
-(defun rem-item (type form)
-  nil)
+(in-package #:shtk)
 
 (defun play-item (form)
   nil)
-
-(defun train ()
-  nil)
-
-(defun load-dict ()
-  nil)
-
-(defun save-dict ()
-  nil)
-
-(defun forms-of (word)
-  nil)
-
-;; basic machinery to start the program??

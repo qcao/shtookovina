@@ -1,6 +1,7 @@
-;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp -*-
+;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; -*-
 ;;;
-;;; ASDF file for Shtookovina.
+;;; Basic interaction for Shtookovina. Currently it's OK to use the program
+;;; directly from REPL just calling necessary functions.
 ;;;
 ;;; Copyright (c) 2014 Mark Karpov
 ;;;
@@ -17,20 +18,22 @@
 ;;; You should have received a copy of the GNU General Public License along
 ;;; with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(asdf:defsystem :shtookovina
-  :version      "0.1.0"
-  :description  "Lisp based program for language learning"
-  :author       "Mark Karpov"
-  :serial       t
-  :license      "GNU GPL"
-  :components   ((:file "package")
-                 (:file "lang")
-                 (:file "langdefs")
-                 (:file "audio")
-                 (:file "session"))
-  :depends-on   (#:alexandria
-                 #:anaphora
-                 #:split-sequence
-                 #:cl-store
-                 #:mk-string-metrics
-                 #:trivial-update))
+(in-package #:shtk)
+
+(defun init-session (targe-lang interface-lang &optional dict)
+  nil)
+
+(defun add-item (type form)
+  nil)
+
+(defun rem-item (type form)
+  nil)
+
+(defun train ()
+  nil)
+
+(defun forms-of (word) ; opens external link to conjugator
+  nil)
+
+(defun close-session ()
+  nil)
