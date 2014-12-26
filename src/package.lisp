@@ -25,4 +25,3 @@
                 #:cl-store
                 #:mk-string-metrics
                 #:trivial-update))
-;; interface?

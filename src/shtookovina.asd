@@ -33,4 +33,6 @@
                  #:split-sequence
                  #:cl-store
                  #:mk-string-metrics
-                 #:trivial-update))
+                 #:trivial-update
+                 #:trivial-shell
+                 #:bordeaux-threads))
