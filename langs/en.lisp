@@ -31,7 +31,7 @@
         :ss-forms
         ("Infinitive" "Past Participle")
         :form-aspects
-        (("(I) " "(you) " "(it) " "(we) " "(they) ")
+        (("(I) " "(you) " "(it) ")
          ("Present Simple"
           "Future Simple"
           "Past Simple"
