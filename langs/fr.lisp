@@ -1,6 +1,6 @@
 ;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; -*-
 ;;;
-;;; Package definition for Shtookovina.
+;;; Definition of French language for Shtookovina.
 ;;;
 ;;; Copyright (c) 2015 Mark Karpov
 ;;;
@@ -17,7 +17,29 @@
 ;;; You should have received a copy of the GNU General Public License along
 ;;; with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(defpackage :shtookovina
-  (:use     #:common-lisp
-            #:alexandria
-            #:anaphora))
+(define-language :fr "français"
+  (:adj "adjectif"
+        :form-aspects
+        (("m" "f")
+         ("" " pl")))
+  (:adv "adverbe")
+  (:art "article")
+  (:cnj "conjonction")
+  (:int "interjection")
+  (:nom "nom"
+        :form-aspects
+        (("m" "f")))
+  (:phr "phrase")
+  (:prp "préposition")
+  (:prn "pronom")
+  (:vrb "verbe"
+        :ss-forms
+        ("Infinitif" "Participe Passe" "Gérondif")
+        :form-aspects
+        (("(je) " "(tu) " "(il) " "(nous) " "(vous) " "(ils) ")
+         ("Present de l'indicatif"
+          "Futur simple"
+          "Imparfait"
+          "Present du subjonctif"
+          "Imperatif"
+          "Conditionnel présent"))))

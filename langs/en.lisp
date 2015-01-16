@@ -1,6 +1,6 @@
 ;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; -*-
 ;;;
-;;; Package definition for Shtookovina.
+;;; Definition of English language for Shtookovina.
 ;;;
 ;;; Copyright (c) 2015 Mark Karpov
 ;;;
@@ -17,7 +17,27 @@
 ;;; You should have received a copy of the GNU General Public License along
 ;;; with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(defpackage :shtookovina
-  (:use     #:common-lisp
-            #:alexandria
-            #:anaphora))
+(define-language :en "English"
+  (:adj "adjective")
+  (:adv "adverb")
+  (:art "article")
+  (:cnj "conjunction")
+  (:int "interjection")
+  (:nom "noun")
+  (:phr "phrase")
+  (:prp "preposition")
+  (:prn "pronoun")
+  (:vrb "verb"
+        :ss-forms
+        ("Infinitive" "Past Participle")
+        :form-aspects
+        (("(I) " "(you) " "(it) " "(we) " "(they) ")
+         ("Present Simple"
+          "Future Simple"
+          "Past Simple"
+          "Present Continuous"
+          "Future Continuous"
+          "Past Continuous"
+          "Present Perfect"
+          "Future Perfect"
+          "Past Perfect"))))
