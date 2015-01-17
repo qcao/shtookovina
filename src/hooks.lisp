@@ -1,6 +1,6 @@
 ;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp -*-
 ;;;
-;;; Hooks for Shtookovina.
+;;; This file is part of Shtookovina.
 ;;;
 ;;; Copyright (c) 2015 Mark Karpov
 ;;;

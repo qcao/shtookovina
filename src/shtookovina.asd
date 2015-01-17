@@ -28,6 +28,7 @@
                  (:file "language"))
                  ;(:file "shtooka-db")
                  ;(:file "ui-language")
+                 ;(:file "dictionary")
                  ;(:file "session")
                  ;(:file "main"))
   :depends-on   (#:alexandria
