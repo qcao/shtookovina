@@ -25,8 +25,8 @@
   :license      "GNU GPL v.3"
   :components   ((:file "package")
                  (:file "hooks")
-                 (:file "language"))
-                 ;(:file "shtooka-db")
+                 (:file "language")
+                 (:file "shtooka-db"))
                  ;(:file "ui-language")
                  ;(:file "dictionary")
                  ;(:file "session")

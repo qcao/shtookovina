@@ -20,4 +20,5 @@
 (defpackage :shtookovina
   (:use     #:common-lisp
             #:alexandria
-            #:anaphora))
+            #:anaphora
+            #:split-sequence))
