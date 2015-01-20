@@ -21,8 +21,9 @@
 
 (in-package #:shtookovina)
 
-(defvar *shtooka-dir* nil
-  "Path to directory that contains data base of audio recordings.")
+(defvar *shtooka-dirs* nil
+  "List of paths to directories that contain data bases of audio
+recordings.")
 
 (defparameter *shtooka-index* "index.tags.txt"
   "Name of index file in directory that contains Shtooka database.")
@@ -50,12 +51,15 @@ deleted from *AUDIO-INDEX* to speed up playback.")
 
 (defun extract-words (str)
   "Split text into words, according to Sthookovina concept of word."
-  (remove-if #'emptyp
-             (split-sequence-if-not #'alpha-char-p str)))
+  (remove-duplicates
+   (remove-if #'emptyp
+              (split-sequence-if-not #'alpha-char-p str))
+   :test #'string-equal))
 
-(defun init-shtooka-db ()
-  "Generate contents of *AUDIO-INDEX* and *TEXT-INDEX*. This function must
-be called before first call of PLAY-ITEM."
+(defun init-shtooka-db (&aux (total 0))
+  "Generate contents of *AUDIO-INDEX*, *TEXT-INDEX*, and
+*AUXILIARY-INDEX*. This function must be called before first call of
+PLAY-ITEM."
   (labels ((headerp (str)
              (and (not (emptyp str))
                   (char= (first-elt str) #\[)
@@ -67,48 +71,46 @@ be called before first call of PLAY-ITEM."
            (find-text (key str)
              (when (string= key (gethash str *text-index*))
                str))
-           (parse-db (filename)
-             (let ((total-num 0))
-               (with-open-file (stream filename :direction :input)
-                 (setf *audio-index*     (make-hash-table :test #'equalp)
-                       *text-index*      (make-hash-table :test #'equal)
-                       *auxiliary-index* (make-hash-table :test #'equalp))
-                 (do ((line (read-line stream nil)
-                            (read-line stream nil))
-                      actual-file
-                      target-tag)
-                     ((null line))
-                   (aif (headerp line)
-                        (progn
-                          (when (and actual-file target-tag)
-                            (dolist (item (extract-words target-tag))
-                              (push actual-file
-                                    (gethash item *audio-index*)))
-                            (setf (gethash actual-file *text-index*)
-                                  target-tag))
-                          (setf actual-file it
-                                total-num   (1+ total-num)
-                                target-tag  nil))
-                        (awhen (parse-tag line)
-                          (destructuring-bind (k v) it
-                            (when (string= *target-tag* k)
-                              (setf target-tag v))))))
-                 (maphash (lambda (key value)
-                            (when (>= (length value)
-                                      (* *uniqueness-threshold*
-                                         total-num))
-                              (remhash key *audio-index*)
-                              (awhen (find key value :test #'find-text)
-                                (setf (gethash key *auxiliary-index*) it))))
-                          *audio-index*)))))
-    (if *shtooka-dir*
-        (let ((index-file (merge-pathnames *shtooka-dir*
-                                           *shtooka-index*)))
-          (if (probe-file index-file)
-              (parse-db   index-file)
-              (perform-hook :could-not-find-shtooka-index
-                            :args index-file))
-          (perform-hook :shtooka-dir-not-set)))))
+           (get-index (dir)
+             (ensure-list (probe-file (merge-pathnames dir *shtooka-index*))))
+           (parse-db (index-file actual-dir)
+             (with-open-file (stream index-file :direction :input)
+               (do ((line (read-line stream nil)
+                          (read-line stream nil))
+                    actual-file
+                    target-tag)
+                   ((null line))
+                 (aif (headerp line)
+                      (progn
+                        (when (and actual-file target-tag)
+                          (dolist (item (extract-words target-tag))
+                            (push actual-file
+                                  (gethash item *audio-index*)))
+                          (setf (gethash actual-file *text-index*)
+                                target-tag))
+                        (setf actual-file (namestring
+                                           (merge-pathnames actual-dir it))
+                              total       (1+ total)
+                              target-tag  nil))
+                      (awhen (parse-tag line)
+                        (destructuring-bind (k v) it
+                          (when (string= *target-tag* k)
+                            (setf target-tag v)))))))))
+    (when *shtooka-dirs*
+      (setf *audio-index*     (make-hash-table :test #'equalp)
+            *text-index*      (make-hash-table :test #'equal)
+            *auxiliary-index* (make-hash-table :test #'equalp))
+      (dolist (index-file (mapcan #'get-index
+                                  (ensure-list *shtooka-dirs*)))
+        (parse-db index-file
+                  (make-pathname :directory (pathname-directory index-file))))
+      (maphash (lambda (key value)
+                 (when (>= (length value)
+                           (* *uniqueness-threshold* total))
+                   (remhash key *audio-index*)
+                   (awhen (find key value :test #'find-text)
+                     (setf (gethash key *auxiliary-index*) it))))
+               *audio-index*))))
 
 (defun play-item (text)
   "Invokes :PLAY-ITEM hook with file name of audio file corresponding to
@@ -142,10 +144,45 @@ passed as argument)."
                                         :key #'cdr))
                  (selected (car (random-elt pretenders))))
        (perform-hook :play-item
-                     :args (merge-pathnames *shtooka-dir*
-                                            (quote-filename selected))
+                     :args (quote-filename selected)
                      :in-thread t
                      :put-into-shell t)
        (gethash selected *text-index*))
      (perform-hook :failed-play
                    :args text))))
+
+;;; --- testing ---
+
+(setf *shtooka-dirs*
+      '("/home/mark/Downloads/eng-balm-emmanuel/"
+        "/home/mark/Downloads/eng-balm-judith/"
+        "/home/mark/Downloads/eng-balm-judith-proverbs/"
+        "/home/mark/Downloads/eng-balm-verbs/"
+        "/home/mark/Downloads/eng-wcp-us/"
+        "/home/mark/Downloads/eng-wims-mary/"
+        "/home/mark/Downloads/eng-wims-mary-conversation/"
+        "/home/mark/Downloads/eng-wims-mary-num/"))
+
+(setf *shtooka-dirs*
+      '("/home/mark/Downloads/fra-balm-conjug/"
+        "/home/mark/Downloads/fra-balm-flora-expr/"
+        "/home/mark/Downloads/fra-balm-flora-num/"
+        "/home/mark/Downloads/fra-balm-frank/"
+        "/home/mark/Downlaods/fra-balm-tnitot/"
+        "/home/mark/Downloads/fra-balm-voc/"
+        "/home/mark/Downloads/fra-nallet-camille/"
+        "/home/mark/Downloads/fra-nallet-caroline/"
+        "/home/mark/Downlaods/fra-nallet-christian/"
+        "/home/mark/Downloads/fra-nallet-denise/"
+        "/home/mark/Downloads/fra-nallet-marie/"
+        "/home/mark/Downloads/fra-nallet-nicolas/"
+        "/home/mark/Downloads/fra-nallet-odile/"
+        "/home/mark/Downloads/fra-wims-lettres fra-wims-voc/"))
+
+(register-hook :play-item
+               (lambda (x)
+                 (format nil "flac -cd ~a | aplay" x)))
+
+(register-hook :failed-play
+               (lambda (x)
+                 (format t "cannot find audio for ~a~%" x)))
