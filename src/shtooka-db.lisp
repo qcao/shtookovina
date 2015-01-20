@@ -36,17 +36,22 @@ database index and fills this hash table.")
   "This hash table allows to lookup text corresponding to given filename in
 data base.")
 
+(defvar *auxiliary-index* nil
+  "Hash table that contains only auxiliary words. It's used when normal
+search fails and before invocation of :FAILED-PLAY.")
+
 (defparameter *target-tag* "SWAC_TEXT"
   "This tag will be used to fill out *AUDIO-INDEX*.")
 
-(defparameter *uniqueness-threshold* 1/100
+(defparameter *uniqueness-threshold* 1/250
   "A word is considered auxiliary in current language, if it appears in
-this (or greater) part of all texts in data base. Auxiliary words are
+this (or greater) share of all texts in data base. Auxiliary words are
 deleted from *AUDIO-INDEX* to speed up playback.")
 
 (defun extract-words (str)
   "Split text into words, according to Sthookovina concept of word."
-  (split-sequence-if-not #'alpha-char-p str))
+  (remove-if #'emptyp
+             (split-sequence-if-not #'alpha-char-p str)))
 
 (defun init-shtooka-db ()
   "Generate contents of *AUDIO-INDEX* and *TEXT-INDEX*. This function must
@@ -59,11 +64,15 @@ be called before first call of PLAY-ITEM."
            (parse-tag (str)
              (when (find #\= str :test #'char=)
                (split-sequence #\= str)))
+           (find-text (key str)
+             (when (string= key (gethash str *text-index*))
+               str))
            (parse-db (filename)
              (let ((total-num 0))
                (with-open-file (stream filename :direction :input)
-                 (setf *audio-index* (make-hash-table :test #'equalp)
-                       *text-index*  (make-hash-table :test #'equal))
+                 (setf *audio-index*     (make-hash-table :test #'equalp)
+                       *text-index*      (make-hash-table :test #'equal)
+                       *auxiliary-index* (make-hash-table :test #'equalp))
                  (do ((line (read-line stream nil)
                             (read-line stream nil))
                       actual-file
@@ -88,7 +97,9 @@ be called before first call of PLAY-ITEM."
                             (when (>= (length value)
                                       (* *uniqueness-threshold*
                                          total-num))
-                              (remhash key *audio-index*)))
+                              (remhash key *audio-index*)
+                              (awhen (find key value :test #'find-text)
+                                (setf (gethash key *auxiliary-index*) it))))
                           *audio-index*)))))
     (if *shtooka-dir*
         (let ((index-file (merge-pathnames *shtooka-dir*
@@ -104,10 +115,11 @@ be called before first call of PLAY-ITEM."
 given TEXT as first argument. TEXT may be word or phrase. If data base
 contains several files corresponding to the same text, one of them will be
 randomly selected. This function returns text of selected audio file on
-success and NIL on failure."
+success, it calls :FAILED-PLAY on failure (blocking call, given text is
+passed as argument)."
   (flet ((quote-filename (filename)
            (if (find #\space filename :test #'char=)
-               (format nil "~s" filename)
+               (format nil "\"~a\"" filename)
                filename))
          (count-items (items)
            (let ((counts (make-hash-table)))
@@ -116,30 +128,24 @@ success and NIL on failure."
                 (if (gethash item counts)
                     (incf (gethash item counts))
                     (setf (gethash item counts) 1)))))))
-    (when-let* ((counts (count-items
-                         (mappend (lambda (x) (gethash x *audio-index*))
-                                  (extract-words text))))
-                (extremum (cdr (extremum counts #'> :key #'cdr)))
-                (pretenders (remove-if (curry #'> extremum)
-                                       counts
-                                       :key #'cdr))
-                (selected (car (random-elt pretenders))))
-      (perform-hook :play-item
-                    :args (merge-pathnames *shtooka-dir*
-                                           (quote-filename selected))
-                    :in-thread t
-                    :put-into-shell t)
-      (gethash selected *text-index*))))
-
-;;; --- testing ---
-
-(setf *shtooka-dir* "/home/mark/Downloads/fr/flac/")
-
-(register-hook :play-item
-               (lambda (str)
-                 (format nil "flac -cd ~a | aplay" str)))
-
-;; todo:
-;; * restarts in some cases (?)
-;; * some guessing when system cannot find some words (damerau-levenshtein)
-;; * how to play auxiliary words?
+    (or
+     (when-let* ((words (extract-words text))
+                 (counts (count-items
+                          (or (mappend (lambda (x)
+                                         (gethash x *audio-index*))
+                                       words)
+                              (ensure-list
+                               (gethash (car words) *auxiliary-index*)))))
+                 (extremum (cdr (extremum counts #'> :key #'cdr)))
+                 (pretenders (remove-if (curry #'> extremum)
+                                        counts
+                                        :key #'cdr))
+                 (selected (car (random-elt pretenders))))
+       (perform-hook :play-item
+                     :args (merge-pathnames *shtooka-dir*
+                                            (quote-filename selected))
+                     :in-thread t
+                     :put-into-shell t)
+       (gethash selected *text-index*))
+     (perform-hook :failed-play
+                   :args text))))
