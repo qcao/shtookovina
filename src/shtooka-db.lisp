@@ -39,7 +39,7 @@ data base.")
 
 (defvar *auxiliary-index* nil
   "Hash table that contains only auxiliary words. It's used when normal
-search fails and before invocation of :FAILED-PLAY.")
+search fails and before invocation of :FAILED-PLAY or :SUCCESSFUL-PLAY.")
 
 (defparameter *target-tag* "SWAC_TEXT"
   "This tag will be used to fill out *AUDIO-INDEX*.")
@@ -59,7 +59,7 @@ deleted from *AUDIO-INDEX* to speed up playback.")
 (defun init-shtooka-db (&aux (total 0))
   "Generate contents of *AUDIO-INDEX*, *TEXT-INDEX*, and
 *AUXILIARY-INDEX*. This function must be called before first call of
-PLAY-ITEM."
+PLAY-ITEM. Invalid directories will be ignored."
   (labels ((headerp (str)
              (and (not (emptyp str))
                   (char= (first-elt str) #\[)
@@ -116,9 +116,9 @@ PLAY-ITEM."
   "Invokes :PLAY-ITEM hook with file name of audio file corresponding to
 given TEXT as first argument. TEXT may be word or phrase. If data base
 contains several files corresponding to the same text, one of them will be
-randomly selected. This function returns text of selected audio file on
-success, it calls :FAILED-PLAY on failure (blocking call, given text is
-passed as argument)."
+randomly selected. This function calls :SUCCESSFUL-PLAY hook when the system
+can find relevant recording and :FAILED-PLAY on failure (blocking calls,
+given text is passed as argument)."
   (flet ((quote-filename (filename)
            (if (find #\space filename :test #'char=)
                (format nil "\"~a\"" filename)
@@ -147,7 +147,9 @@ passed as argument)."
                      :args (quote-filename selected)
                      :in-thread t
                      :put-into-shell t)
-       (gethash selected *text-index*))
+       (perform-hook :successful-play
+                     :args (gethash selected *text-index*))
+       t)
      (perform-hook :failed-play
                    :args text))))
 
@@ -163,26 +165,30 @@ passed as argument)."
         "/home/mark/Downloads/eng-wims-mary-conversation/"
         "/home/mark/Downloads/eng-wims-mary-num/"))
 
-(setf *shtooka-dirs*
-      '("/home/mark/Downloads/fra-balm-conjug/"
-        "/home/mark/Downloads/fra-balm-flora-expr/"
-        "/home/mark/Downloads/fra-balm-flora-num/"
-        "/home/mark/Downloads/fra-balm-frank/"
-        "/home/mark/Downlaods/fra-balm-tnitot/"
-        "/home/mark/Downloads/fra-balm-voc/"
-        "/home/mark/Downloads/fra-nallet-camille/"
-        "/home/mark/Downloads/fra-nallet-caroline/"
-        "/home/mark/Downlaods/fra-nallet-christian/"
-        "/home/mark/Downloads/fra-nallet-denise/"
-        "/home/mark/Downloads/fra-nallet-marie/"
-        "/home/mark/Downloads/fra-nallet-nicolas/"
-        "/home/mark/Downloads/fra-nallet-odile/"
-        "/home/mark/Downloads/fra-wims-lettres fra-wims-voc/"))
+;; (setf *shtooka-dirs*
+;;       '("/home/mark/Downloads/fra-balm-conjug/"
+;;         "/home/mark/Downloads/fra-balm-flora-expr/"
+;;         "/home/mark/Downloads/fra-balm-flora-num/"
+;;         "/home/mark/Downloads/fra-balm-frank/"
+;;         "/home/mark/Downlaods/fra-balm-tnitot/"
+;;         "/home/mark/Downloads/fra-balm-voc/"
+;;         "/home/mark/Downloads/fra-nallet-camille/"
+;;         "/home/mark/Downloads/fra-nallet-caroline/"
+;;         "/home/mark/Downlaods/fra-nallet-christian/"
+;;         "/home/mark/Downloads/fra-nallet-denise/"
+;;         "/home/mark/Downloads/fra-nallet-marie/"
+;;         "/home/mark/Downloads/fra-nallet-nicolas/"
+;;         "/home/mark/Downloads/fra-nallet-odile/"
+;;         "/home/mark/Downloads/fra-wims-lettres fra-wims-voc/"))
 
 (register-hook :play-item
                (lambda (x)
                  (format nil "flac -cd ~a | aplay" x)))
 
+(register-hook :successful-play
+               (lambda (x)
+                 (format t "proposed recording: \"~a\"~%" x)))
+
 (register-hook :failed-play
                (lambda (x)
-                 (format t "cannot find audio for ~a~%" x)))
+                 (format t "cannot find audio for \"~a\"~%" x)))

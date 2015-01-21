@@ -26,9 +26,9 @@
   :components   ((:file "package")
                  (:file "hooks")
                  (:file "language")
+                 (:file "dictionary")
                  (:file "shtooka-db"))
                  ;(:file "ui-language")
-                 ;(:file "dictionary")
                  ;(:file "session")
                  ;(:file "main"))
   :depends-on   (#:alexandria
