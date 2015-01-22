@@ -118,7 +118,8 @@ given TEXT as first argument. TEXT may be word or phrase. If data base
 contains several files corresponding to the same text, one of them will be
 randomly selected. This function calls :SUCCESSFUL-PLAY hook when the system
 can find relevant recording and :FAILED-PLAY on failure (blocking calls,
-given text is passed as argument)."
+given text is passed as argument). The function returns T if it was able to
+find relevant audio recording and NIL otherwise."
   (flet ((quote-filename (filename)
            (if (find #\space filename :test #'char=)
                (format nil "\"~a\"" filename)
@@ -151,7 +152,8 @@ given text is passed as argument)."
                      :args (gethash selected *text-index*))
        t)
      (perform-hook :failed-play
-                   :args text))))
+                   :args text)
+     nil)))
 
 ;;; --- testing ---
 
