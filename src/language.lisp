@@ -138,6 +138,7 @@ lexeme of language, it returns NIL."
     (length (forms it))))
 
 (defun form-name (language lexeme &optional (form 0))
-  "Returns name of specified FORM (integer) of LEXEME in LANGUAGE."
+  "Returns name of specified FORM (integer) of LEXEME in LANGUAGE. If there
+is no such lexeme, returns NIL."
   (awhen (get-lexeme language lexeme)
     (aref (forms it) form)))

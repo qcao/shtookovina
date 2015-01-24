@@ -22,67 +22,178 @@
 
 (in-package #:shtookovina)
 
-(defvar *dictionary* (make-hash-table :test #'equalp)
+(defparameter *dictionary* (make-hash-table :test #'equalp)
   "Hash table that allows to get dictionary item by its type and string
-representation of the main form.")
+representation of the main form (they should be CONSed to get key).")
 
-(defvar *dictionary-weight-sums* nil
-  "This is an alist that contains sums of all values in corresponding weight
-vectors. It's used to pick up next pseudo-random word for training.")
-
-(defparameter *initial-weight* 3
+(defparameter *initial-weight* 9
   "When the user gives right answer when training a word, the weight is
 decreased, otherwise it's increased. This is upper limit of the weight.")
 
-(defparameter *base-weight* (/ 1 *initial-weight*)
-  "This is a number [0..1] that represents lower limit of weight of form.")
+(defparameter *base-weight* 1
+  "This is a number that represents lower limit of weight of form.")
+
+(defparameter *weight-step* 3
+  "Weight is changed discretely, *WEIGHT-STEP* is minimal difference between
+consequent values of weight.")
+
+(defvar +aspects-count+ 8
+  "Number of 'aspects' (exercise types) per form.")
+
+(defvar *weight-sums* (make-array +aspects-count+ :initial-element 0)
+  "Vector of sums of all weights per aspect.")
 
 (defclass dictionary-item ()
   ((forms
-    :initarg :forms
-    :initform (make-array 1 :initial-element "")
     :accessor forms
     :documentation "vector of strings that represent forms of the item")
    (weights
-    :initarg :weights
-    :initform (make-array 1 :initial-element NIL)
     :accessor weights
-    :documentation "alist of vectors of weights corresponding to items'
-forms"))
-  (:documentation "class that represents item in the dictionary"))
+    :documentation "array of weights corresponding to items' forms")
+   (item-weight
+    :initform (make-array +aspects-count+ :initial-element 0)
+    :accessor item-weight
+    :documentation "vector of sums of all item weights"))
+  (:documentation "class that represents an item in the dictionary"))
 
-(defun default-dictionary ()
-  "Resets dictionary state to its default.")
+(defgeneric alter-weight (item form-index aspect-index amount)
+  (:documentation "Intelligently change weight for form found at FORM-INDEX,
+for aspect denoted by ASPECT-INDEX, and in AMOUNT. All alterations of weight
+table should be done with this function."))
 
-(defun load-dictionary (filename)
-  "Try to load dictionary from file that has name FILENAME. This operation
-sets values of *DICTIONARY* and *DICTIONARY-WEIGHT-SUMS* variables.")
+(defmethod alter-weight ((item dictionary-item) form-index aspect-index amount)
+  (with-slots (weights item-weight) item
+    (let* ((value  (aref weights form-index aspect-index))
+           (sum    (+ value amount))
+           (result (cond ((> sum *initial-weight*) *initial-weight*)
+                         ((< sum *base-weight*) *base-weight*)
+                         (t sum)))
+           (diff   (- result value)))
+      (setf (aref weights form-index aspect-index) result)
+      (incf (aref item-weight aspect-index) diff)
+      (incf (aref *weight-sums* aspect-index) diff)
+      result)))
+
+(defmethod initialize-instance :after
+    ((item dictionary-item) &key type default-form in-language)
+  (with-slots (forms weights) item
+    (let ((forms-number (forms-number in-language type)))
+      (check-type forms-number (integer 1))
+      (setf forms (make-array forms-number
+                              :element-type '(simple-array character)
+                              :initial-element "")
+            (aref forms 0) default-form
+            weights (make-array (list forms-number
+                                      +aspects-count+)
+                                :element-type 'integer
+                                :initial-element 0))
+      (dotimes (form-index forms-number)
+        (dotimes (aspect-index +aspects-count+)
+          (alter-weight item form-index aspect-index *initial-weight*))))))
 
 (defun save-dictionary (filename)
   "Write current dictionary image to the file with the name FILENAME. This
-mainly serializes contents of *DICTIONARY* variable.")
+mainly serializes contents of *DICTIONARY* and *WEIGHT-SUMS* variables."
+  (with-open-file (stream filename
+                          :direction :output
+                          :if-exists :supersede
+                          :element-type '(unsigned-byte 8))
+    (cl-store:store *dictionary* stream)
+    (cl-store:store *weight-sums* stream)
+    filename))
 
-(defun add-dictionary-item (type default-form)
-  "Add item to the dictionary. The item will have type TYPE and default form
-DEFAULT-FORM. If the dictionary already contains this item, its weight will
-be reset to *INITIAL-WEIGHT*.")
+(defun load-dictionary (filename)
+  "Try to load dictionary from file that has name FILENAME. This operation
+sets values of *DICTIONARY* and *WEIGHT-SUMS* variables. The function
+returns T on success and NIL on failure."
+  (with-open-file (stream filename
+                          :direction :input
+                          :element-type '(unsigned-byte 8)
+                          :if-does-not-exist nil)
+    (when stream
+      (setf *dictionary* (cl-store:restore stream)
+            *weight-sums* (cl-store:restore stream))
+      t)))
 
 (defun rem-dictionary-item (type default-form)
-  "Remove item from the dictionary.")
+  "Remove item from the dictionary. Return T if there was such an item and
+NIL otherwise."
+  (awhen (gethash (cons type default-form) *dictionary*)
+    (let ((*initial-weight* 0))
+      (dotimes (form-index (length (forms it)))
+        (dotimes (aspect-index +aspects-count+)
+          (alter-weight it form-index aspect-index 0))))
+    (remhash (cons type default-form) *dictionary*)))
 
-(defun edit-dictionary-item (type default-form form-index new-form)
-  "Edit dictionary item changing one of its forms and possibly type of the
-item. Target item is identified by TYPE and DEFAULT-FORM. Selected form at
-FORM-INDEX will be replaced with NEW-FORM.")
+(defun add-dictionary-item (language type default-form)
+  "Add item to the dictionary. The item will have type TYPE (according to
+definition of LANGUAGE) and default form DEFAULT-FORM. If the dictionary
+already contains this item, the function has no effect."
+  (unless (gethash (cons type default-form) *dictionary*)
+    (setf (gethash (cons type default-form) *dictionary*)
+          (make-instance 'dictionary-item
+                         :type type
+                         :default-form default-form
+                         :in-language language))))
 
-(defun item-dec-weight (type default-form exc-type form-index)
-  "Decrease weight of form at FORM-INDEX of item identified by TYPE and
-DEFAULT-FORM in the dictionary.")
+(defun clear-dictionary ()
+  "Clear dictionary removing all its elements."
+  (maphash (lambda (key value)
+             (declare (ignore value))
+             (destructuring-bind (type . default-form) key
+               (rem-dictionary-item type default-form)))
+           *dictionary*))
 
-(defun item-inc-weight (type default-form exc-type form-index)
-  "Increase weight of form at FORM-INDEX of item identified by TYPE and
-DEFAULT-FORM in the dictionary.")
+(defun edit-dictionary-item
+    (type default-form new-form &optional (form-index 0))
+  "Edit dictionary item changing one of its forms. Target item is identified
+by TYPE and DEFAULT-FORM. Selected form at FORM-INDEX will be replaced with
+NEW-FORM. Return NIL if there is no such item in the dictionary and NEW-FORM
+otherwise."
+  (check-type form-index integer)
+  (check-type new-form (simple-array character))
+  (awhen (gethash (cons type default-form) *dictionary*)
+    (setf (aref (forms it) form-index) new-form)
+    (when (zerop form-index)
+      (remhash (cons type default-form) *dictionary*)
+      (setf (gethash (cons type new-form) *dictionary*)
+            it))
+    new-form))
 
-(defun get-next-form (exc-type)
-  "Get type, default form, and index of randomly selected dictionary item
-for exercises type EXC-TYPE.")
+(defun item-dec-weight (type default-form form-index aspect-index)
+  "Decrease weight of ASPECT-INDEX aspect of form at FORM-INDEX of item
+identified by TYPE and DEFAULT-FORM in the dictionary."
+  (awhen (gethash (cons type default-form) *dictionary*)
+    (alter-weight it form-index aspect-index (- *weight-step*))))
+
+(defun item-inc-weight (type default-form form-index aspect-index)
+  "Decrease weight of ASPECT-INDEX aspect of form at FORM-INDEX of item
+identified by TYPE and DEFAULT-FORM in the dictionary."
+  (awhen (gethash (cons type default-form) *dictionary*)
+    (alter-weight it form-index aspect-index *weight-step*)))
+
+(defun get-next-form (aspect-index)
+  "Get type, default form, and form index of randomly selected dictionary
+item for ASPECT-INDEX."
+  (let ((index (random (aref *weight-sums* aspect-index))))
+    (when (plusp (hash-table-count *dictionary*))
+      (block the-block
+        (maphash (lambda (key value)
+                   (if (<= index (aref (item-weight value) aspect-index))
+                       (destructuring-bind (type . default-form) key
+                         (return-from the-block
+                           (values type
+                                   default-form
+                                   (do ((i 0 (1+ i)))
+                                       ((<= index (aref (weights value)
+                                                        i
+                                                        aspect-index)) i)
+                                     (decf index (aref (weights value)
+                                                       i
+                                                       aspect-index))))))
+                       (decf index (aref (item-weight value) aspect-index))))
+                 *dictionary*)))))
+
+;;; --- tests ---
+
+(load "/home/mark/projects/programs/shtookovina/git/langs/en.lisp")
