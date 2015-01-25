@@ -17,27 +17,28 @@
 ;;; You should have received a copy of the GNU General Public License along
 ;;; with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(define-language :en "English"
-  (:adj "adjective")
-  (:adv "adverb")
-  (:art "article")
-  (:cnj "conjunction")
-  (:int "interjection")
-  (:nom "noun")
-  (:phr "phrase")
-  (:prp "preposition")
-  (:prn "pronoun")
-  (:vrb "verb"
-        :ss-forms
-        ("Infinitive" "Past Participle")
-        :form-aspects
-        (("(I) " "(you) " "(it) ")
-         ("Present Simple"
-          "Future Simple"
-          "Past Simple"
-          "Present Continuous"
-          "Future Continuous"
-          "Past Continuous"
-          "Present Perfect"
-          "Future Perfect"
-          "Past Perfect"))))
+(set-language
+ "English"
+ '((:adj "adjective")
+   (:adv "adverb")
+   (:art "article")
+   (:cnj "conjunction")
+   (:int "interjection")
+   (:nom "noun")
+   (:phr "phrase")
+   (:prp "preposition")
+   (:prn "pronoun")
+   (:vrb "verb"
+    :ss-forms
+    ("Infinitive" "Past Participle")
+    :form-aspects
+    (("Present Simple"
+      "Future Simple"
+      "Past Simple"
+      "Present Continuous"
+      "Future Continuous"
+      "Past Continuous"
+      "Present Perfect"
+      "Future Perfect"
+      "Past Perfect")
+     (" (I)" " (you)" " (it)")))))

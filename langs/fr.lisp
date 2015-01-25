@@ -17,29 +17,34 @@
 ;;; You should have received a copy of the GNU General Public License along
 ;;; with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(define-language :fr "français"
-  (:adj "adjectif"
-        :form-aspects
-        (("m" "f")
-         ("" " pl")))
-  (:adv "adverbe")
-  (:art "article")
-  (:cnj "conjonction")
-  (:int "interjection")
-  (:nom "nom"
-        :form-aspects
-        (("m" "f")))
-  (:phr "phrase")
-  (:prp "préposition")
-  (:prn "pronom")
-  (:vrb "verbe"
-        :ss-forms
-        ("Infinitif" "Participe Passe" "Gérondif")
-        :form-aspects
-        (("(je) " "(tu) " "(il) " "(nous) " "(vous) " "(ils) ")
-         ("Present de l'indicatif"
-          "Futur simple"
-          "Imparfait"
-          "Present du subjonctif"
-          "Imperatif"
-          "Conditionnel présent"))))
+(set-language
+ "français"
+ '((:adj "adjectif"
+    :form-aspects
+    (("m" "f")
+     ("" " pl")))
+   (:adv "adverbe")
+   (:art "article")
+   (:cnj "conjonction")
+   (:int "interjection")
+   (:nom "nom"
+    :form-aspects
+    (("m" "f")))
+   (:phr "phrase")
+   (:prp "préposition")
+   (:prn "pronom")
+   (:vrb "verbe"
+    :ss-forms
+    ("Infinitif" "Participe Passe" "Gérondif")
+    :form-aspects
+    (("Present de l'indicatif"
+      "Futur simple"
+      "Future proche"
+      "Imparfait"
+      "Passé composé"
+      "Present du subjonctif"
+      "Subjonctif passé"
+      "Imperatif"
+      "Conditionnel présent"
+      "Conditionnel passé")
+     (" (je)" " (tu)" " (il)" " (nous)" " (vous)" " (ils)")))))

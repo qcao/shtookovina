@@ -20,8 +20,9 @@
 
 (in-package #:shtookovina)
 
-(defparameter *languages* (make-hash-table)
-  "This variable is bound to hash table of all supported languages.")
+(defvar *language* nil
+  "Normally, this variable is bound to instance of LANGUAGE class that
+represent current language that user learns.")
 
 (defparameter *default-form-name* ""
   "When no forms specified for lexeme in language definition, this form is
@@ -38,11 +39,9 @@ automatically created as single form of the lexeme.")
     :initform (make-hash-table)
     :accessor lexemes
     :documentation "collection of lexemes that define language"))
-  (:documentation "class to model natural languages for purposes of
-Shtookovina"))
+  (:documentation "class to model natural language"))
 
 (defmethod make-load-form ((self language) &optional env)
-  "This method is needed to create language objects at compile time."
   (make-load-form-saving-slots self :environment env))
 
 (defclass lexeme ()
@@ -59,7 +58,6 @@ Shtookovina"))
   (:documentation "model of natural language lexeme"))
 
 (defmethod make-load-form ((self lexeme) &optional env)
-  "This method is needed to create lexemes at compile time."
   (make-load-form-saving-slots self :environment env))
 
 (defun lexeme (id name &key ss-forms form-aspects)
@@ -86,7 +84,7 @@ preserved."
                              (make-array (length lst)
                                          :initial-contents lst))))))
 
-(defmacro define-language (id name &rest lexemes)
+(defun set-language (name lexemes)
   "This macro defines model of natural language."
   (flet ((build-lexemes (lexemes)
            (let ((result (make-hash-table)))
@@ -94,51 +92,40 @@ preserved."
                (multiple-value-bind (id lexeme)
                    (apply #'lexeme item)
                  (setf (gethash id result) lexeme))))))
-    `(setf (gethash ,id *languages*)
-           (make-instance 'language
-                          :name ,name
-                          :lexemes ,(build-lexemes lexemes)))))
+    (setf *language*
+          (make-instance 'language
+                         :name name
+                         :lexemes (build-lexemes lexemes)))))
 
-(defun get-language (language)
-  "This is a helper function, it tries to find requested language LANG and
-if it succeeds, it returns it. Otherwise it calls :COULD-NOT-FIND-LANGUAGE
-hook (blocking call), its non-NIL result will be used as actual language."
-  (aif (gethash language *languages*)
-       it
-       (perform-hook :could-not-find-language
-                     :args language)))
-
-(defun get-lexemes (language)
-  "Return alist of lexemes (id - name) of given language LANGUAGE."
-  (awhen (get-language language)
+(defun get-lexemes ()
+  "Return alist of lexemes (id - name) in the actual language."
+  (when *language*
     (let (result)
       (maphash (lambda (k v)
                  (push (cons k (name v)) result))
-               (lexemes it))
+               (lexemes *language*))
       (nreverse result))))
 
-(defun get-lexeme (language lexeme)
-  "If lexeme LEXEME exists in language LANGUAGE, it is returned. Otherwise
-the function calls :COULD-NOT-FIND-LEXEME hook (blocking call), its non-NIL
-result will be used as actual language.."
-  (awhen (get-language language)
-    (or (gethash lexeme (lexemes it))
-        (perform-hook :could-not-find-lexeme
-                      :args (list lexeme language)))))
+(defun get-lexeme (lexeme)
+  "If lexeme LEXEME exists in the actual language, it is returned. Otherwise
+NIL is returned."
+  (when *language*
+    (gethash lexeme (lexemes *language*))))
 
-(defun get-forms (language lexeme)
-  "Return list of LEXEME forms in LANGUAGE."
-  (awhen (get-lexeme language lexeme)
+(defun get-forms (lexeme)
+  "Return list of LEXEME forms or NIL if there is no such lexeme in actual
+language."
+  (awhen (get-lexeme lexeme)
     (forms it)))
 
-(defun forms-number (language lexeme)
-  "Returns number of forms that has LEXEME in LANGUAGE. If there is no such
-lexeme of language, it returns NIL."
-  (awhen (get-lexeme language lexeme)
+(defun forms-number (lexeme)
+  "Returns number of forms that has LEXEME in actual language. If there is
+no such lexeme in the language, it returns NIL."
+  (awhen (get-lexeme lexeme)
     (length (forms it))))
 
-(defun form-name (language lexeme &optional (form 0))
-  "Returns name of specified FORM (integer) of LEXEME in LANGUAGE. If there
-is no such lexeme, returns NIL."
-  (awhen (get-lexeme language lexeme)
+(defun form-name (lexeme &optional (form 0))
+  "Returns name of specified FORM (integer) of LEXEME in actual language. If
+there is no such lexeme, returns NIL."
+  (awhen (get-lexeme lexeme)
     (aref (forms it) form)))
