@@ -75,9 +75,9 @@ table should be done with this function."))
       result)))
 
 (defmethod initialize-instance :after
-    ((item dictionary-item) &key type default-form in-language)
+    ((item dictionary-item) &key type default-form)
   (with-slots (forms weights) item
-    (let ((forms-number (forms-number in-language type)))
+    (let ((forms-number (forms-number type)))
       (check-type forms-number (integer 1))
       (setf forms (make-array forms-number
                               :element-type '(simple-array character)
@@ -125,7 +125,7 @@ NIL otherwise."
           (alter-weight it form-index aspect-index 0))))
     (remhash (cons type default-form) *dictionary*)))
 
-(defun add-dictionary-item (language type default-form)
+(defun add-dictionary-item (type default-form)
   "Add item to the dictionary. The item will have type TYPE (according to
 definition of LANGUAGE) and default form DEFAULT-FORM. If the dictionary
 already contains this item, the function has no effect."
@@ -133,8 +133,7 @@ already contains this item, the function has no effect."
     (setf (gethash (cons type default-form) *dictionary*)
           (make-instance 'dictionary-item
                          :type type
-                         :default-form default-form
-                         :in-language language))))
+                         :default-form default-form))))
 
 (defun clear-dictionary ()
   "Clear dictionary removing all its elements."

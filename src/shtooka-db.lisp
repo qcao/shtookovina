@@ -39,7 +39,8 @@ data base.")
 
 (defvar *auxiliary-index* nil
   "Hash table that contains only auxiliary words. It's used when normal
-search fails and before invocation of :FAILED-PLAY or :SUCCESSFUL-PLAY.")
+search fails and before invocation of :FAILED-AUDIO-QUERY
+or :SUCCESSFUL-AUDIO-QUERY.")
 
 (defparameter *target-tag* "SWAC_TEXT"
   "This tag will be used to fill out *AUDIO-INDEX*.")
@@ -59,7 +60,7 @@ deleted from *AUDIO-INDEX* to speed up playback.")
 (defun init-shtooka-db (&aux (total 0))
   "Generate contents of *AUDIO-INDEX*, *TEXT-INDEX*, and
 *AUXILIARY-INDEX*. This function must be called before first call of
-PLAY-ITEM. Invalid directories will be ignored."
+AUDIO-QUERY. Invalid directories will be ignored."
   (labels ((headerp (str)
              (and (not (emptyp str))
                   (char= (first-elt str) #\[)
@@ -112,14 +113,15 @@ PLAY-ITEM. Invalid directories will be ignored."
                      (setf (gethash key *auxiliary-index*) it))))
                *audio-index*))))
 
-(defun play-item (text)
-  "Invokes :PLAY-ITEM hook with file name of audio file corresponding to
+(defun audio-query (text)
+  "Invokes :AUDIO-QUERY hook with file name of audio file corresponding to
 given TEXT as first argument. TEXT may be word or phrase. If data base
 contains several files corresponding to the same text, one of them will be
-randomly selected. This function calls :SUCCESSFUL-PLAY hook when the system
-can find relevant recording and :FAILED-PLAY on failure (blocking calls,
-given text is passed as argument). The function returns T if it was able to
-find relevant audio recording and NIL otherwise."
+randomly selected. This function calls :SUCCESSFUL-AUDIO-QUERY hook when the
+system can find relevant recording and :FAILED-AUDIO-QUERY on
+failure (blocking calls, given text is passed as argument). The function
+returns T if it was able to find relevant audio recording and NIL
+otherwise."
   (flet ((quote-filename (filename)
            (if (find #\space filename :test #'char=)
                (format nil "\"~a\"" filename)
@@ -144,14 +146,14 @@ find relevant audio recording and NIL otherwise."
                                         counts
                                         :key #'cdr))
                  (selected (car (random-elt pretenders))))
-       (perform-hook :play-item
+       (perform-hook :audio-query
                      :args (quote-filename selected)
                      :in-thread t
                      :put-into-shell t)
-       (perform-hook :successful-play
+       (perform-hook :successful-audio-query
                      :args (gethash selected *text-index*))
        t)
-     (perform-hook :failed-play
+     (perform-hook :failed-audio-query
                    :args text)
      nil)))
 
@@ -183,14 +185,14 @@ find relevant audio recording and NIL otherwise."
 ;;         "/home/mark/Downloads/fra-nallet-odile/"
 ;;         "/home/mark/Downloads/fra-wims-lettres fra-wims-voc/"))
 
-(register-hook :play-item
+(register-hook :audio-query
                (lambda (x)
                  (format nil "flac -cd ~a | aplay" x)))
 
-(register-hook :successful-play
+(register-hook :successful-audio-query
                (lambda (x)
                  (format t "proposed recording: \"~a\"~%" x)))
 
-(register-hook :failed-play
+(register-hook :failed-audio-query
                (lambda (x)
                  (format t "cannot find audio for \"~a\"~%" x)))

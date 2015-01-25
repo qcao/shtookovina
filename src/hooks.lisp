@@ -28,7 +28,7 @@ given keyword. The keyword corresponds to some predefined event.")
 FUNCTION must be able to take appropriate number of arguments. Exact number
 of arguments depends on EVENT, see documentation for full list of
 events. Only one function can be registered for any given EVENT. That means
-that new functions may overwrite old ones."
+that new functions will overwrite the old ones."
   (setf (gethash event *hooks*) function)
   (values))
 
@@ -38,12 +38,12 @@ was function associated with EVENT and NIL otherwise."
   (remhash event *hooks*))
 
 (defun perform-hook (event &key args in-thread put-into-shell)
-  "Call function associated with given EVENT with arguments ARGS (must be
+  "Call function associated with given EVENT with arguments ARGS (must be a
 list designator). If IN-THREAD is non-NIL, create separate thread for the
-function (return no values in this case). If PUT-INTO-SHELL is non-NIL,
+function (return no value in this case). If PUT-INTO-SHELL is non-NIL,
 result of the function will be feed into system shell (the result must be a
-string, then). Return value actual function evaluates to, or NIL if there is
-no such function registered."
+string). Return value actual function evaluates to, or NIL if there is no
+such function registered."
   (awhen (gethash event *hooks*)
     (flet ((call-hook ()
              (let ((result (apply it (ensure-list args))))
