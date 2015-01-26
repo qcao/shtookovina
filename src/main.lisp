@@ -1,8 +1,8 @@
 ;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; -*-
 ;;;
-;;; Package definition for Shtookovina.
+;;; This is the place where we put it all together.
 ;;;
-;;; Copyright (c) 2015 Mark Karpov
+;;; Copyright (c) 2014 Mark Karpov
 ;;;
 ;;; Shtookovina is free software: you can redistribute it and/or modify it
 ;;; under the terms of the GNU General Public License as published by the
@@ -17,8 +17,4 @@
 ;;; You should have received a copy of the GNU General Public License along
 ;;; with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(defpackage :shtookovina
-  (:use     #:common-lisp
-            #:alexandria
-            #:anaphora
-            #:split-sequence))
+(in-package #:shtookovina)

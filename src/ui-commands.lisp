@@ -1,8 +1,12 @@
 ;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; -*-
 ;;;
-;;; Package definition for Shtookovina.
+;;; All user-friendly commands live here. It includes commands to start some
+;;; exercise, get information or statistics, open external resource (such as
+;;; generated URL in your favorite web-browser, so you can check an online
+;;; dictionary), and more. See how the commands are defined, and you will be
+;;; able to add your own commands easily.
 ;;;
-;;; Copyright (c) 2015 Mark Karpov
+;;; Copyright (c) 2014 Mark Karpov
 ;;;
 ;;; Shtookovina is free software: you can redistribute it and/or modify it
 ;;; under the terms of the GNU General Public License as published by the
@@ -17,8 +21,4 @@
 ;;; You should have received a copy of the GNU General Public License along
 ;;; with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(defpackage :shtookovina
-  (:use     #:common-lisp
-            #:alexandria
-            #:anaphora
-            #:split-sequence))
+(in-package #:shtookovina)

@@ -22,22 +22,22 @@
   :description  "Lisp based program for language learning"
   :author       "Mark Karpov"
   :serial       t
-  :license      "GNU GPL v.3"
+  :license      "GNU GPL, version 3"
   :components   ((:file "package")
                  (:file "hooks")
                  (:file "language")
                  (:file "shtooka-db")
                  (:file "dictionary")
-                 (:file "ui-language"))
-                 ;(:file "session")
-                 ;(:file "main"))
+                 (:file "ui-language")
+                 (:file "session")
+                 (:file "ui-commands")
+                 (:file "main"))
   :depends-on   (#:alexandria
                  #:anaphora
+                 #:trivial-shell
+                 #:bordeaux-threads
                  #:split-sequence
                  #:cl-store
-                 #:trivial-update
                  #:mk-string-metrics
                  #:cl-readline
-                 #:cl-ansi-term
-                 #:trivial-shell
-                 #:bordeaux-threads))
+                 #:cl-ansi-term))

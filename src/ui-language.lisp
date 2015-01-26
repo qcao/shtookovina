@@ -54,7 +54,7 @@ interface elements."
   "Returns name of active UI langauge."
   (name *ui-language*))
 
-(defun get-ui-element (id)
+(defun uie (id)
   "Returns local translation of user interface element with id ID."
   (aif (gethash id (vocabulary *ui-language*))
        it
