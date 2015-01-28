@@ -42,13 +42,22 @@ screen.")
   (make-load-form-saving-slots self :environment env))
 
 (defun set-ui-language (name pairs)
-  "Set user interface language. NAME is name of the language and PAIRS is
+  "Set user interface language. NAME is name of the language and PAIRS is an
 alist of pairs 'keyword - string' that represent local translations of user
 interface elements."
   (setf *ui-language*
         (make-instance 'ui-language
                        :name name
                        :vocabulary (alist-hash-table pairs))))
+
+(defun add-ui-elements (pairs)
+  "Add new user interface elements (translations). PAIRS is an alist of
+pairs 'keyword - string' that represent local translations of user interface
+elements."
+  (dolist (pair pairs)
+    (destructuring-bind (id . string) pair
+      (setf (gethash id (vocabulary *ui-language*))
+            string))))
 
 (defun get-ui-locale ()
   "Returns name of active UI langauge."
