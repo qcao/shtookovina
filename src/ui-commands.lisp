@@ -6,7 +6,7 @@
 ;;; dictionary), and more. See how the commands are defined, and you will be
 ;;; able to add your own commands easily.
 ;;;
-;;; Copyright (c) 2014 Mark Karpov
+;;; Copyright (c) 2015 Mark Karpov
 ;;;
 ;;; Shtookovina is free software: you can redistribute it and/or modify it
 ;;; under the terms of the GNU General Public License as published by the
@@ -22,3 +22,24 @@
 ;;; with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (in-package #:shtookovina)
+
+(define-command quit ()
+    (:quit-short-desc :quit-long-desc)
+  (setf *session-terminated* t))
+
+(define-command help (&optional (command string))
+    (:help-short-desc :help-long-desc)
+  (if command
+      (print-command-description command)
+      (progn
+        (term:cat-print (uie :available-cmds)
+                        :base-style :hdr)
+        (terpri)
+        (term:table (cons (list (uie :command) (uie :description))
+                          (mapcar (lambda (x)
+                                    (list x (uie (short-desc-id
+                                                  (gethash x *commands*)))))
+                                  *command-list*))
+                    :header-style :hdr
+                    :border-style nil
+                    :column-width 37))))
