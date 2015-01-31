@@ -19,5 +19,37 @@
 
 (set-ui-language
  "English"
- '((:foo . "foo")
-   (:bar . "bar")))
+ :where
+ "where "
+ :arg-parser-failed
+ "[Cannot](err) parse [\"~\"](inc) as [~](typ)"
+ :cmd-invalid-call
+ "[Cannot](err) call [~](cmd) with these arguments"
+ :help-cmd-reminder
+ "For information about the command use: [help](cmd) [~](arg)"
+ :define-audio-query
+ "[Cannot](err) play [\"~\"](arg), please define [AUDIO-QUERY](cmd) hook"
+ :proposed-audio
+ "Proposed audio: [\"~\"](arg)"
+ :failed-audio-query
+ "[Cannot](err) find any relevant audio for [\"~\"](arg)"
+ :quit-short-desc
+ "Quit the Shtookovina REPL."
+ :quit-long-desc
+ "Quit the Shtookovina REPL."
+ :help-short-desc
+ "Print info about commands."
+ :help-long-desc
+ "When invoked without arguments, it prints information about all available
+commands. When [COMMAND](arg) argument given, it prints detailed description
+of the specific command."
+ :available-cmds
+ "Available Commands:"
+ :command
+ "Command"
+ :description
+ "Description"
+ :possible-corrections
+ "Possible corrections for [~](cmd):"
+ :uncorrectable-cmd
+ "[Cannot](err) perform or correct command [~](cmd)")
