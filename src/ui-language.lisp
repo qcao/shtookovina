@@ -41,21 +41,24 @@ screen.")
 (defmethod make-load-form ((self ui-language) &optional env)
   (make-load-form-saving-slots self :environment env))
 
-(defun set-ui-language (name pairs)
-  "Set user interface language. NAME is name of the language and PAIRS is an
-alist of pairs 'keyword - string' that represent local translations of user
+(defun set-ui-language (name &rest plist)
+  "Set user interface language. NAME is name of the language and PLIST is a
+plist of pairs 'keyword - string' that represent local translations of user
 interface elements."
   (setf *ui-language*
         (make-instance 'ui-language
                        :name name
-                       :vocabulary (alist-hash-table pairs))))
+                       :vocabulary (plist-hash-table plist)))
+  (values))
 
-(defun add-ui-elements (pairs)
-  "Add new user interface elements (translations). PAIRS is an alist of
-pairs 'keyword - string' that represent local translations of user interface
+(defun add-ui-elements (&rest plist)
+  "Add new user interface elements (translations). PLIST is a plist of pairs
+'keyword - string' that represent local translations of user interface
 elements."
-  (dolist (pair pairs)
-    (destructuring-bind (id . string) pair
+  (do ((tail plist (cddr tail)))
+      ((null tail) (values))
+    (destructuring-bind (id string . rest) tail
+      (declare (ignore rest))
       (setf (gethash id (vocabulary *ui-language*))
             string))))
 
@@ -69,6 +72,50 @@ elements."
        it
        "?"))
 
-;;; --- testing ---
-
-(load "/home/mark/projects/programs/shtookovina/git/ui-langs/en.lisp")
+(defun uim (id &rest args)
+  "Like UIE, but helps to render colorized string corresponding to ID,
+inserting ARGS into it. Returns a list suitable for passing to
+TERM:CAT-PRINT."
+  (labels ((positions (char str &optional (start 0) acc)
+             (aif (position char str :start start :test #'char=)
+                  (positions char str (1+ it) (cons it acc))
+                  (nreverse acc)))
+           (malformed (item)
+             (destructuring-bind (start . end) item
+               (> start end)))
+           (form-pairs (open close str)
+             (remove-if #'malformed
+                        (mapcar #'cons
+                                (positions open str)
+                                (positions close str))))
+           (prepare (str start end)
+             (aif (position #\~ str :start start :end end :test #'char=)
+                  (concatenate 'string
+                               (subseq str start it)
+                               (format nil "~a" (pop args))
+                               (subseq str (1+ it) end))
+                  (subseq str start end))))
+    (awhen (gethash id (vocabulary *ui-language*))
+      (let ((brackets (form-pairs #\[ #\] it))
+            (parens   (form-pairs #\( #\) it))
+            (i        0)
+            result)
+        (dolist (item (mapcan (lambda (b)
+                                (destructuring-bind (bs . be) b
+                                  (awhen (find-if (lambda (x)
+                                                    (= (car x) (1+ be)))
+                                                  parens)
+                                    (destructuring-bind (ps . pe) it
+                                      (list (list (cons (1+ bs) be)
+                                                  (cons (1+ ps) pe)))))))
+                              brackets))
+          (destructuring-bind ((bs . be) (ps . pe)) item
+            (when (< i (1- bs))
+              (push (prepare it i (1- bs)) result))
+            (push (list (prepare it bs be)
+                        (intern (string-upcase (subseq it ps pe)) "KEYWORD"))
+                  result)
+            (setf i (1+ pe))))
+        (when (< i (length it))
+          (push (prepare it i (length it)) result))
+        (nreverse result)))))

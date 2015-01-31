@@ -85,7 +85,8 @@ preserved."
                                          :initial-contents lst))))))
 
 (defun set-language (name lexemes)
-  "This macro defines model of natural language."
+  "This macro generates and sets language for learning. Such a form must be
+evaluated before any exercises take place."
   (flet ((build-lexemes (lexemes)
            (let ((result (make-hash-table)))
              (dolist (item lexemes result)
@@ -98,11 +99,11 @@ preserved."
                          :lexemes (build-lexemes lexemes)))))
 
 (defun get-lexemes ()
-  "Return alist of lexemes (id - name) in the actual language."
+  "Return alist of lexemes (id name) in the actual language."
   (when *language*
     (let (result)
       (maphash (lambda (k v)
-                 (push (cons k (name v)) result))
+                 (push (list k (name v)) result))
                (lexemes *language*))
       (nreverse result))))
 

@@ -192,7 +192,3 @@ item for ASPECT-INDEX."
                                                        aspect-index))))))
                        (decf index (aref (item-weight value) aspect-index))))
                  *dictionary*)))))
-
-;;; --- tests ---
-
-(load "/home/mark/projects/programs/shtookovina/git/langs/en.lisp")

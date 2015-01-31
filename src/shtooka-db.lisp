@@ -40,7 +40,7 @@ data base.")
 (defvar *auxiliary-index* nil
   "Hash table that contains only auxiliary words. It's used when normal
 search fails and before invocation of :FAILED-AUDIO-QUERY
-or :SUCCESSFUL-AUDIO-QUERY.")
+or :SUCCESSFUL-AUDIO-QUERY hooks.")
 
 (defparameter *target-tag* "SWAC_TEXT"
   "This tag will be used to fill out *AUDIO-INDEX*.")
@@ -48,7 +48,8 @@ or :SUCCESSFUL-AUDIO-QUERY.")
 (defparameter *uniqueness-threshold* 1/250
   "A word is considered auxiliary in current language, if it appears in
 this (or greater) share of all texts in data base. Auxiliary words are
-deleted from *AUDIO-INDEX* to speed up playback.")
+deleted from *AUDIO-INDEX* to speed up playback. One can find all auxiliary
+words in *AUXILIARY-INDEX* hash table.")
 
 (defun extract-words (str)
   "Split text into words, according to Sthookovina concept of word."
@@ -59,8 +60,8 @@ deleted from *AUDIO-INDEX* to speed up playback.")
 
 (defun init-shtooka-db (&aux (total 0))
   "Generate contents of *AUDIO-INDEX*, *TEXT-INDEX*, and
-*AUXILIARY-INDEX*. This function must be called before first call of
-AUDIO-QUERY. Invalid directories will be ignored."
+*AUXILIARY-INDEX*. This function must be called before the first call of
+AUDIO-QUERY. Invalid directories will be ignored silently."
   (labels ((headerp (str)
              (and (not (emptyp str))
                   (char= (first-elt str) #\[)
@@ -115,13 +116,13 @@ AUDIO-QUERY. Invalid directories will be ignored."
 
 (defun audio-query (text)
   "Invokes :AUDIO-QUERY hook with file name of audio file corresponding to
-given TEXT as first argument. TEXT may be word or phrase. If data base
-contains several files corresponding to the same text, one of them will be
-randomly selected. This function calls :SUCCESSFUL-AUDIO-QUERY hook when the
-system can find relevant recording and :FAILED-AUDIO-QUERY on
-failure (blocking calls, given text is passed as argument). The function
-returns T if it was able to find relevant audio recording and NIL
-otherwise."
+given TEXT as first argument. TEXT may be a word or a phrase (i.e. several
+words). If the data base contains several files corresponding to the same
+text, one of them will be randomly selected. This function
+calls :SUCCESSFUL-AUDIO-QUERY hook when the system can find relevant
+recording and :FAILED-AUDIO-QUERY on failure (blocking calls, given text is
+passed as argument). The function returns T if it could find relevant audio
+recording and NIL otherwise."
   (flet ((quote-filename (filename)
            (if (find #\space filename :test #'char=)
                (format nil "\"~a\"" filename)
@@ -156,43 +157,3 @@ otherwise."
      (perform-hook :failed-audio-query
                    :args text)
      nil)))
-
-;;; --- testing ---
-
-(setf *shtooka-dirs*
-      '("/home/mark/Downloads/eng-balm-emmanuel/"
-        "/home/mark/Downloads/eng-balm-judith/"
-        "/home/mark/Downloads/eng-balm-judith-proverbs/"
-        "/home/mark/Downloads/eng-balm-verbs/"
-        "/home/mark/Downloads/eng-wcp-us/"
-        "/home/mark/Downloads/eng-wims-mary/"
-        "/home/mark/Downloads/eng-wims-mary-conversation/"
-        "/home/mark/Downloads/eng-wims-mary-num/"))
-
-;; (setf *shtooka-dirs*
-;;       '("/home/mark/Downloads/fra-balm-conjug/"
-;;         "/home/mark/Downloads/fra-balm-flora-expr/"
-;;         "/home/mark/Downloads/fra-balm-flora-num/"
-;;         "/home/mark/Downloads/fra-balm-frank/"
-;;         "/home/mark/Downlaods/fra-balm-tnitot/"
-;;         "/home/mark/Downloads/fra-balm-voc/"
-;;         "/home/mark/Downloads/fra-nallet-camille/"
-;;         "/home/mark/Downloads/fra-nallet-caroline/"
-;;         "/home/mark/Downlaods/fra-nallet-christian/"
-;;         "/home/mark/Downloads/fra-nallet-denise/"
-;;         "/home/mark/Downloads/fra-nallet-marie/"
-;;         "/home/mark/Downloads/fra-nallet-nicolas/"
-;;         "/home/mark/Downloads/fra-nallet-odile/"
-;;         "/home/mark/Downloads/fra-wims-lettres fra-wims-voc/"))
-
-(register-hook :audio-query
-               (lambda (x)
-                 (format nil "flac -cd ~a | aplay" x)))
-
-(register-hook :successful-audio-query
-               (lambda (x)
-                 (format t "proposed recording: \"~a\"~%" x)))
-
-(register-hook :failed-audio-query
-               (lambda (x)
-                 (format t "cannot find audio for \"~a\"~%" x)))
