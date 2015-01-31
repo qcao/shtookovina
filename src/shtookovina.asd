@@ -31,6 +31,8 @@
                  (:file "ui-language")
                  (:file "session")
                  (:file "ui-commands")
+                 (:file "default-hooks")
+                 (:file "default-style")
                  (:file "main"))
   :depends-on   (#:alexandria
                  #:anaphora
