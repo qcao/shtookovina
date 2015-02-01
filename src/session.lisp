@@ -220,13 +220,13 @@ will perform any necessary processing."
       (arg-parser-failed (condition)
         (princ condition)
         (term:cat-print
-         (uim :help-cmd-reminder name)))
+         (uim :help-command-reminder name)))
       (error (condition)
         (declare (ignore condition))
         (term:cat-print
-         (uim :cmd-invalid-call name))
+         (uim :command-invalid-call name))
         (term:cat-print
-         (uim :help-cmd-reminder name))))))
+         (uim :help-command-reminder name))))))
 
 (defun session ()
   "This is Shtookovina REPL."

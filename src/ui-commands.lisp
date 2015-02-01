@@ -32,7 +32,7 @@
   (if command
       (print-command-description command)
       (progn
-        (term:cat-print (uie :available-cmds)
+        (term:cat-print (uie :available-commands)
                         :base-style :hdr)
         (terpri)
         (term:table (cons (list (uie :command) (uie :description))

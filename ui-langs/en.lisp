@@ -1,6 +1,6 @@
 ;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; -*-
 ;;;
-;;; Definition of English translation of user interface.
+;;; English translation of user interface.
 ;;;
 ;;; Copyright (c) 2015 Mark Karpov
 ;;;
@@ -17,39 +17,47 @@
 ;;; You should have received a copy of the GNU General Public License along
 ;;; with this program. If not, see <http://www.gnu.org/licenses/>.
 
+;; This is English translation of the user interface. Other translations can
+;; be easily written by substitution of corresponding English words and
+;; phrases. Some strings are used as plain text (via UIE function), others
+;; also contain information about graphic rendition and tildes that will be
+;; replaced with arguments of function UIM. To apply some style (see
+;; 'default-style.lisp' for list of default styles) enclose text in
+;; brackets, and immediately after closing bracket ']', put name of desired
+;; style in parenthesis.  For example: [my text](cmd).
+
 (set-ui-language
  "English"
- :where
- "where "
  :arg-parser-failed
  "[Cannot](err) parse [\"~\"](inc) as [~](typ)"
- :cmd-invalid-call
+ :available-commands
+ "Available Commands:"
+ :command
+ "Command"
+ :command-invalid-call
  "[Cannot](err) call [~](cmd) with these arguments"
- :help-cmd-reminder
- "For information about the command use: [help](cmd) [~](arg)"
  :define-audio-query
  "[Cannot](err) play [\"~\"](arg), please define [AUDIO-QUERY](cmd) hook"
- :proposed-audio
- "Proposed audio: [\"~\"](arg)"
+ :description
+ "Description"
  :failed-audio-query
  "[Cannot](err) find any relevant audio for [\"~\"](arg)"
- :quit-short-desc
- "Quit the Shtookovina REPL."
- :quit-long-desc
- "Quit the Shtookovina REPL."
- :help-short-desc
- "Print info about commands."
+ :help-command-reminder
+ "For information about the command use: [help](cmd) [~](arg)"
  :help-long-desc
  "When invoked without arguments, it prints information about all available
 commands. When [COMMAND](arg) argument given, it prints detailed description
 of the specific command."
- :available-cmds
- "Available Commands:"
- :command
- "Command"
- :description
- "Description"
+ :help-short-desc
+ "Print info about commands."
  :possible-corrections
  "Possible corrections for [~](cmd):"
- :uncorrectable-cmd
- "[Cannot](err) perform or correct command [~](cmd)")
+ :proposed-audio
+ "Proposed audio: [\"~\"](arg)"
+ :quit-long-desc
+ "Quit the Shtookovina REPL."
+ :quit-short-desc
+ "Quit the Shtookovina REPL."
+ :uncorrectable-command
+ "[Cannot](err) perform or correct command [~](cmd)"
+ :where "where ")
