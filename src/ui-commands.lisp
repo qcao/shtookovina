@@ -43,3 +43,8 @@
                     :header-style :hdr
                     :border-style nil
                     :column-width 37))))
+
+(define-command lang ()
+    (:lang-short-desc :lang-long-desc)
+  (term:cat-print (uim :current-language
+                       (name *language*))))

@@ -36,6 +36,8 @@
  "Command"
  :command-invalid-call
  "[Cannot](err) call [~](cmd) with these arguments"
+ :current-language
+ "You are learning [~](arg)"
  :define-audio-query
  "[Cannot](err) play [\"~\"](arg), please define [AUDIO-QUERY](cmd) hook"
  :description
@@ -50,6 +52,11 @@ commands. When [COMMAND](arg) argument given, it prints detailed description
 of the specific command."
  :help-short-desc
  "Print info about commands."
+ :lang-long-desc
+ "The [lang](cmd) command prints name of the language that you're learning
+in the current Shtookovina session. It's useful for troubleshooting."
+ :lang-short-desc
+ "Print name of the language you're learning."
  :possible-corrections
  "Possible corrections for [~](cmd):"
  :proposed-audio
