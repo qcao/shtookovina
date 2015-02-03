@@ -25,9 +25,6 @@
 command that may be presented to user to choose from when there is no exact
 match.")
 
-(define-hook :audio-query (filename)
-  (term:cat-print (uim :define-audio-query filename)))
-
 (define-hook :successful-audio-query (text)
   (term:cat-print (uim :proposed-audio text)))
 
