@@ -23,12 +23,15 @@
 
 (in-package #:shtookovina)
 
+(defvar +table-cell-width+ 20
+  "Cell width that is used when Shtookovina needs to print some table.")
+
 (define-command quit ()
-    (:quit-short-desc :quit-long-desc)
+    (:cmd-quit-s :cmd-quit-l)
   (setf *session-terminated* t))
 
 (define-command help (&optional (command string))
-    (:help-short-desc :help-long-desc)
+    (:cmd-help-s :cmd-help-l)
   (if command
       (print-command-description command)
       (progn
@@ -42,9 +45,82 @@
                                   *command-list*))
                     :header-style :hdr
                     :border-style nil
-                    :column-width 37))))
+                    :column-width +table-cell-width+))))
 
 (define-command lang ()
-    (:lang-short-desc :lang-long-desc)
+    (:cmd-lang-s :cmd-lang-l)
   (term:cat-print (uim :current-language
                        (name *language*))))
+
+(define-command ui-lang ()
+    (:cmd-ui-lang-s :cmd-ui-lang-l)
+  (term:cat-print (uim :current-ui-language
+                       (get-ui-locale))))
+
+(define-command lexemes ()
+    (:cmd-lexemes-s :cmd-lexemes-l)
+  (term:cat-print (uie :lexemes)
+                  :base-style :hdr)
+  (terpri)
+  (term:table (cons (list (uie :id) (uie :name))
+                    (get-lexemes))
+              :header-style :hdr
+              :border-style nil
+              :column-width +table-cell-width+))
+
+(define-command forms ((lexeme keyword))
+    (:cmd-forms-s :cmd-forms-l)
+  (if (get-lexeme lexeme)
+      (progn
+        (term:cat-print (uie :lexeme-forms)
+                        :base-style :hdr)
+        (terpri)
+        (term:table (cons (list (uie :index) (uie :name))
+                          (mapcar (lambda (i form)
+                                    (list i (if (emptyp form)
+                                                (uie :default-form)
+                                                form)))
+                                  (iota (forms-number lexeme))
+                                  (get-forms lexeme)))
+                    :header-style :hdr
+                    :border-style nil
+                    :column-width +table-cell-width+))
+      (term:cat-print (uim :no-such-lexeme lexeme))))
+
+(define-command audio ((text string))
+    (:cmd-audio-s :cmd-audio-l)
+  (audio-query text))
+
+;; (define-command rem ((type keyword) (default-form string))
+;;     (:cmd-rem-s :cmd-rem-l)
+;;   )
+
+;; (define-command add ((type keyword) (default-form string))
+;;     (:cmd-add-s :cmd-add-l)
+;;   )
+
+;; (define-command clear ()
+;;     (:cmd-clear-s :cmd-clear-l)
+;;   )
+
+;; (define-command edit ((type keyword)
+;;                       (default-form string)
+;;                       (new-form string)
+;;                       &optional
+;;                       (form-index integer))
+;;     (:cmd-edit-s :cmd-edit-l)
+;;   )
+
+(define-command dict ((word string))
+    (:cmd-dict-s :cmd-dict-l)
+  (perform-hook :external-dict
+                :args word
+                :in-thread t
+                :put-into-shell t))
+
+(define-command conj ((verb string))
+    (:cmd-conj-s :cmd-conj-l)
+  (perform-hook :external-conj
+                :args verb
+                :in-thread t
+                :put-into-shell t))
