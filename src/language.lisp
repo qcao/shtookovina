@@ -117,7 +117,7 @@ NIL is returned."
   "Return list of LEXEME forms or NIL if there is no such lexeme in actual
 language."
   (awhen (get-lexeme lexeme)
-    (forms it)))
+    (coerce (forms it) 'list)))
 
 (defun forms-number (lexeme)
   "Returns number of forms that has LEXEME in actual language. If there is

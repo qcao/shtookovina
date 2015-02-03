@@ -231,8 +231,11 @@ will perform any necessary processing."
 (defun session ()
   "This is Shtookovina REPL."
   (perform-hook :session-start)
-  (do () (*session-terminated*)
-    (awhen (correct-command (read-command))
+  (do (input)
+      (*session-terminated*)
+    (setf input (read-command))
+    (awhen (and (not (emptyp input))
+                (correct-command input))
       (perform-command it)))
   (perform-hook :session-end)
   (values))

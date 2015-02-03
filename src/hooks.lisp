@@ -49,7 +49,7 @@ no such function registered."
   (awhen (gethash event *hooks*)
     (flet ((call-hook ()
              (let ((result (apply it (ensure-list args))))
-               (when put-into-shell
+               (when (and put-into-shell result)
                  (trivial-shell:shell-command result))
                result)))
       (if in-thread
