@@ -36,35 +36,76 @@
  "Command"
  :command-invalid-call
  "[Cannot](err) call [~](cmd) with these arguments"
+ :cmd-audio-l
+ "Search Shtooka databases, pick and play some audio file that's relevant to
+given [TEXT](arg)."
+ :cmd-audio-s
+ "Play audio that's relevant to given text."
+ :cmd-conj-l
+ "Show conjugation of given [VERB](arg), possibly with help of an external
+program."
+ :cmd-conj-s
+ "Show conjugation of given verb."
+ :cmd-dict-l
+ "Show information about (and translation of) given [WORD](arg)."
+ :cmd-dict-s
+ "Show translation of given word."
+ :cmd-forms-l
+ "Print table with indexed forms of given [LEXEME](arg). You can get full
+list of all defined lexemes with [lexemes](cmd) command."
+ :cmd-forms-s
+ "Print forms of given lexeme."
+ :cmd-help-l
+ "When invoked without arguments, it prints information about all available
+commands. When [COMMAND](arg) argument given, it prints detailed description
+of the specific command."
+ :cmd-help-s
+ "Print info about commands."
+ :cmd-lang-l
+ "The [lang](cmd) command prints name of the language that you're learning
+in the current Shtookovina session. It's useful for troubleshooting."
+ :cmd-lang-s
+ "Print name of the language you're learning."
+ :cmd-lexemes-l
+ "Print a table of all lexemes defined in the actual language."
+ :cmd-lexemes-s
+ "Print all lexemes and their IDs."
+ :cmd-quit-l
+ "Quit the Shtookovina REPL."
+ :cmd-quit-s
+ "Quit the Shtookovina REPL."
+ :cmd-ui-lang-l
+ "Print name of user interface language."
+ :cmd-ui-lang-s
+ "Print name of user interface language."
  :current-language
  "You are learning [~](arg)"
- :define-audio-query
- "[Cannot](err) play [\"~\"](arg), please define [AUDIO-QUERY](cmd) hook"
+ :current-ui-language
+ "User interface is in [~](arg)"
+ :default-form
+ "default form"
  :description
  "Description"
  :failed-audio-query
  "[Cannot](err) find any relevant audio for [\"~\"](arg)"
  :help-command-reminder
  "For information about the command use: [help](cmd) [~](arg)"
- :help-long-desc
- "When invoked without arguments, it prints information about all available
-commands. When [COMMAND](arg) argument given, it prints detailed description
-of the specific command."
- :help-short-desc
- "Print info about commands."
- :lang-long-desc
- "The [lang](cmd) command prints name of the language that you're learning
-in the current Shtookovina session. It's useful for troubleshooting."
- :lang-short-desc
- "Print name of the language you're learning."
+ :id
+ "ID"
+ :index
+ "Index"
+ :lexemes
+ "Defined Lexemes"
+ :lexeme-forms
+ "Lexeme Forms"
+ :name
+ "Name"
+ :no-such-lexeme
+ "[Cannot](err) find definition of the [~](arg) lexeme"
  :possible-corrections
  "Possible corrections for [~](cmd):"
  :proposed-audio
  "Proposed audio: [\"~\"](arg)"
- :quit-long-desc
- "Quit the Shtookovina REPL."
- :quit-short-desc
- "Quit the Shtookovina REPL."
  :uncorrectable-command
  "[Cannot](err) perform or correct command [~](cmd)"
  :where "where ")
