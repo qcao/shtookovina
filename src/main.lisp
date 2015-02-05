@@ -73,9 +73,5 @@
  "Does nothing.")
 
 (define-hook :external-dict (word)
-  ;; just a test, we probably need something like URL-HEXIFY-STRING in final
-  ;; version of the program... also, to support one init file for many
-  ;; languages we need some way to easily determine target and interface
-  ;; languages, probably code them as keywords... currently we only cat
-  ;; returns their names as strings, it may work too
-  (format nil "icecat -new-tab \"www.wordreference/enen/~a\"" word))
+  (format nil "icecat -new-tab \"www.wordreference/enen/~a\""
+          (hexify-string word)))
