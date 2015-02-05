@@ -33,7 +33,8 @@
                  (:file "ui-commands")
                  (:file "default-hooks")
                  (:file "default-style")
-                 (:file "main"))
+                 (:file "main")
+                 (:file "user-utils"))
   :depends-on   (#:alexandria
                  #:anaphora
                  #:trivial-shell
@@ -42,4 +43,5 @@
                  #:cl-store
                  #:mk-string-metrics
                  #:cl-readline
-                 #:cl-ansi-term))
+                 #:cl-ansi-term
+                 #:babel))
