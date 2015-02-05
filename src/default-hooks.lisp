@@ -20,41 +20,14 @@
 
 (in-package #:shtookovina)
 
-(defparameter *command-recognition-threshold* 1
-  "Maximal Damerau-Levenshtein distance between entered command and existing
-command that may be presented to user to choose from when there is no exact
-match.")
-
 (define-hook :successful-audio-query (text)
-  (term:cat-print (uim :proposed-audio text)))
+  (term:print (uie :proposed-audio)
+              :args text))
 
 (define-hook :failed-audio-query (text)
-  (term:cat-print (uim :failed-audio-query text)))
+  (term:print (uie :failed-audio-query)
+              :args text))
 
 (define-hook :unknown-command (command)
-  (flet ((gen-prompt (num)
-           (format nil *session-prompt*
-                   (coerce (mapcar #'code-char
-                                   (iota num :start (char-code #\a)))
-                           'string))))
-    (let* ((carcmd (car command))
-           (options (remove-if (lambda (x)
-                                 (> (mksm:damerau-levenshtein
-                                     (string-downcase carcmd) x)
-                                    *command-recognition-threshold*))
-                               *command-list*)))
-      (if options
-          (progn
-            (term:cat-print (uim :possible-corrections carcmd))
-            (term:o-list options
-                         :index :letter
-                         :index-style :arg
-                         :item-style :cmd)
-            (when-let* ((out (rl:readline :prompt (gen-prompt (length options))
-                                          :num-chars 1))
-                        (nem (not (emptyp out))))
-              (cons (nth (- (char-code (char out 0))
-                            (char-code #\a))
-                         options)
-                    (cdr command))))
-          (term:cat-print (uim :uncorrectable-command carcmd))))))
+  (awhen (int-correct-command (car command))
+    (cons it (cdr command))))

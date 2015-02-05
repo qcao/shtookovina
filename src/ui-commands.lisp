@@ -23,7 +23,7 @@
 
 (in-package #:shtookovina)
 
-(defvar +table-cell-width+ 20
+(defvar +table-cell-width+ 10
   "Cell width that is used when Shtookovina needs to print some table.")
 
 (define-command quit ()
@@ -35,35 +35,37 @@
   (if command
       (print-command-description command)
       (progn
-        (term:cat-print (uie :available-commands)
-                        :base-style :hdr)
+        (term:print (uie :available-commands)
+                    :base-style :hdr)
         (terpri)
         (term:table (cons (list (uie :command) (uie :description))
                           (mapcar (lambda (x)
                                     (list x (uie (short-desc-id
                                                   (gethash x *commands*)))))
                                   *command-list*))
+                    :cell-style '(:cmd :default)
                     :header-style :hdr
                     :border-style nil
                     :column-width +table-cell-width+))))
 
 (define-command lang ()
     (:cmd-lang-s :cmd-lang-l)
-  (term:cat-print (uim :current-language
-                       (name *language*))))
+  (term:print (uie :current-language)
+              :args (name *language*)))
 
 (define-command ui-lang ()
     (:cmd-ui-lang-s :cmd-ui-lang-l)
-  (term:cat-print (uim :current-ui-language
-                       (get-ui-locale))))
+  (term:print (uie :current-ui-language)
+              :args (get-ui-locale)))
 
 (define-command lexemes ()
     (:cmd-lexemes-s :cmd-lexemes-l)
-  (term:cat-print (uie :lexemes)
-                  :base-style :hdr)
+  (term:print (uie :lexemes)
+              :base-style :hdr)
   (terpri)
   (term:table (cons (list (uie :id) (uie :name))
                     (get-lexemes))
+              :cell-style '(:arg :default)
               :header-style :hdr
               :border-style nil
               :column-width +table-cell-width+))
@@ -72,8 +74,8 @@
     (:cmd-forms-s :cmd-forms-l)
   (if (get-lexeme lexeme)
       (progn
-        (term:cat-print (uie :lexeme-forms)
-                        :base-style :hdr)
+        (term:print (uie :lexeme-forms)
+                    :base-style :hdr)
         (terpri)
         (term:table (cons (list (uie :index) (uie :name))
                           (mapcar (lambda (i form)
@@ -82,10 +84,12 @@
                                                 form)))
                                   (iota (forms-number lexeme))
                                   (get-forms lexeme)))
+                    :cell-style '(:arg :default)
                     :header-style :hdr
                     :border-style nil
                     :column-width +table-cell-width+))
-      (term:cat-print (uim :no-such-lexeme lexeme))))
+      (term:print (uie :no-such-lexeme)
+                  :args lexeme)))
 
 (define-command audio ((text string))
     (:cmd-audio-s :cmd-audio-l)

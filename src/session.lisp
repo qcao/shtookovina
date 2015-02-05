@@ -44,6 +44,11 @@ value of *COMMAND-COUNTER* to produce Shtookovina session prompt.")
   "If this variable is bound to non-NIL value, Shtookovina REPL will be
 terminated.")
 
+(defparameter *command-recognition-threshold* 1
+  "Maximal Damerau-Levenshtein distance between entered command and existing
+command that may be presented to user to choose from when there is no exact
+match.")
+
 (defclass command ()
   ((types
     :initarg :types
@@ -186,11 +191,10 @@ implicit PROGN."
     :initarg :target-type
     :reader target-type))
   (:report (lambda (condition stream)
-             (term:cat-print
-              (uim :arg-parser-failed
-                   (raw-arg condition)
-                   (target-type condition))
-              :stream stream)))
+             (term:print (uie :arg-parser-failed)
+                         :args (list (raw-arg condition)
+                                     (target-type condition))
+                         :stream stream)))
   (:documentation "The condition is signaled when argument parser cannot
 fulfill its task: when returned value is not of target type or when the
 parser signals any condition itself. In both cases, condition of this type
@@ -219,14 +223,14 @@ will perform any necessary processing."
           (apply (fnc it) (mapcar #'coerce-arg (types it) args)))
       (arg-parser-failed (condition)
         (princ condition)
-        (term:cat-print
-         (uim :help-command-reminder name)))
+        (term:print (uie :help-command-reminder)
+                    :args name))
       (error (condition)
         (declare (ignore condition))
-        (term:cat-print
-         (uim :command-invalid-call name))
-        (term:cat-print
-         (uim :help-command-reminder name))))))
+        (term:print (uie :command-invalid-call)
+                    :args name)
+        (term:print (uie :help-command-reminder)
+                    :args name)))))
 
 (defun session ()
   "This is Shtookovina REPL."
@@ -240,7 +244,42 @@ will perform any necessary processing."
   (perform-hook :session-end)
   (values))
 
+(defun int-correct-command (command)
+  "Interactively correct given command COMMAND. Return corrected command on
+success or NIL on failure."
+  (flet ((gen-prompt (num)
+           (format nil *session-prompt*
+                   (coerce (mapcar #'code-char
+                                   (iota num :start (char-code #\a)))
+                           'string))))
+    (let* ((command (string-downcase command))
+           (options (remove-if (lambda (x)
+                                (> (mksm:damerau-levenshtein command x)
+                                   *command-recognition-threshold*))
+                               *command-list*)))
+      (if options
+          (progn
+            (term:print (uie :possible-corrections)
+                        :args command)
+            (term:o-list options
+                         :index       :letter
+                         :index-style :arg
+                         :item-style  :cmd)
+            (when-let* ((out (rl:readline :prompt (gen-prompt (length options))
+                                          :num-chars 1))
+                        (nem (not (emptyp out))))
+              (nth (- (char-code (char out 0))
+                      (char-code #\a))
+                   options)))
+          (progn
+            (term:print (uie :uncorrectable-command)
+                        :args command)
+            nil)))))
+
 (defun print-command-description (command)
+  "Print full description of given command COMMAND. The information includes
+synopsis, list of arguments (with types), and long description of the
+command itself."
   (flet ((args-annotation (args)
            (let (optionals
                  result)
@@ -262,7 +301,10 @@ will perform any necessary processing."
                              (if (eql a last) "" ", ")))
                      args
                      types))))
-    (awhen (gethash command *commands*)
+    (when-let* ((command (if (gethash command *commands*)
+                             command
+                             (int-correct-command command)))
+                (it      (gethash command *commands*)))
       (term:cat-print
        (cons (list command :cmd)
              (args-annotation (lambda-list it))))
@@ -273,8 +315,8 @@ will perform any necessary processing."
                                         (lambda-list it)
                                         :count 1)
                                 (types it)))))
-      (term:cat-print (uim (long-desc-id it))
-                      :margin 2))
+      (term:print (uie (long-desc-id it))
+                  :margin 2))
     (values)))
 
 ;; default parsers

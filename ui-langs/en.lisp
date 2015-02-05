@@ -19,12 +19,9 @@
 
 ;; This is English translation of the user interface. Other translations can
 ;; be easily written by substitution of corresponding English words and
-;; phrases. Some strings are used as plain text (via UIE function), others
-;; also contain information about graphic rendition and tildes that will be
-;; replaced with arguments of function UIM. To apply some style (see
-;; 'default-style.lisp' for list of default styles) enclose text in
-;; brackets, and immediately after closing bracket ']', put name of desired
-;; style in parenthesis.  For example: [my text](cmd).
+;; phrases. To apply some style (see documentation of CL-ANSI-TERM library)
+;; enclose text in brackets, and immediately after closing bracket ']', put
+;; name of desired style in parenthesis. For example: [my text](cmd).
 
 (set-ui-language
  "English"
@@ -107,5 +104,5 @@ in the current Shtookovina session. It's useful for troubleshooting."
  :proposed-audio
  "Proposed audio: [\"~\"](arg)"
  :uncorrectable-command
- "[Cannot](err) perform or correct command [~](cmd)"
+ "[Cannot](err) correct command [~](cmd)"
  :where "where ")
