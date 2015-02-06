@@ -95,25 +95,57 @@
     (:cmd-audio-s :cmd-audio-l)
   (audio-query text))
 
-;; (define-command rem ((type keyword) (default-form string))
-;;     (:cmd-rem-s :cmd-rem-l)
-;;   )
+(define-command add ((type keyword)
+                     (default-form string)
+                     (translation string))
+    (:cmd-add-s :cmd-add-l)
+  (if (add-dictionary-item type default-form translation)
+      (term:print (uie :dict-item-added)
+                  :args (list type default-form))
+      (term:print (uie :dict-item-already-exists)
+                  :args (list type default-form))))
 
-;; (define-command add ((type keyword) (default-form string))
-;;     (:cmd-add-s :cmd-add-l)
-;;   )
+(define-command rem ((type keyword)
+                     (default-form string))
+    (:cmd-rem-s :cmd-rem-l)
+  (if (rem-dictionary-item type default-form)
+      (term:print (uie :dict-item-removed)
+                  :args (list type default-form))
+      (term:print (uie :dict-no-such-item)
+                  :args (list type default-form))))
 
-;; (define-command clear ()
-;;     (:cmd-clear-s :cmd-clear-l)
-;;   )
+(define-command clear ()
+    (:cmd-clear-s :cmd-clear-l)
+  (term:print (uie :dict-cleared)
+              :args (clear-dictionary)))
 
-;; (define-command edit ((type keyword)
-;;                       (default-form string)
-;;                       (new-form string)
-;;                       &optional
-;;                       (form-index integer))
-;;     (:cmd-edit-s :cmd-edit-l)
-;;   )
+(define-command eform ((type keyword)
+                       (default-form string)
+                       (new-form string)
+                       &optional
+                       (form-index integer))
+    (:cmd-eform-s :cmd-eform-l)
+  (let ((form-index (or form-index 0)))
+    (if (edit-dictionary-item-form type
+                                   default-form
+                                   new-form
+                                   form-index)
+        (term:print (uie :dict-form-changed)
+                    :args (list type default-form form-index))
+        (term:print (uie :dict-no-such-item)
+                    :args (list type default-form)))))
+
+(define-command etrans ((type keyword)
+                        (default-form string)
+                        (new-translation string))
+    (:cmd-etrans-s :cmd-etrans-l)
+  (if (edit-dictionary-item-translation type
+                                        default-form
+                                        new-translation)
+      (term:print (uie :dict-trans-changed)
+                  :args (list type default-form))
+      (term:print (uie :dict-no-such-item)
+                  :args (list type default-form))))
 
 (define-command dict ((word string))
     (:cmd-dict-s :cmd-dict-l)

@@ -33,11 +33,21 @@
  "Command"
  :command-invalid-call
  "[Cannot](err) call [~](cmd) with these arguments"
+ :cmd-add-l
+ "Add new dictionary item of type [TYPE](arg). The item will have default
+form [DEFAULT-FORM](arg). If the item already exists in the dictionary, this
+command has no effect."
+ :cmd-add-s
+ "Add new item to the dicitonary."
  :cmd-audio-l
  "Search Shtooka databases, pick and play some audio file that's relevant to
 given [TEXT](arg)."
  :cmd-audio-s
  "Play audio that's relevant to given text."
+ :cmd-clear-l
+ "Clear the dictionary deleting all its items."
+ :cmd-clear-s
+ "Clear the dictionary."
  :cmd-conj-l
  "Show conjugation of given [VERB](arg), possibly with help of an external
 program."
@@ -47,6 +57,17 @@ program."
  "Show information about (and translation of) given [WORD](arg)."
  :cmd-dict-s
  "Show translation of given word."
+ :cmd-eform-l
+ "Edit dictionary item changing one of its forms. Target item is identified
+by [TYPE](arg) and [DEFAULT-FORM](arg). Selected form at [FORM-INDEX](arg)
+will be replaced with [NEW-FORM](arg)."
+ :cmd-eform-s
+ "Change form of specified dictionary item."
+ :cmd-etrans-l
+ "Edit dictionary item changing its translation. Target item is identified
+by [TYPE](arg) and [DEFAULT-FORM](arg)."
+ :cmd-etrans-s
+ "Change translation of dictionary item."
  :cmd-forms-l
  "Print table with indexed forms of given [LEXEME](arg). You can get full
 list of all defined lexemes with [lexemes](cmd) command."
@@ -71,6 +92,11 @@ in the current Shtookovina session. It's useful for troubleshooting."
  "Quit the Shtookovina REPL."
  :cmd-quit-s
  "Quit the Shtookovina REPL."
+ :cmd-rem-l
+ "Remove specified dictionary item. The dictionary item is identified by its
+[TYPE](arg) and [DEFAULT-FORM](arg)."
+ :cmd-rem-s
+ "Remove specified dictionary item."
  :cmd-ui-lang-l
  "Print name of user interface language."
  :cmd-ui-lang-s
@@ -83,6 +109,20 @@ in the current Shtookovina session. It's useful for troubleshooting."
  "default form"
  :description
  "Description"
+ :dict-cleared
+ "The dictionary is cleared, [~](arg) items removed"
+ :dict-form-changed
+ "Changed [~](typ) [~](arg) #[~](arg)"
+ :dict-item-added
+ "[~](typ) [~](arg) added to your dictionary"
+ :dict-item-already-exists
+ "[Cannot](err) add [~](typ) [~](arg), it's already present in your dictionary"
+ :dict-item-removed
+ "[~](typ) [~](arg) removed from your dictionary"
+ :dict-no-such-item
+ "[Cannot](err) remove [~](typ) [~](arg) from the dictionary, no such item"
+ :dict-trans-changed
+ "Changed translation of [~](typ) [~](arg)"
  :failed-audio-query
  "[Cannot](err) find any relevant audio for [\"~\"](arg)"
  :help-command-reminder

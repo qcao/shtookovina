@@ -53,7 +53,12 @@ consequent values of weight.")
    (item-weight
     :initform (make-array +aspects-count+ :initial-element 0)
     :accessor item-weight
-    :documentation "vector of sums of all item weights"))
+    :documentation "vector of sums of all item weights")
+   (translation
+    :initarg :translation
+    :initform "?"
+    :accessor translation
+    :documentation "translation of the dictionary item"))
   (:documentation "class that represents an item in the dictionary"))
 
 (defgeneric alter-weight (item form-index aspect-index amount)
@@ -125,32 +130,35 @@ NIL otherwise."
           (alter-weight it form-index aspect-index 0))))
     (remhash (cons type default-form) *dictionary*)))
 
-(defun add-dictionary-item (type default-form)
+(defun add-dictionary-item (type default-form translation)
   "Add item to the dictionary. The item will have type TYPE (according to
 definition of LANGUAGE) and default form DEFAULT-FORM. If the dictionary
-already contains this item, the function has no effect."
+already contains this item, the function has no effect. Return NIL value if
+there was no such item in the dictionary and non-NIL value otherwise."
   (unless (gethash (cons type default-form) *dictionary*)
     (setf (gethash (cons type default-form) *dictionary*)
           (make-instance 'dictionary-item
                          :type type
-                         :default-form default-form))))
+                         :default-form default-form
+                         :translation translation))))
 
 (defun clear-dictionary ()
-  "Clear dictionary removing all its elements."
-  (maphash (lambda (key value)
-             (declare (ignore value))
-             (destructuring-bind (type . default-form) key
-               (rem-dictionary-item type default-form)))
-           *dictionary*))
+  "Clear dictionary removing all its elements. Return number of removed
+dictionary items."
+  (let ((total (hash-table-count *dictionary*)))
+    (maphash (lambda (key value)
+               (declare (ignore value))
+               (destructuring-bind (type . default-form) key
+                 (rem-dictionary-item type default-form)))
+             *dictionary*)
+    total))
 
-(defun edit-dictionary-item
+(defun edit-dictionary-item-form
     (type default-form new-form &optional (form-index 0))
   "Edit dictionary item changing one of its forms. Target item is identified
 by TYPE and DEFAULT-FORM. Selected form at FORM-INDEX will be replaced with
 NEW-FORM. Return NIL if there is no such item in the dictionary and NEW-FORM
 otherwise."
-  (check-type form-index integer)
-  (check-type new-form (simple-array character))
   (awhen (gethash (cons type default-form) *dictionary*)
     (setf (aref (forms it) form-index) new-form)
     (when (zerop form-index)
@@ -158,6 +166,13 @@ otherwise."
       (setf (gethash (cons type new-form) *dictionary*)
             it))
     new-form))
+
+(defun edit-dictionary-item-translation (type default-form new-translation)
+  "Edit dictionary item changing its translation. Target item is identified
+by TYPE and DEFAULT-FORM. Return NIL if there is no such item in the
+dictionary and NEW-TRANSLATION otherwise."
+  (awhen (gethash (cons type default-form) *dictionary*)
+    (setf (translation it) new-translation)))
 
 (defun item-dec-weight (type default-form form-index aspect-index)
   "Decrease weight of ASPECT-INDEX aspect of form at FORM-INDEX of item
