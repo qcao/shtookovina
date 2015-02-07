@@ -53,25 +53,6 @@
 (define-hook :audio-query (x)
   (format nil "flac -cd ~a | aplay" x))
 
-(define-command foo ((a string) (b integer) &optional (c keyword))
-    (:foo-short-desc :foo-long-desc)
-  (if c
-      (list a b c)
-      (list a b)))
-
-(define-command fob ((a string) (b integer) &optional (c keyword))
-    (:foo-short-desc :foo-long-desc)
-  (if c
-      (list a b c)
-      (list a b)))
-
-(add-ui-elements
- :foo-long-desc
- "[foo](cmd) command does nothing. It takes, however, up to three arguments:
-[A](arg), [B](arg), and [C](arg)."
- :foo-short-desc
- "Does nothing.")
-
 (define-hook :external-dict (word)
   (format nil "icecat -new-tab \"www.wordreference/enen/~a\""
           (hexify-string word)))
