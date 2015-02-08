@@ -36,7 +36,7 @@
  :cmd-add-l
  "Add new dictionary item of type [TYPE](arg). The item will have default
 form [DEFAULT-FORM](arg). If the item already exists in the dictionary, this
-command has no effect."
+command will have no effect."
  :cmd-add-s
  "Add new item to the dicitonary."
  :cmd-audio-l
@@ -79,11 +79,23 @@ commands. When [COMMAND](arg) argument given, it prints detailed description
 of the specific command."
  :cmd-help-s
  "Print info about commands."
+ :cmd-info-l
+ "Print information about the dictionary. If [PREFIX](arg) argument is
+given, show detailed information regarding every dictionary item which
+default form (zero-indexed) starts with given prefix. Otherwise print
+general information about the entire dictionary."
+ :cmd-info-s
+ "Print information about the dictionary."
  :cmd-lang-l
  "The [lang](cmd) command prints name of the language that you're learning
 in the current Shtookovina session. It's useful for troubleshooting."
  :cmd-lang-s
  "Print name of the language you're learning."
+ :cmd-learned-l
+ "Mark specified dictionary item as learned. The dictionary item is
+identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
+ :cmd-learned-s
+ "Mark specified item as learned."
  :cmd-lexemes-l
  "Print a table of all lexemes defined in the actual language."
  :cmd-lexemes-s
@@ -97,6 +109,11 @@ in the current Shtookovina session. It's useful for troubleshooting."
 [TYPE](arg) and [DEFAULT-FORM](arg)."
  :cmd-rem-s
  "Remove specified dictionary item."
+ :cmd-reset-l
+ "Reset progress of specified dictionary item. The dictionary item is
+identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
+ :cmd-reset-s
+ "Reset progress of specified dictionary item."
  :cmd-ui-lang-l
  "Print name of user interface language."
  :cmd-ui-lang-s
@@ -117,10 +134,14 @@ in the current Shtookovina session. It's useful for troubleshooting."
  "[~](typ) [~](arg) added to your dictionary"
  :dict-item-already-exists
  "[Cannot](err) add [~](typ) [~](arg), it's already present in your dictionary"
+ :dict-item-learned
+ "[~](typ) [~](arg) has been marked as fully learned"
  :dict-item-removed
  "[~](typ) [~](arg) removed from your dictionary"
+ :dict-item-reset
+ "progress of [~](typ) [~](arg) was reset"
  :dict-no-such-item
- "[Cannot](err) remove [~](typ) [~](arg) from the dictionary, no such item"
+ "[Cannot](err) find [~](typ) [~](arg), no such item"
  :dict-trans-changed
  "Changed translation of [~](typ) [~](arg)"
  :failed-audio-query
@@ -131,6 +152,10 @@ in the current Shtookovina session. It's useful for troubleshooting."
  "ID"
  :index
  "Index"
+ :info-general
+ "[~](arg) word(s) in the dictionary [[~](arg) %]"
+ :info-header
+ "[~](arg), [~](typ) - ~ [[~](arg) %]"
  :lexemes
  "Defined Lexemes"
  :lexeme-forms
@@ -141,8 +166,13 @@ in the current Shtookovina session. It's useful for troubleshooting."
  "[Cannot](err) find definition of the [~](arg) lexeme"
  :possible-corrections
  "Possible corrections for [~](cmd):"
+ :progress
+ "Progress"
  :proposed-audio
  "Proposed audio: [\"~\"](arg)"
  :uncorrectable-command
  "[Cannot](err) correct command [~](cmd)"
- :where "where ")
+ :value
+ "Value"
+ :where
+ "where ")

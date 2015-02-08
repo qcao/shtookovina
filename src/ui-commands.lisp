@@ -26,6 +26,9 @@
 (defvar +table-cell-width+ 10
   "Cell width that is used when Shtookovina needs to print some table.")
 
+(defvar +info-table-width+ '(10 30 30 10)
+  "Cell width that is used for tables printed by INFO command.")
+
 (define-command quit ()
     (:cmd-quit-s :cmd-quit-l)
   (setf *session-terminated* t))
@@ -119,6 +122,24 @@
   (term:print (uie :dict-cleared)
               :args (clear-dictionary)))
 
+(define-command learned ((type keyword)
+                         (default-form string))
+    (:cmd-learned-s :cmd-learned-l)
+  (if (item-mark-as-learned type default-form)
+      (term:print (uie :dict-item-learned)
+                  :args (list type default-form))
+      (term:print (uie :dict-no-such-item)
+                  :args (list type default-form))))
+
+(define-command reset ((type keyword)
+                       (default-form string))
+    (:cmd-reset-s :cmd-reset-l)
+  (if (item-reset-progress type default-form)
+      (term:print (uie :dict-item-reset)
+                  :args (list type default-form))
+      (term:print (uie :dict-no-such-item)
+                  :args (list type default-form))))
+
 (define-command eform ((type keyword)
                        (default-form string)
                        (new-form string)
@@ -146,6 +167,44 @@
                   :args (list type default-form))
       (term:print (uie :dict-no-such-item)
                   :args (list type default-form))))
+
+(define-command info (&optional (prefix string))
+  (:cmd-info-s :cmd-info-l)
+  (if prefix
+      (flet ((print-item (type item)
+               (term:print (uie :info-header)
+                           :args (list (aref (forms item) 0)
+                                       type
+                                       (translation item)
+                                       (item-progress item)))
+               (terpri)
+               (term:table (cons (list (uie :index)
+                                       (uie :name)
+                                       (uie :value)
+                                       (uie :progress))
+                                 (mapcar (lambda (i form)
+                                           (list i
+                                                 (if (emptyp form)
+                                                     (uie :default-form)
+                                                     form)
+                                                 (aref (forms item) i)
+                                                 (item-form-progress item i)))
+                                         (iota (forms-number type))
+                                         (get-forms type)))
+                           :cell-style '(:arg :default :default :arg)
+                           :header-style :hdr
+                           :border-style nil
+                           :column-width +info-table-width+)
+               (terpri)))
+        (maphash (lambda (key item)
+                   (destructuring-bind (type . default-form) key
+                     (when (starts-with-subseq prefix default-form
+                                               :test #'char-equal)
+                       (print-item type item))))
+                 *dictionary*))
+      (term:print (uie :info-general)
+                  :args (list (dictionary-item-count)
+                              (dictionary-progress)))))
 
 (define-command dict ((word string))
     (:cmd-dict-s :cmd-dict-l)
