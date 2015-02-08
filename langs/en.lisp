@@ -30,15 +30,4 @@
    (:prn "pronoun")
    (:vrb "verb"
     :ss-forms
-    ("Infinitive" "Past Participle")
-    :form-aspects
-    (("Present Simple"
-      "Future Simple"
-      "Past Simple"
-      "Present Continuous"
-      "Future Continuous"
-      "Past Continuous"
-      "Present Perfect"
-      "Future Perfect"
-      "Past Perfect")
-     (" (I)" " (you)" " (it)")))))
+    ("Infinitive" "Past" "Past Participle"))))

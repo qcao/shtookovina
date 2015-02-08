@@ -39,12 +39,6 @@
     :form-aspects
     (("Present de l'indicatif"
       "Futur simple"
-      "Future proche"
       "Imparfait"
-      "Passé composé"
-      "Present du subjonctif"
-      "Subjonctif passé"
-      "Imperatif"
-      "Conditionnel présent"
-      "Conditionnel passé")
+      "Present du subjonctif")
      (" (je)" " (tu)" " (il)" " (nous)" " (vous)" " (ils)")))))
