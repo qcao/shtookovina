@@ -26,21 +26,21 @@
   "Hash table that allows to get dictionary item by its type and string
 representation of the main form (they should be CONSed to get key).")
 
-(defparameter *initial-weight* 9
+(defvar *initial-weight* 9
   "When the user gives right answer when training a word, the weight is
 decreased, otherwise it's increased. This is upper limit of the weight.")
 
-(defparameter *base-weight* 1
+(defvar *base-weight* 1
   "This is a number that represents lower limit of weight of form.")
 
-(defparameter *weight-step* 3
+(defvar *weight-step* 3
   "Weight is changed discretely, *WEIGHT-STEP* is minimal difference between
 consequent values of weight.")
 
-(defvar +aspects-count+ 8
+(defvar +aspects-count+ 3
   "Number of 'aspects' (exercise types) per form.")
 
-(defvar *weight-sums* (make-array +aspects-count+ :initial-element 0)
+(defparameter *weight-sums* (make-array +aspects-count+ :initial-element 0)
   "Vector of sums of all weights per aspect.")
 
 (defclass dictionary-item ()
@@ -186,11 +186,33 @@ identified by TYPE and DEFAULT-FORM in the dictionary."
   (awhen (gethash (cons type default-form) *dictionary*)
     (alter-weight it form-index aspect-index *weight-step*)))
 
+(defun item-reset-progress (type default-form)
+  "Set all weights for all forms to *INITIAL-WEIGHT* value (= 0 %
+learned). Return NIL if there is no such dictionary item and T otherwise."
+  (awhen (gethash (cons type default-form) *dictionary*)
+    (dotimes (form-index (length (forms it)))
+      (dotimes (aspect-index +aspects-count+)
+        (alter-weight it form-index aspect-index *initial-weight*)))
+    t))
+
+(defun item-mark-as-learned (type default-form)
+  "Set all weights for all forms to *BASE-WEIGHT* value (= 100 %
+learned). Return NIL if there is no such dictionary item and T otherwise."
+  (awhen (gethash (cons type default-form) *dictionary*)
+    (dotimes (form-index (length (forms it)))
+      (dotimes (aspect-index +aspects-count+)
+        (alter-weight it form-index aspect-index (- *initial-weight*))))
+    t))
+
+(defun dictionary-item-count ()
+  "Returns total number of dictionary items in the dictionary."
+  (hash-table-count *dictionary*))
+
 (defun get-next-form (aspect-index)
   "Get type, default form, and form index of randomly selected dictionary
 item for ASPECT-INDEX."
   (let ((index (random (aref *weight-sums* aspect-index))))
-    (when (plusp (hash-table-count *dictionary*))
+    (when (plusp (dictionary-item-count))
       (block the-block
         (maphash (lambda (key value)
                    (if (<= index (aref (item-weight value) aspect-index))
@@ -207,3 +229,41 @@ item for ASPECT-INDEX."
                                                        aspect-index))))))
                        (decf index (aref (item-weight value) aspect-index))))
                  *dictionary*)))))
+
+(defun item-form-progress (item form-index)
+  "Calculate progress in percents for form at FORM-INDEX in dictionary item
+ITEM."
+  (let* ((weights (weights item))
+         (size    (array-dimension weights 1))
+         (total   (* (- *initial-weight*
+                        *base-weight*)
+                     size)))
+    (floor
+     (* 100
+        (- total
+           (do ((i 0 (1+ i))
+                (sum 0))
+               ((= i size) sum)
+             (incf sum (- (aref weights form-index i)
+                          *base-weight*)))))
+     total)))
+
+(defun item-progress (item)
+  "Calculate progress in percents for given dictionary item ITEM."
+  (do ((i 0 (1+ i))
+       (size (array-dimension (weights item) 0))
+       (sum 0))
+      ((= i size)
+       (floor sum size))
+    (incf sum (item-form-progress item i))))
+
+(defun dictionary-progress ()
+  "Calculate average progress though the dictionary."
+  (round (/ (let ((total 0))
+              (maphash (lambda (key item)
+                         (declare (ignore key))
+                         (incf total (item-progress item)))
+                       *dictionary*)
+              total)
+            (let ((count (dictionary-item-count)))
+              (if (zerop count) 1 count)))))
