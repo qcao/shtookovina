@@ -60,7 +60,8 @@ program."
  :cmd-eform-l
  "Edit dictionary item changing one of its forms. Target item is identified
 by [TYPE](arg) and [DEFAULT-FORM](arg). Selected form at [FORM-INDEX](arg)
-will be replaced with [NEW-FORM](arg)."
+will be replaced with [NEW-FORM](arg). To get information about form indexes
+try [forms](cmd) command."
  :cmd-eform-s
  "Change form of specified dictionary item."
  :cmd-etrans-l
