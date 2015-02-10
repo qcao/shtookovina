@@ -147,14 +147,23 @@ history R-LINE."
   (not (equalp (string-to-list a-line)
                (string-to-list r-line))))
 
+(defun readline (prompt &optional (num-chars 0))
+  "Generalized version of readline. It checks if current input stream is
+interactive. If it's interactive we use real GNU Readline library here,
+otherwise we just read a line of text after printing given prompt."
+  (if (interactive-stream-p *standard-input*)
+      (rl:readline :prompt prompt
+                   :add-history t
+                   :num-chars num-chars
+                   :novelty-check #'novelty-check)
+      (progn
+        (princ prompt)
+        (read-line))))
+
 (defun read-command ()
   "Read command from user with editing, parse it and return a list of
 strings."
-  (awhen (rl:readline :prompt (format nil
-                                      *session-prompt*
-                                      *command-counter*)
-                      :add-history t
-                      :novelty-check #'novelty-check)
+  (awhen (readline (format nil *session-prompt* *command-counter*))
     (incf *command-counter*)
     (let (result)
       (do ((i 0 (1+ i))
@@ -234,6 +243,7 @@ will perform any necessary processing."
 
 (defun session ()
   "This is Shtookovina REPL."
+  (setf *session-terminated* nil)
   (perform-hook :session-start)
   (do (input)
       (*session-terminated*)
@@ -265,8 +275,7 @@ success or NIL on failure."
                          :index       :letter
                          :index-style :arg
                          :item-style  :cmd)
-            (when-let* ((out (rl:readline :prompt (gen-prompt (length options))
-                                          :num-chars 1))
+            (when-let* ((out (readline (gen-prompt (length options)) 1))
                         (nem (not (emptyp out))))
               (nth (- (char-code (char out 0))
                       (char-code #\a))
