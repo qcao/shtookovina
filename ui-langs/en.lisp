@@ -128,7 +128,7 @@ identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  :description
  "Description"
  :dict-cleared
- "The dictionary is cleared, [~](arg) items removed"
+ "The dictionary is cleared, [~](arg) item(s) removed"
  :dict-form-changed
  "Changed [~](typ) [~](arg) #[~](arg)"
  :dict-item-added
