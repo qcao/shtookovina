@@ -56,3 +56,11 @@
 (define-hook :query-ext (word)
   (format nil "icecat -new-tab \"www.wordreference/enen/~a\""
           (hexify-string word)))
+
+;; test dictionary
+
+(add-dictionary-item :vrb "make" "делать")
+(add-dictionary-item :vrb "fake" "подделывать, обманывать")
+(add-dictionary-item :adj "red" "красный")
+(add-dictionary-item :nom "face" "лицо")
+(add-dictionary-item :adv "fast" "быстро")
