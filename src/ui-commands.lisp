@@ -26,8 +26,8 @@
 (defvar +table-cell-width+ 10
   "Cell width that is used when Shtookovina needs to print some table.")
 
-(defvar +info-table-width+ '(10 30 30 10)
-  "Cell width that is used for tables printed by INFO command.")
+(defvar +dict-table-width+ '(10 30 30 10)
+  "Cell width that is used for tables printed by DICT command.")
 
 (define-command quit ()
     (:cmd-quit-s :cmd-quit-l)
@@ -168,11 +168,11 @@
       (term:print (uie :dict-no-such-item)
                   :args (list type default-form))))
 
-(define-command info (&optional (prefix string))
-  (:cmd-info-s :cmd-info-l)
+(define-command dict (&optional (prefix string))
+    (:cmd-dict-s :cmd-dict-l)
   (if prefix
       (flet ((print-item (type item)
-               (term:print (uie :info-header)
+               (term:print (uie :dict-entry-header)
                            :args (list (aref (forms item) 0)
                                        type
                                        (translation item)
@@ -194,7 +194,7 @@
                            :cell-style '(:arg :default :default :arg)
                            :header-style :hdr
                            :border-style nil
-                           :column-width +info-table-width+)
+                           :column-width +dict-table-width+)
                (terpri)))
         (maphash (lambda (key item)
                    (destructuring-bind (type . default-form) key
@@ -202,20 +202,20 @@
                                                :test #'char-equal)
                        (print-item type item))))
                  *dictionary*))
-      (term:print (uie :info-general)
+      (term:print (uie :dict-general)
                   :args (list (dictionary-item-count)
                               (dictionary-progress)))))
 
-(define-command dict ((word string))
-    (:cmd-dict-s :cmd-dict-l)
-  (perform-hook :external-dict
+(define-command query ((word string))
+    (:cmd-query-s :cmd-query-l)
+  (perform-hook :query-ext
                 :args word
                 :in-thread t
                 :put-into-shell t))
 
 (define-command conj ((verb string))
     (:cmd-conj-s :cmd-conj-l)
-  (perform-hook :external-conj
+  (perform-hook :conj-ext
                 :args verb
                 :in-thread t
                 :put-into-shell t))

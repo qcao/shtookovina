@@ -54,9 +54,12 @@ program."
  :cmd-conj-s
  "Show conjugation of given verb."
  :cmd-dict-l
- "Show information about (and translation of) given [WORD](arg)."
+ "Print information about the dictionary. If [PREFIX](arg) argument is
+given, show detailed information regarding every dictionary item which
+default form (zero-indexed) starts with given prefix. Otherwise print
+general information about the entire dictionary."
  :cmd-dict-s
- "Show translation of given word."
+ "Print information about the dictionary."
  :cmd-eform-l
  "Edit dictionary item changing one of its forms. Target item is identified
 by [TYPE](arg) and [DEFAULT-FORM](arg). Selected form at [FORM-INDEX](arg)
@@ -80,13 +83,6 @@ commands. When [COMMAND](arg) argument given, it prints detailed description
 of the specific command."
  :cmd-help-s
  "Print info about commands."
- :cmd-info-l
- "Print information about the dictionary. If [PREFIX](arg) argument is
-given, show detailed information regarding every dictionary item which
-default form (zero-indexed) starts with given prefix. Otherwise print
-general information about the entire dictionary."
- :cmd-info-s
- "Print information about the dictionary."
  :cmd-lang-l
  "The [lang](cmd) command prints name of the language that you're learning
 in the current Shtookovina session. It's useful for troubleshooting."
@@ -101,6 +97,10 @@ identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  "Print a table of all lexemes defined in the actual language."
  :cmd-lexemes-s
  "Print all lexemes and their IDs."
+ :cmd-query-l
+ "Show information about (and translation of) given [WORD](arg)."
+ :cmd-query-s
+ "Show translation of given word."
  :cmd-quit-l
  "Quit the Shtookovina REPL."
  :cmd-quit-s
@@ -129,6 +129,10 @@ identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  "Description"
  :dict-cleared
  "The dictionary is cleared, [~](arg) item(s) removed"
+ :dict-entry-header
+ "[~](arg), [~](typ) - ~ [[~](arg) %]"
+ :dict-general
+ "[~](arg) word(s) in the dictionary [[~](arg) %]"
  :dict-form-changed
  "Changed [~](typ) [~](arg) #[~](arg)"
  :dict-item-added
@@ -153,10 +157,6 @@ identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  "ID"
  :index
  "Index"
- :info-general
- "[~](arg) word(s) in the dictionary [[~](arg) %]"
- :info-header
- "[~](arg), [~](typ) - ~ [[~](arg) %]"
  :lexemes
  "Defined Lexemes"
  :lexeme-forms

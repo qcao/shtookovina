@@ -53,6 +53,6 @@
 (define-hook :audio-query (x)
   (format nil "flac -cd ~a | aplay" x))
 
-(define-hook :external-dict (word)
+(define-hook :query-ext (word)
   (format nil "icecat -new-tab \"www.wordreference/enen/~a\""
           (hexify-string word)))
