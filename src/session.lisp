@@ -106,7 +106,7 @@ has the same meaning as in usual lambda list. BODY is an implicit PROGN."
 (defun custom-complete (text start end)
   "Custom completion for Shtookovina REPL. First word is completed to a word
 from *COMMAND-LIST*, other words are currently not completed."
-  (declare (ignore end))
+  (declare (ignore start end))
   (labels ((common-prefix (items)
              (subseq
               (car items) 0
@@ -129,10 +129,7 @@ from *COMMAND-LIST*, other words are currently not completed."
                (if (cdr els)
                    (cons (common-prefix els) els)
                    els))))
-    (when (or (zerop start)
-              (every (curry #'char= #\space)
-                     (subseq rl:*line-buffer* 0 start)))
-      (select-completions *command-list*))))
+    (select-completions *command-list*)))
 
 (rl:register-function :complete #'custom-complete)
 

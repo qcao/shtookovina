@@ -41,17 +41,7 @@ screen.")
 (defmethod make-load-form ((self ui-language) &optional env)
   (make-load-form-saving-slots self :environment env))
 
-(defun set-ui-language (name &rest plist)
-  "Set user interface language. NAME is name of the language and PLIST is a
-plist of pairs 'keyword - string' that represent local translations of user
-interface elements."
-  (setf *ui-language*
-        (make-instance 'ui-language
-                       :name name
-                       :vocabulary (plist-hash-table plist)))
-  (values))
-
-(defun add-ui-elements (&rest plist)
+(defun add-ui-elements (plist)
   "Add new user interface elements (translations). PLIST is a plist of pairs
 'keyword - string' that represent local translations of user interface
 elements."
@@ -60,7 +50,18 @@ elements."
     (destructuring-bind (id string . rest) tail
       (declare (ignore rest))
       (setf (gethash id (vocabulary *ui-language*))
-            string))))
+            (substitute #\space #\newline string :test #'char=)))))
+
+(defun set-ui-language (name &rest plist)
+  "Set user interface language. NAME is name of the language and PLIST is a
+plist of pairs 'keyword - string' that represent local translations of user
+interface elements."
+  (setf *ui-language*
+        (make-instance 'ui-language
+                       :name name
+                       :vocabulary (make-hash-table)))
+  (add-ui-elements plist)
+  (values))
 
 (defun get-ui-locale ()
   "Returns name of active UI langauge."

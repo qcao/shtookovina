@@ -146,11 +146,11 @@ there was no such item in the dictionary and non-NIL value otherwise."
   "Clear dictionary removing all its elements. Return number of removed
 dictionary items."
   (let ((total (hash-table-count *dictionary*)))
-    (maphash (lambda (key value)
-               (declare (ignore value))
-               (destructuring-bind (type . default-form) key
-                 (rem-dictionary-item type default-form)))
-             *dictionary*)
+    (maphash-keys
+     (lambda (key)
+       (destructuring-bind (type . default-form) key
+         (rem-dictionary-item type default-form)))
+     *dictionary*)
     total))
 
 (defun edit-dictionary-item-form
@@ -260,10 +260,10 @@ ITEM."
 (defun dictionary-progress ()
   "Calculate average progress though the dictionary."
   (round (/ (let ((total 0))
-              (maphash (lambda (key item)
-                         (declare (ignore key))
-                         (incf total (item-progress item)))
-                       *dictionary*)
+              (maphash-values
+               (lambda (item)
+                 (incf total (item-progress item)))
+               *dictionary*)
               total)
             (let ((count (dictionary-item-count)))
               (if (zerop count) 1 count)))))
