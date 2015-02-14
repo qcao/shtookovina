@@ -251,36 +251,40 @@ will perform any necessary processing."
   (perform-hook :session-end)
   (values))
 
+(defun int-select-option (options &optional (item-style :default))
+  "Interactively select an options from OPTIONS. Return the option on
+success and NIL on failure (canceled)."
+  (term:o-list options
+               :index       :letter
+               :index-style :arg
+               :item-style  item-style)
+  (let ((input (readline
+                (format nil *session-prompt*
+                        (coerce (mapcar #'code-char
+                                        (iota (length options)
+                                              :start (char-code #\a)))
+                                'string))
+                1)))
+    (when (and input (not (emptyp input)))
+      (nth (- (char-code (char input 0))
+              (char-code #\a))
+           options))))
+
 (defun int-correct-command (command)
   "Interactively correct given command COMMAND. Return corrected command on
 success or NIL on failure."
-  (flet ((gen-prompt (num)
-           (format nil *session-prompt*
-                   (coerce (mapcar #'code-char
-                                   (iota num :start (char-code #\a)))
-                           'string))))
-    (let* ((command (string-downcase command))
-           (options (remove-if (lambda (x)
-                                (> (mksm:damerau-levenshtein command x)
-                                   *command-recognition-threshold*))
-                               *command-list*)))
-      (if options
-          (progn
-            (term:print (uie :possible-corrections)
-                        :args command)
-            (term:o-list options
-                         :index       :letter
-                         :index-style :arg
-                         :item-style  :cmd)
-            (when-let* ((out (readline (gen-prompt (length options)) 1))
-                        (nem (not (emptyp out))))
-              (nth (- (char-code (char out 0))
-                      (char-code #\a))
-                   options)))
-          (progn
-            (term:print (uie :uncorrectable-command)
-                        :args command)
-            nil)))))
+  (let* ((command (string-downcase command))
+         (options (remove-if (lambda (x)
+                               (> (mksm:damerau-levenshtein command x)
+                                  *command-recognition-threshold*))
+                             *command-list*)))
+    (if options
+        (progn
+          (term:print (uie :possible-corrections)
+                      :args command)
+          (int-select-option options :cmd))
+        (term:print (uie :uncorrectable-command)
+                    :args command))))
 
 (defun print-command-description (command)
   "Print full description of given command COMMAND. The information includes
