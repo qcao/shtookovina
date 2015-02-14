@@ -230,6 +230,29 @@ item for ASPECT-INDEX."
                        (decf index (aref (item-weight value) aspect-index))))
                  *dictionary*)))))
 
+(defun get-some-forms (aspect-index number)
+  "Return list of lists of form (type default-form form-index). NUMBER
+specifies how many elements returned list should have. If there is not
+enough forms in the dictionary, i.e. NUMBER < number of forms in the
+dictionary, return NIL. Otherwise return NUMBER randomly selected items as
+with GET-NEXT-FORM. Big values of NUMBER are not recommended."
+  (when (block the-block
+          (let ((total 0))
+            (maphash-values
+             (lambda (item)
+               (incf total (length (forms item)))
+               (when (>= total number)
+                 (return-from the-block t)))
+             *dictionary*)))
+    (do (result
+         (total 0))
+        ((= total number)
+         result)
+      (let ((form (multiple-value-list (get-next-form aspect-index))))
+        (unless (find form result :test #'equal)
+          (push form result)
+          (incf total))))))
+
 (defun item-form-progress (item form-index)
   "Calculate progress in percents for form at FORM-INDEX in dictionary item
 ITEM."
