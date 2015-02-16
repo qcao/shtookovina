@@ -27,6 +27,14 @@
  "English"
  :arg-parser-failed
  "[Cannot](err) parse [\"~\"](inc) as [~](typ)"
+ :aspect
+ "Aspect"
+ :aspect-translation
+ "Translation"
+ :aspect-writing
+ "Writing"
+ :aspect-audition
+ "Audition"
  :available-commands
  "Available Commands:"
  :command
@@ -165,6 +173,8 @@ identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  "Name"
  :no-such-lexeme
  "[Cannot](err) find definition of the [~](arg) lexeme"
+ :not-enough-forms
+ "There is [not enough](err) words in the dictionary"
  :possible-corrections
  "Possible corrections for [~](cmd):"
  :progress
@@ -173,6 +183,8 @@ identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  "Proposed audio: [\"~\"](arg)"
  :uncorrectable-command
  "[Cannot](err) correct command [~](cmd)"
+ :unknown-form-query
+ "[~](typ) [~](arg), ~ is [unknown](err), fill it out to continue:"
  :value
  "Value"
  :where

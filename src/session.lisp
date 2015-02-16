@@ -144,24 +144,28 @@ history R-LINE."
   (not (equalp (string-to-list a-line)
                (string-to-list r-line))))
 
-(defun readline (prompt &optional (num-chars 0))
+(defun readline (prompt &key add-history (num-chars 0))
   "Generalized version of readline. It checks if current input stream is
 interactive. If it's interactive we use real GNU Readline library here,
 otherwise we just read a line of text after printing given prompt."
-  (if (interactive-stream-p *standard-input*)
-      (rl:readline :prompt prompt
-                   :add-history t
-                   :num-chars num-chars
-                   :novelty-check #'novelty-check)
-      (progn
-        (princ prompt)
-        (read-line))))
+  (awhen
+      (if (interactive-stream-p *standard-input*)
+          (rl:readline :prompt prompt
+                       :add-history add-history
+                       :num-chars num-chars
+                       :novelty-check #'novelty-check)
+          (progn
+            (princ prompt)
+            (read-line)))
+    (when add-history
+      (incf *command-counter*))
+    it))
 
 (defun read-command ()
   "Read command from user with editing, parse it and return a list of
 strings."
-  (awhen (readline (format nil *session-prompt* *command-counter*))
-    (incf *command-counter*)
+  (awhen (readline (format nil *session-prompt* *command-counter*)
+                   :add-history t)
     (let (result)
       (do ((i 0 (1+ i))
            (tail (string-to-list it #\")
@@ -264,7 +268,7 @@ success and NIL on failure (canceled)."
                                         (iota (length options)
                                               :start (char-code #\a)))
                                 'string))
-                1)))
+                :num-chars 1)))
     (when (and input (not (emptyp input)))
       (nth (- (char-code (char input 0))
               (char-code #\a))

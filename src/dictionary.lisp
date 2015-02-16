@@ -38,10 +38,15 @@ decreased, otherwise it's increased. This is upper limit of the weight.")
 consequent values of weight.")
 
 (defvar +aspects-count+ 3
-  "Number of 'aspects' (exercise types) per form.")
+  "Number of 'aspects' (exercise types) per form. In this version of
+Shtookovina we have three aspects: translation, writing, and audition.")
 
 (defparameter *weight-sums* (make-array +aspects-count+ :initial-element 0)
   "Vector of sums of all weights per aspect.")
+
+(defparameter *unknown-form* "?"
+  "When some form of a dictionary item is not yet specified by the user, we
+use this symbolic string for it.")
 
 (defclass dictionary-item ()
   ((forms
@@ -86,7 +91,7 @@ table should be done with this function."))
       (check-type forms-number (integer 1))
       (setf forms (make-array forms-number
                               :element-type '(simple-array character)
-                              :initial-element "")
+                              :initial-element *unknown-form*)
             (aref forms 0) default-form
             weights (make-array (list forms-number
                                       +aspects-count+)
@@ -253,39 +258,68 @@ with GET-NEXT-FORM. Big values of NUMBER are not recommended."
           (push form result)
           (incf total))))))
 
-(defun item-form-progress (item form-index)
+(defun form (item form-index)
+  "Return form of given item ITEM at FORM-INDEX."
+  (aref (forms item) form-index))
+
+(defun (setf form) (new-form item form-index)
+  "Set form of given item ITEM at FORM-INDEX."
+  (setf (aref (forms item) form-index)
+        new-form))
+
+(defun item-form (type default-form form-index)
+  "The same as FORM, but takes TYPE and DEFAULT-FORM instead of item."
+  (form (gethash (cons type default-form) *dictionary*)
+        form-index))
+
+(defun (setf item-form) (new-form type default-form form-index)
+  "Set form at FORM-INDEX of given item identified by TYPE and DEFAULT-FORM."
+  (setf (form (gethash (cons type default-form) *dictionary*)
+              form-index)
+        new-form))
+
+(defun unknown-form-p (type default-form form-index)
+  "Check if specified form of dictionary item is unknown."
+  (string= (item-form type default-form form-index)
+           *unknown-form*))
+
+(defun item-form-progress (item form-index &optional aspect-index)
   "Calculate progress in percents for form at FORM-INDEX in dictionary item
-ITEM."
+ITEM. If ASPECT-INDEX is supplied and it's not NIL, calculate progress for
+this aspect."
   (let* ((weights (weights item))
          (size    (array-dimension weights 1))
          (total   (* (- *initial-weight*
                         *base-weight*)
-                     size)))
+                     (if aspect-index 1 size))))
     (floor
      (* 100
         (- total
-           (do ((i 0 (1+ i))
-                (sum 0))
-               ((= i size) sum)
-             (incf sum (- (aref weights form-index i)
-                          *base-weight*)))))
-     total)))
+           (if aspect-index
+               (- (aref weights form-index aspect-index)
+                  *base-weight*)
+               (do ((i 0 (1+ i))
+                    (sum 0))
+                   ((= i size) sum)
+                 (incf sum (- (aref weights form-index i)
+                              *base-weight*))))))
+        total)))
 
-(defun item-progress (item)
+(defun item-progress (item &optional aspect-index)
   "Calculate progress in percents for given dictionary item ITEM."
   (do ((i 0 (1+ i))
        (size (array-dimension (weights item) 0))
        (sum 0))
       ((= i size)
        (floor sum size))
-    (incf sum (item-form-progress item i))))
+    (incf sum (item-form-progress item i aspect-index))))
 
-(defun dictionary-progress ()
-  "Calculate average progress though the dictionary."
+(defun dictionary-progress (&optional aspect-index)
+  "Calculate average progress through the dictionary."
   (round (/ (let ((total 0))
               (maphash-values
                (lambda (item)
-                 (incf total (item-progress item)))
+                 (incf total (item-progress item aspect-index)))
                *dictionary*)
               total)
             (let ((count (dictionary-item-count)))

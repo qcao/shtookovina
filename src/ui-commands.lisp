@@ -23,11 +23,11 @@
 
 (in-package #:shtookovina)
 
-(defvar +table-cell-width+ 10
-  "Cell width that is used when Shtookovina needs to print some table.")
+;; (defvar +table-cell-width+ 10
+;;   "Cell width that is used when Shtookovina needs to print some table.")
 
-(defvar +dict-table-width+ '(10 30 30 10)
-  "Cell width that is used for tables printed by DICT command.")
+;; (defvar +dict-table-width+ '(10 30 30 10)
+;;   "Cell width that is used for tables printed by DICT command.")
 
 (define-command quit ()
     (:cmd-quit-s :cmd-quit-l)
@@ -49,7 +49,7 @@
                     :cell-style '(:cmd :default)
                     :header-style :hdr
                     :border-style nil
-                    :column-width +table-cell-width+))))
+                    :column-width 10))))
 
 (define-command lang ()
     (:cmd-lang-s :cmd-lang-l)
@@ -71,7 +71,7 @@
               :cell-style '(:arg :default)
               :header-style :hdr
               :border-style nil
-              :column-width +table-cell-width+))
+              :column-width 10))
 
 (define-command forms ((lexeme keyword))
     (:cmd-forms-s :cmd-forms-l)
@@ -90,7 +90,7 @@
                     :cell-style '(:arg :default)
                     :header-style :hdr
                     :border-style nil
-                    :column-width +table-cell-width+))
+                    :column-width 10))
       (term:print (uie :no-such-lexeme)
                   :args lexeme)))
 
@@ -173,7 +173,7 @@
   (if prefix
       (flet ((print-item (type item)
                (term:print (uie :dict-entry-header)
-                           :args (list (aref (forms item) 0)
+                           :args (list (form item 0)
                                        type
                                        (translation item)
                                        (item-progress item)))
@@ -187,14 +187,14 @@
                                                  (if (emptyp form)
                                                      (uie :default-form)
                                                      form)
-                                                 (aref (forms item) i)
+                                                 (form item i)
                                                  (item-form-progress item i)))
                                          (iota (forms-number type))
                                          (get-forms type)))
                            :cell-style '(:arg :default :default :arg)
                            :header-style :hdr
                            :border-style nil
-                           :column-width +dict-table-width+)
+                           :column-width '(10 30 30 10))
                (terpri)))
         (maphash (lambda (key item)
                    (destructuring-bind (type . default-form) key
@@ -202,9 +202,24 @@
                                                :test #'char-equal)
                        (print-item type item))))
                  *dictionary*))
-      (term:print (uie :dict-general)
-                  :args (list (dictionary-item-count)
-                              (dictionary-progress)))))
+      (progn
+        (term:print (uie :dict-general)
+                    :args (list (dictionary-item-count)
+                                (dictionary-progress)))
+        (terpri)
+        (term:table (cons (list (uie :aspect)
+                                (uie :progress))
+                          (mapcar (lambda (uie-id index)
+                                    (list (uie uie-id)
+                                          (dictionary-progress index)))
+                                  '(:aspect-translation
+                                    :aspect-writing
+                                    :aspect-audition)
+                                  (iota +aspects-count+)))
+                    :cell-style '(:default :arg)
+                    :header-style :hdr
+                    :border-style nil
+                    :column-width '(20 20)))))
 
 (define-command query ((word string))
     (:cmd-query-s :cmd-query-l)
@@ -219,3 +234,64 @@
                 :args verb
                 :in-thread t
                 :put-into-shell t))
+
+;; Before we write definitions of exercises, we need to define some helpers.
+
+(defun get-forms (aspect-index quantity)
+  "Return forms for exercises. If some forms are unknown, ask user to fill
+them out."
+  (let ((forms (get-some-forms aspect-index quantity)))
+    (dolist (form forms forms)
+      (when (apply #'unknown-form-p form)
+        (destructuring-bind (type default-form form-index) form
+          (term:print :unknown-form-query
+                      :args (list type default-form
+                                  (form-name type form-index)))
+          (setf (item-form type default-form form-index)
+                (readline (format nil *session-prompt* "?")))
+          (term:print (uie :dict-form-changed)
+                      :args form))))))
+
+(defmacro exercise ((aspect-index
+                     progress
+                     target-forms
+                     helper-forms
+                     description-uie)
+                    &body body)
+  "This macro provides useful logic that can be used when programming an
+exercise. In order to enter the exercise user must have at least
+TARGET-FORMS + HELPER-FORMS forms in his/her dictionary. The exercise will
+be executed in a loop until PROGRESS percents of overall progress is done
+for ASPECT-INDEX aspect index (unless overall progress is already
+sufficiently high so that amount of extra progress is impossible to
+achieve). TARGET-WORDS words will be generated and bound to symbol TARGETS,
+HELPER-WORDS words will be generated and bound to symbol HELPERS. Return
+value of BODY affects weights of words specified in TARGETS variable, if
+BODY evaluates to NIL, weights will be increased, otherwise decreased."
+  (with-gensyms (executed-once init-progress forms)
+    `(do (,executed-once
+          (,init-progress (dictionary-progress ,aspect-index)))
+         ((and ,executed-once
+               (>= (dictionary-progress ,aspect-index)
+                   (min (+ ,init-progress
+                           ,progress)
+                        100))))
+       (let ((,forms (get-forms ,aspect-index
+                                ,(+ target-forms helper-forms))))
+         (if ,forms
+             (let ((targets (subseq ,forms 0 ,target-forms))
+                   (helpers (car (nthcdr ,helper-forms ,forms))))
+               (unless ,executed-once
+                 (term:print ,description-uie))
+               (let ((result  (progn ,@body)))
+                 (dolist (form targets)
+                   (destructuring-bind (type default-form form-index) form
+                     (funcall (if result
+                                  #'item-inc-weight
+                                  #'item-dec-weight)
+                              type
+                              default-form
+                              form-index
+                              ,aspect-index)))
+                 (setf ,executed-once t)))
+             (term:cat-print (uie :not-enough-forms)))))))
