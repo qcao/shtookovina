@@ -23,12 +23,6 @@
 
 (in-package #:shtookovina)
 
-;; (defvar +table-cell-width+ 10
-;;   "Cell width that is used when Shtookovina needs to print some table.")
-
-;; (defvar +dict-table-width+ '(10 30 30 10)
-;;   "Cell width that is used for tables printed by DICT command.")
-
 (define-command quit ()
     (:cmd-quit-s :cmd-quit-l)
   (setf *session-terminated* t))
@@ -102,7 +96,7 @@
                      (default-form string)
                      (translation string))
     (:cmd-add-s :cmd-add-l)
-  (if (add-dictionary-item type default-form translation)
+  (if (add-item type default-form translation)
       (term:print (uie :dict-item-added)
                   :args (list type default-form))
       (term:print (uie :dict-item-already-exists)
@@ -111,7 +105,7 @@
 (define-command rem ((type keyword)
                      (default-form string))
     (:cmd-rem-s :cmd-rem-l)
-  (if (rem-dictionary-item type default-form)
+  (if (rem-item type default-form)
       (term:print (uie :dict-item-removed)
                   :args (list type default-form))
       (term:print (uie :dict-no-such-item)
@@ -147,10 +141,10 @@
                        (form-index integer))
     (:cmd-eform-s :cmd-eform-l)
   (let ((form-index (or form-index 0)))
-    (if (edit-dictionary-item-form type
-                                   default-form
-                                   new-form
-                                   form-index)
+    (if (edit-item-form type
+                        default-form
+                        new-form
+                        form-index)
         (term:print (uie :dict-form-changed)
                     :args (list type default-form form-index))
         (term:print (uie :dict-no-such-item)
@@ -160,9 +154,9 @@
                         (default-form string)
                         (new-translation string))
     (:cmd-etrans-s :cmd-etrans-l)
-  (if (edit-dictionary-item-translation type
-                                        default-form
-                                        new-translation)
+  (if (edit-item-translation type
+                             default-form
+                             new-translation)
       (term:print (uie :dict-trans-changed)
                   :args (list type default-form))
       (term:print (uie :dict-no-such-item)
@@ -237,14 +231,14 @@
 
 ;; Before we write definitions of exercises, we need to define some helpers.
 
-(defun get-forms (aspect-index quantity)
+(defun pick-forms (aspect-index quantity)
   "Return forms for exercises. If some forms are unknown, ask user to fill
 them out."
-  (let ((forms (get-some-forms aspect-index quantity)))
+  (let ((forms (pick-some-forms aspect-index quantity)))
     (dolist (form forms forms)
       (when (apply #'unknown-form-p form)
         (destructuring-bind (type default-form form-index) form
-          (term:print :unknown-form-query
+          (term:print (uie :unknown-form-query)
                       :args (list type default-form
                                   (form-name type form-index)))
           (setf (item-form type default-form form-index)
@@ -276,22 +270,24 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
                    (min (+ ,init-progress
                            ,progress)
                         100))))
-       (let ((,forms (get-forms ,aspect-index
-                                ,(+ target-forms helper-forms))))
+       (let ((,forms (pick-forms ,aspect-index
+                                 ,(+ target-forms helper-forms))))
          (if ,forms
              (let ((targets (subseq ,forms 0 ,target-forms))
                    (helpers (car (nthcdr ,helper-forms ,forms))))
+               (declare (ignorable helpers))
                (unless ,executed-once
-                 (term:print ,description-uie))
-               (let ((result  (progn ,@body)))
+                 (term:print (uie ,description-uie)))
+               (let ((result (progn ,@body)))
                  (dolist (form targets)
                    (destructuring-bind (type default-form form-index) form
                      (funcall (if result
-                                  #'item-inc-weight
-                                  #'item-dec-weight)
+                                  #'item-dec-weight
+                                  #'item-inc-weight)
                               type
                               default-form
                               form-index
                               ,aspect-index)))
+                 (term:print (uie (if result :correct :incorrect)))
                  (setf ,executed-once t)))
              (term:cat-print (uie :not-enough-forms)))))))

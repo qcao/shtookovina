@@ -26,14 +26,14 @@
   "Hash table that allows to get dictionary item by its type and string
 representation of the main form (they should be CONSed to get key).")
 
-(defvar *initial-weight* 9
+(defvar *initial-weight* 12
   "When the user gives right answer when training a word, the weight is
 decreased, otherwise it's increased. This is upper limit of the weight.")
 
 (defvar *base-weight* 1
   "This is a number that represents lower limit of weight of form.")
 
-(defvar *weight-step* 3
+(defvar *weight-step* 4
   "Weight is changed discretely, *WEIGHT-STEP* is minimal difference between
 consequent values of weight.")
 
@@ -125,7 +125,7 @@ returns T on success and NIL on failure."
             *weight-sums* (cl-store:restore stream))
       t)))
 
-(defun rem-dictionary-item (type default-form)
+(defun rem-item (type default-form)
   "Remove item from the dictionary. Return T if there was such an item and
 NIL otherwise."
   (awhen (gethash (cons type default-form) *dictionary*)
@@ -135,7 +135,7 @@ NIL otherwise."
           (alter-weight it form-index aspect-index 0))))
     (remhash (cons type default-form) *dictionary*)))
 
-(defun add-dictionary-item (type default-form translation)
+(defun add-item (type default-form translation)
   "Add item to the dictionary. The item will have type TYPE (according to
 definition of LANGUAGE) and default form DEFAULT-FORM. If the dictionary
 already contains this item, the function has no effect. Return NIL value if
@@ -154,11 +154,11 @@ dictionary items."
     (maphash-keys
      (lambda (key)
        (destructuring-bind (type . default-form) key
-         (rem-dictionary-item type default-form)))
+         (rem-item type default-form)))
      *dictionary*)
     total))
 
-(defun edit-dictionary-item-form
+(defun edit-item-form
     (type default-form new-form &optional (form-index 0))
   "Edit dictionary item changing one of its forms. Target item is identified
 by TYPE and DEFAULT-FORM. Selected form at FORM-INDEX will be replaced with
@@ -172,12 +172,16 @@ otherwise."
             it))
     new-form))
 
-(defun edit-dictionary-item-translation (type default-form new-translation)
+(defun edit-item-translation (type default-form new-translation)
   "Edit dictionary item changing its translation. Target item is identified
 by TYPE and DEFAULT-FORM. Return NIL if there is no such item in the
 dictionary and NEW-TRANSLATION otherwise."
   (awhen (gethash (cons type default-form) *dictionary*)
     (setf (translation it) new-translation)))
+
+(defun item-translation (type default-form)
+  "Return translation of specified dictionary item."
+  (translation (gethash (cons type default-form) *dictionary*)))
 
 (defun item-dec-weight (type default-form form-index aspect-index)
   "Decrease weight of ASPECT-INDEX aspect of form at FORM-INDEX of item
@@ -213,7 +217,7 @@ learned). Return NIL if there is no such dictionary item and T otherwise."
   "Returns total number of dictionary items in the dictionary."
   (hash-table-count *dictionary*))
 
-(defun get-next-form (aspect-index)
+(defun pick-next-form (aspect-index)
   "Get type, default form, and form index of randomly selected dictionary
 item for ASPECT-INDEX."
   (let ((index (random (aref *weight-sums* aspect-index))))
@@ -235,7 +239,7 @@ item for ASPECT-INDEX."
                        (decf index (aref (item-weight value) aspect-index))))
                  *dictionary*)))))
 
-(defun get-some-forms (aspect-index number)
+(defun pick-some-forms (aspect-index number)
   "Return list of lists of form (type default-form form-index). NUMBER
 specifies how many elements returned list should have. If there is not
 enough forms in the dictionary, i.e. NUMBER < number of forms in the
@@ -253,7 +257,7 @@ with GET-NEXT-FORM. Big values of NUMBER are not recommended."
          (total 0))
         ((= total number)
          result)
-      (let ((form (multiple-value-list (get-next-form aspect-index))))
+      (let ((form (multiple-value-list (pick-next-form aspect-index))))
         (unless (find form result :test #'equal)
           (push form result)
           (incf total))))))

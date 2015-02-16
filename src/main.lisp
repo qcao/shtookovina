@@ -59,8 +59,8 @@
 
 ;; test dictionary
 
-(add-dictionary-item :vrb "make" "делать")
-(add-dictionary-item :vrb "fake" "подделывать, обманывать")
-(add-dictionary-item :adj "red" "красный")
-(add-dictionary-item :nom "face" "лицо")
-(add-dictionary-item :adv "fast" "быстро")
+(add-item :vrb "make" "делать")
+(add-item :vrb "fake" "подделывать, обманывать")
+(add-item :adj "red" "красный")
+(add-item :nom "face" "лицо")
+(add-item :adv "fast" "быстро")

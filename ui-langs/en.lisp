@@ -41,6 +41,8 @@
  "Command"
  :command-invalid-call
  "[Cannot](err) call [~](cmd) with these arguments"
+ :correct
+ "[Correct answer!](crc)"
  :cmd-add-l
  "Add new dictionary item of type [TYPE](arg). The item will have default
 form [DEFAULT-FORM](arg). If the item already exists in the dictionary, this
@@ -123,6 +125,14 @@ identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
 identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  :cmd-reset-s
  "Reset progress of specified dictionary item."
+ :cmd-trans-l
+ "This is translation exercise. In this exercise you are given a
+word (either in interface language or target language) and four possible
+translations. You should select correct one. Argument [PROGRESS](arg), when
+given, denotes how many percents of progress you would like to
+make. [PROGRESS](arg) defaults to [20](arg)."
+ :cmd-trans-s
+ "Translation exercise."
  :cmd-ui-lang-l
  "Print name of user interface language."
  :cmd-ui-lang-s
@@ -157,10 +167,14 @@ identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  "[Cannot](err) find [~](typ) [~](arg), no such item"
  :dict-trans-changed
  "Changed translation of [~](typ) [~](arg)"
+ :exercise-translation
+ "Select correct translation of given dictionary item:"
  :failed-audio-query
  "[Cannot](err) find any relevant audio for [\"~\"](arg)"
  :help-command-reminder
  "For information about the command use: [help](cmd) [~](arg)"
+ :incorrect
+ "[Incorrect answer.](inc)"
  :id
  "ID"
  :index
@@ -184,7 +198,7 @@ identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  :uncorrectable-command
  "[Cannot](err) correct command [~](cmd)"
  :unknown-form-query
- "[~](typ) [~](arg), ~ is [unknown](err), fill it out to continue:"
+ "[~](typ) [~](arg) ~ is [unknown](err), fill it out to continue:"
  :value
  "Value"
  :where
