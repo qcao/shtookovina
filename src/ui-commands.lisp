@@ -324,3 +324,34 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
                     (shuffle
                      (cons target-item
                            (mapcar prepare helpers))))))))))
+
+(define-command const (&optional (progress integer))
+    (:cmd-const-s :cmd-const-l)
+  (let ((progress (or progress 20)))
+    (exercise (1 progress 1 0 :exercise-constructor)
+      (destructuring-bind (type default-form form-index) (car targets)
+        (let ((target-item (item-form type default-form form-index)))
+          (term:print (uie :word-translated)
+                      :args (list type
+                                  (item-translation type default-form)
+                                  (form-name type form-index)))
+          (do ((parts (shuffle (copy-sequence 'string target-item)))
+               (acc   (make-array 0
+                                  :element-type 'character
+                                  :adjustable t
+                                  :fill-pointer 0)))
+              ((or (= (length acc) (length target-item))
+                   (not (starts-with-subseq acc
+                                            target-item
+                                            :test #'char-equal)))
+               (progn
+                 (audio-query target-item)
+                 (string-equal acc target-item)))
+            (awhen (readline
+                    (concatenate 'string
+                                 (format nil *session-prompt* parts)
+                                 acc)
+                    :num-chars 1)
+              (let ((it (if (emptyp it) #\newline (char it 0))))
+                (vector-push-extend it acc)
+                (update parts (curry #'remove it) :test #'char-equal)))))))))

@@ -38,6 +38,7 @@
   :depends-on   (#:alexandria
                  #:anaphora
                  #:trivial-shell
+                 #:trivial-update
                  #:bordeaux-threads
                  #:split-sequence
                  #:cl-store

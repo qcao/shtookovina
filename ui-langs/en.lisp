@@ -63,6 +63,14 @@ given [TEXT](arg)."
 program."
  :cmd-conj-s
  "Show conjugation of given verb."
+ :cmd-const-l
+ "Word constructor exercise. You are given translation of the word and
+letters of the word, but they are shuffled. You need to enter the word
+correctly, letter by letter. Argument [PROGRESS](arg), when given, denotes
+how many percents of progress you would like to make. [PROGRESS](arg)
+defaults to [20](arg)."
+ :cmd-const-s
+ "Word constructor exercise."
  :cmd-dict-l
  "Print information about the dictionary. If [PREFIX](arg) argument is
 given, show detailed information regarding every dictionary item which
@@ -167,6 +175,9 @@ make. [PROGRESS](arg) defaults to [20](arg)."
  "[Cannot](err) find [~](typ) [~](arg), no such item"
  :dict-trans-changed
  "Changed translation of [~](typ) [~](arg)"
+ :exercise-constructor
+ "Enter the word letter by letter (hint: you are given all letters of the
+word in prompt, but they are shuffled):"
  :exercise-translation
  "Select correct translation of given dictionary item:"
  :failed-audio-query

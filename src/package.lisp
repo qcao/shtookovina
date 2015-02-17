@@ -21,4 +21,5 @@
   (:use     #:common-lisp
             #:alexandria
             #:anaphora
+            #:trivial-update
             #:split-sequence))
