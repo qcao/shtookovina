@@ -29,12 +29,12 @@
  "[Cannot](err) parse [\"~\"](inc) as [~](typ)"
  :aspect
  "Aspect"
+ :aspect-listening
+ "Listening"
  :aspect-translation
  "Translation"
  :aspect-writing
  "Writing"
- :aspect-audition
- "Audition"
  :available-commands
  "Available Commands:"
  :command
@@ -150,7 +150,7 @@ make. [PROGRESS](arg) defaults to [20](arg)."
  :dict-entry-header
  "[~](arg), [~](typ) - ~ [[~](arg) %]"
  :dict-general
- "[~](arg) word(s) in the dictionary [[~](arg) %]"
+ "[~](arg) word(s) in the dictionary, overall progress [~](arg) %"
  :dict-form-changed
  "Changed [~](typ) [~](arg) #[~](arg)"
  :dict-item-added
@@ -202,4 +202,8 @@ make. [PROGRESS](arg) defaults to [20](arg)."
  :value
  "Value"
  :where
- "where ")
+ "where "
+ :word-form
+ "[~](typ) [~](arg)"
+ :word-translated
+ "[~](typ) ~ ~")

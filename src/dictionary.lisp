@@ -39,7 +39,7 @@ consequent values of weight.")
 
 (defvar +aspects-count+ 3
   "Number of 'aspects' (exercise types) per form. In this version of
-Shtookovina we have three aspects: translation, writing, and audition.")
+Shtookovina we have three aspects: translation, writing, and listening.")
 
 (defparameter *weight-sums* (make-array +aspects-count+ :initial-element 0)
   "Vector of sums of all weights per aspect.")

@@ -208,7 +208,7 @@
                                           (dictionary-progress index)))
                                   '(:aspect-translation
                                     :aspect-writing
-                                    :aspect-audition)
+                                    :aspect-listening)
                                   (iota +aspects-count+)))
                     :cell-style '(:default :arg)
                     :header-style :hdr
@@ -262,19 +262,21 @@ achieve). TARGET-WORDS words will be generated and bound to symbol TARGETS,
 HELPER-WORDS words will be generated and bound to symbol HELPERS. Return
 value of BODY affects weights of words specified in TARGETS variable, if
 BODY evaluates to NIL, weights will be increased, otherwise decreased."
-  (with-gensyms (executed-once init-progress forms)
+  (with-gensyms (executed-once not-enough init-progress forms)
     `(do (,executed-once
+          ,not-enough
           (,init-progress (dictionary-progress ,aspect-index)))
-         ((and ,executed-once
-               (>= (dictionary-progress ,aspect-index)
-                   (min (+ ,init-progress
-                           ,progress)
-                        100))))
+         ((or ,not-enough
+              (and ,executed-once
+                   (>= (dictionary-progress ,aspect-index)
+                       (min (+ ,init-progress
+                               ,progress)
+                            100)))))
        (let ((,forms (pick-forms ,aspect-index
                                  ,(+ target-forms helper-forms))))
          (if ,forms
              (let ((targets (subseq ,forms 0 ,target-forms))
-                   (helpers (car (nthcdr ,helper-forms ,forms))))
+                   (helpers (nthcdr ,target-forms ,forms)))
                (declare (ignorable helpers))
                (unless ,executed-once
                  (term:print (uie ,description-uie)))
@@ -290,4 +292,35 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
                               ,aspect-index)))
                  (term:print (uie (if result :correct :incorrect)))
                  (setf ,executed-once t)))
-             (term:cat-print (uie :not-enough-forms)))))))
+             (progn
+               (setf ,not-enough t)
+               (term:print (uie :not-enough-forms))))))))
+
+(define-command trans (&optional (progress integer))
+    (:cmd-trans-s :cmd-trans-l)
+  (let ((progress (or progress 20)))
+    (exercise (0 progress 1 3 :exercise-translation)
+      (destructuring-bind (type default-form form-index) (car targets)
+        (let* ((trans-word (zerop (random 2)))
+               (prepare (lambda (x)
+                          (if trans-word
+                              (apply #'item-form x)
+                              (destructuring-bind (type default-form form-index)
+                                  x
+                                (format nil "~a ~a"
+                                        (item-translation type default-form)
+                                        (form-name type form-index))))))
+               (target-item (funcall prepare (car targets))))
+          (if trans-word
+              (term:print (uie :word-translated)
+                          :args (list type
+                                      (item-translation type default-form)
+                                      (form-name type form-index)))
+              (term:print (uie :word-form)
+                          :args (list type
+                                      (apply #'item-form (car targets)))))
+          (string= target-item
+                   (int-select-option
+                    (shuffle
+                     (cons target-item
+                           (mapcar prepare helpers))))))))))
