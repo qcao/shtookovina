@@ -62,10 +62,10 @@
   (terpri)
   (term:table (cons (list (uie :id) (uie :name))
                     (get-lexemes))
-              :cell-style '(:arg :default)
+              :cell-style '(:typ :default)
               :header-style :hdr
               :border-style nil
-              :column-width 10))
+              :column-width 15))
 
 (define-command forms ((lexeme keyword))
     (:cmd-forms-s :cmd-forms-l)
@@ -138,17 +138,16 @@
                        (default-form string)
                        (new-form string)
                        &optional
-                       (form-index integer))
+                       ((form-index 0) integer))
     (:cmd-eform-s :cmd-eform-l)
-  (let ((form-index (or form-index 0)))
-    (if (edit-item-form type
-                        default-form
-                        new-form
-                        form-index)
-        (term:print (uie :dict-form-changed)
-                    :args (list type default-form form-index))
-        (term:print (uie :dict-no-such-item)
-                    :args (list type default-form)))))
+  (if (edit-item-form type
+                      default-form
+                      new-form
+                      form-index)
+      (term:print (uie :dict-form-changed)
+                  :args (list type default-form form-index))
+      (term:print (uie :dict-no-such-item)
+                  :args (list type default-form))))
 
 (define-command etrans ((type keyword)
                         (default-form string)
@@ -296,62 +295,60 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
                (setf ,not-enough t)
                (term:print (uie :not-enough-forms))))))))
 
-(define-command trans (&optional (progress integer))
+(define-command trans (&optional ((progress 20) integer))
     (:cmd-trans-s :cmd-trans-l)
-  (let ((progress (or progress 20)))
-    (exercise (0 progress 1 3 :exercise-translation)
-      (destructuring-bind (type default-form form-index) (car targets)
-        (let* ((trans-word (zerop (random 2)))
-               (prepare (lambda (x)
-                          (if trans-word
-                              (apply #'item-form x)
-                              (destructuring-bind (type default-form form-index)
-                                  x
-                                (format nil "~a ~a"
-                                        (item-translation type default-form)
-                                        (form-name type form-index))))))
-               (target-item (funcall prepare (car targets))))
-          (if trans-word
-              (term:print (uie :word-translated)
-                          :args (list type
+  (exercise (0 progress 1 3 :exercise-translation)
+    (destructuring-bind (type default-form form-index) (car targets)
+      (let* ((trans-word (zerop (random 2)))
+             (prepare (lambda (x)
+                        (if trans-word
+                            (apply #'item-form x)
+                            (destructuring-bind (type default-form form-index)
+                                x
+                              (format nil "~a ~a"
                                       (item-translation type default-form)
-                                      (form-name type form-index)))
-              (term:print (uie :word-form)
-                          :args (list type
-                                      (apply #'item-form (car targets)))))
-          (string= target-item
-                   (int-select-option
-                    (shuffle
-                     (cons target-item
-                           (mapcar prepare helpers))))))))))
+                                      (form-name type form-index))))))
+             (target-item (funcall prepare (car targets))))
+        (if trans-word
+            (term:print (uie :word-translated)
+                        :args (list type
+                                    (item-translation type default-form)
+                                    (form-name type form-index)))
+            (term:print (uie :word-form)
+                        :args (list type
+                                    (apply #'item-form (car targets)))))
+        (string= target-item
+                 (int-select-option
+                  (shuffle
+                   (cons target-item
+                         (mapcar prepare helpers)))))))))
 
-(define-command const (&optional (progress integer))
+(define-command const (&optional ((progress 20) integer))
     (:cmd-const-s :cmd-const-l)
-  (let ((progress (or progress 20)))
-    (exercise (1 progress 1 0 :exercise-constructor)
-      (destructuring-bind (type default-form form-index) (car targets)
-        (let ((target-item (item-form type default-form form-index)))
-          (term:print (uie :word-translated)
-                      :args (list type
-                                  (item-translation type default-form)
-                                  (form-name type form-index)))
-          (do ((parts (shuffle (copy-sequence 'string target-item)))
-               (acc   (make-array 0
-                                  :element-type 'character
-                                  :adjustable t
-                                  :fill-pointer 0)))
-              ((or (= (length acc) (length target-item))
-                   (not (starts-with-subseq acc
-                                            target-item
-                                            :test #'char-equal)))
-               (progn
-                 (audio-query target-item)
-                 (string-equal acc target-item)))
-            (awhen (readline
-                    (concatenate 'string
-                                 (format nil *session-prompt* parts)
-                                 acc)
-                    :num-chars 1)
-              (let ((it (if (emptyp it) #\newline (char it 0))))
-                (vector-push-extend it acc)
-                (update parts (curry #'remove it) :test #'char-equal)))))))))
+  (exercise (1 progress 1 0 :exercise-constructor)
+    (destructuring-bind (type default-form form-index) (car targets)
+      (let ((target-item (item-form type default-form form-index)))
+        (term:print (uie :word-translated)
+                    :args (list type
+                                (item-translation type default-form)
+                                (form-name type form-index)))
+        (do ((parts (shuffle (copy-sequence 'string target-item)))
+             (acc   (make-array 0
+                                :element-type 'character
+                                :adjustable t
+                                :fill-pointer 0)))
+            ((or (= (length acc) (length target-item))
+                 (not (starts-with-subseq acc
+                                          target-item
+                                          :test #'char-equal)))
+             (progn
+               (audio-query target-item)
+               (string-equal acc target-item)))
+          (awhen (readline
+                  (concatenate 'string
+                               (format nil *session-prompt* parts)
+                               acc)
+                  :num-chars 1)
+            (let ((it (if (emptyp it) #\newline (char it 0))))
+              (vector-push-extend it acc)
+              (update parts (curry #'remove it) :test #'char-equal))))))))

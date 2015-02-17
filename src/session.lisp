@@ -301,7 +301,12 @@ command itself."
                (cond ((eql arg '&optional) (setf optionals t))
                      (optionals
                       (push " [" result)
-                      (push (list arg :arg) result)
+                      (if (consp arg)
+                          (progn
+                            (push (list (car arg) :arg) result)
+                            (push " -> " result)
+                            (push (list (cadr arg) :arg) result))
+                          (push (list arg :arg) result))
                       (push "]" result))
                      (t
                       (push " " result)
@@ -309,7 +314,7 @@ command itself."
          (type-annotation (args types)
            (let ((last (lastcar args)))
              (mapcan (lambda (a p)
-                       (list (list a :arg)
+                       (list (list (if (consp a) (car a) a) :arg)
                              " - "
                              (list p :typ)
                              (if (eql a last) "" ", ")))

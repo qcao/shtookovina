@@ -66,9 +66,8 @@ program."
  :cmd-const-l
  "Word constructor exercise. You are given translation of the word and
 letters of the word, but they are shuffled. You need to enter the word
-correctly, letter by letter. Argument [PROGRESS](arg), when given, denotes
-how many percents of progress you would like to make. [PROGRESS](arg)
-defaults to [20](arg)."
+correctly, letter by letter. Argument [PROGRESS](arg), denotes how many
+percents of progress you would like to make."
  :cmd-const-s
  "Word constructor exercise."
  :cmd-dict-l
@@ -136,9 +135,8 @@ identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  :cmd-trans-l
  "This is translation exercise. In this exercise you are given a
 word (either in interface language or target language) and four possible
-translations. You should select correct one. Argument [PROGRESS](arg), when
-given, denotes how many percents of progress you would like to
-make. [PROGRESS](arg) defaults to [20](arg)."
+translations. You should select correct one. Argument [PROGRESS](arg)
+denotes how many percents of progress you would like to make."
  :cmd-trans-s
  "Translation exercise."
  :cmd-ui-lang-l
