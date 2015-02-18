@@ -130,3 +130,8 @@ no such lexeme in the language, it returns NIL."
 there is no such lexeme, returns NIL."
   (awhen (get-lexeme lexeme)
     (aref (forms it) form)))
+
+(defun lexeme-name (lexeme)
+  "Return name of lexeme with ID LEXEME."
+  (awhen (get-lexeme lexeme)
+    (name it)))

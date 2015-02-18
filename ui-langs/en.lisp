@@ -158,7 +158,7 @@ denotes how many percents of progress you would like to make."
  :dict-general
  "[~](arg) word(s) in the dictionary, overall progress [~](arg) %"
  :dict-form-changed
- "Changed [~](typ) [~](arg) #[~](arg)"
+ "Changed [~](typ) [~](arg) ~"
  :dict-item-added
  "[~](typ) [~](arg) added to your dictionary"
  :dict-item-already-exists
@@ -184,8 +184,6 @@ word in prompt, but they are shuffled):"
  "For information about the command use: [help](cmd) [~](arg)"
  :incorrect
  "[Incorrect answer.](inc)"
- :id
- "ID"
  :index
  "Index"
  :lexemes

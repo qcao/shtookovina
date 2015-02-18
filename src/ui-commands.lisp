@@ -57,12 +57,9 @@
 
 (define-command lexemes ()
     (:cmd-lexemes-s :cmd-lexemes-l)
-  (term:print (uie :lexemes)
-              :base-style :hdr)
-  (terpri)
-  (term:table (cons (list (uie :id) (uie :name))
-                    (get-lexemes))
-              :cell-style '(:typ :default)
+  (term:table (cons (uie :lexemes)
+                    (mapcar #'cadr (get-lexemes)))
+              :cell-style :typ
               :header-style :hdr
               :border-style nil
               :column-width 15))
@@ -98,18 +95,18 @@
     (:cmd-add-s :cmd-add-l)
   (if (add-item type default-form translation)
       (term:print (uie :dict-item-added)
-                  :args (list type default-form))
+                  :args (list (lexeme-name type) default-form))
       (term:print (uie :dict-item-already-exists)
-                  :args (list type default-form))))
+                  :args (list (lexeme-name type) default-form))))
 
 (define-command rem ((type keyword)
                      (default-form string))
     (:cmd-rem-s :cmd-rem-l)
   (if (rem-item type default-form)
       (term:print (uie :dict-item-removed)
-                  :args (list type default-form))
+                  :args (list (lexeme-name type) default-form))
       (term:print (uie :dict-no-such-item)
-                  :args (list type default-form))))
+                  :args (list (lexeme-name type) default-form))))
 
 (define-command clear ()
     (:cmd-clear-s :cmd-clear-l)
@@ -121,18 +118,18 @@
     (:cmd-learned-s :cmd-learned-l)
   (if (item-mark-as-learned type default-form)
       (term:print (uie :dict-item-learned)
-                  :args (list type default-form))
+                  :args (list (lexeme-name type) default-form))
       (term:print (uie :dict-no-such-item)
-                  :args (list type default-form))))
+                  :args (list (lexeme-name type) default-form))))
 
 (define-command reset ((type keyword)
                        (default-form string))
     (:cmd-reset-s :cmd-reset-l)
   (if (item-reset-progress type default-form)
       (term:print (uie :dict-item-reset)
-                  :args (list type default-form))
+                  :args (list (lexeme-name type) default-form))
       (term:print (uie :dict-no-such-item)
-                  :args (list type default-form))))
+                  :args (list (lexeme-name type) default-form))))
 
 (define-command eform ((type keyword)
                        (default-form string)
@@ -145,9 +142,11 @@
                       new-form
                       form-index)
       (term:print (uie :dict-form-changed)
-                  :args (list type default-form form-index))
+                  :args (list (lexeme-name type)
+                              default-form
+                              (form-name type form-index)))
       (term:print (uie :dict-no-such-item)
-                  :args (list type default-form))))
+                  :args (list (lexeme-name type) default-form))))
 
 (define-command etrans ((type keyword)
                         (default-form string)
@@ -157,9 +156,9 @@
                              default-form
                              new-translation)
       (term:print (uie :dict-trans-changed)
-                  :args (list type default-form))
+                  :args (list (lexeme-name type) default-form))
       (term:print (uie :dict-no-such-item)
-                  :args (list type default-form))))
+                  :args (list (lexeme-name type) default-form))))
 
 (define-command dict (&optional (prefix string))
     (:cmd-dict-s :cmd-dict-l)
@@ -167,7 +166,7 @@
       (flet ((print-item (type item)
                (term:print (uie :dict-entry-header)
                            :args (list (form item 0)
-                                       type
+                                       (lexeme-name type)
                                        (translation item)
                                        (item-progress item)))
                (terpri)
@@ -238,12 +237,15 @@ them out."
       (when (apply #'unknown-form-p form)
         (destructuring-bind (type default-form form-index) form
           (term:print (uie :unknown-form-query)
-                      :args (list type default-form
+                      :args (list (lexeme-name type)
+                                  default-form
                                   (form-name type form-index)))
           (setf (item-form type default-form form-index)
                 (readline (format nil *session-prompt* "?")))
           (term:print (uie :dict-form-changed)
-                      :args form))))))
+                      :args (list (lexeme-name type)
+                                  default-form
+                                  (form-name type form-index))))))))
 
 (defmacro exercise ((aspect-index
                      progress
@@ -311,11 +313,11 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
              (target-item (funcall prepare (car targets))))
         (if trans-word
             (term:print (uie :word-translated)
-                        :args (list type
+                        :args (list (lexeme-name type)
                                     (item-translation type default-form)
                                     (form-name type form-index)))
             (term:print (uie :word-form)
-                        :args (list type
+                        :args (list (lexeme-name type)
                                     (apply #'item-form (car targets)))))
         (string= target-item
                  (int-select-option
@@ -329,7 +331,7 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
     (destructuring-bind (type default-form form-index) (car targets)
       (let ((target-item (item-form type default-form form-index)))
         (term:print (uie :word-translated)
-                    :args (list type
+                    :args (list (lexeme-name type)
                                 (item-translation type default-form)
                                 (form-name type form-index)))
         (do ((parts (shuffle (copy-sequence 'string target-item)))

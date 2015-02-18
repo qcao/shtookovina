@@ -347,4 +347,4 @@ command itself."
   (parse-integer arg))
 
 (define-arg-parser keyword (arg)
-  (intern (string-upcase arg) "KEYWORD"))
+  (car (find arg (get-lexemes) :test #'string-equal :key #'cadr)))
