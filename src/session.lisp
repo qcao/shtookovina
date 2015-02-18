@@ -133,6 +133,16 @@ from *COMMAND-LIST*, other words are currently not completed."
 
 (rl:register-function :complete #'custom-complete)
 
+(defun repeat-audio-query (arg key)
+  "Call AUDIO-QUERY silently with the same text as in its last call."
+  (declare (ignore arg key))
+  (when *last-audio-query*
+    (audio-query *last-audio-query*
+                 :silent-success t
+                 :silent-failure t)))
+
+(rl:bind-keyseq "\\C-o" #'repeat-audio-query)
+
 (defun string-to-list (str &optional (del #\space))
   "Transform string STR to list of words. Words are separated by DEL in
 STR."

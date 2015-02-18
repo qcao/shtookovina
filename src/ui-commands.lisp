@@ -354,3 +354,18 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
             (let ((it (if (emptyp it) #\newline (char it 0))))
               (vector-push-extend it acc)
               (update parts (curry #'remove it) :test #'char-equal))))))))
+
+(define-command listen (&optional ((progress 20) integer))
+    (:cmd-listen-s :cmd-listen-l)
+  (exercise (2 progress 1 0 :exercise-listening)
+    (destructuring-bind (type default-form form-index) (car targets)
+      (let ((target-item (item-form type default-form form-index)))
+        (audio-query target-item :silent-success t)
+        (awhen (readline (format nil *session-prompt* "?"))
+          (string-equal target-item it))))))
+
+(define-command train (&optional ((progress 20) integer))
+    (:cmd-train-s :cmd-train-l)
+  (dolist (exercise '(trans const listen))
+    (perform-command (list (symbol-name exercise)
+                           (format nil "~a" progress)))))

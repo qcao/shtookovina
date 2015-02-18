@@ -51,6 +51,9 @@ this (or greater) share of all texts in data base. Auxiliary words are
 deleted from *AUDIO-INDEX* to speed up playback. One can find all auxiliary
 words in *AUXILIARY-INDEX* hash table.")
 
+(defvar *last-audio-query* nil
+  "Last text given to AUDIO-QUERY function.")
+
 (defun extract-words (str)
   "Split text into words, according to Sthookovina concept of word."
   (remove-duplicates
@@ -114,7 +117,7 @@ AUDIO-QUERY. Invalid directories will be ignored silently."
                      (setf (gethash key *auxiliary-index*) it))))
                *audio-index*))))
 
-(defun audio-query (text)
+(defun audio-query (text &key silent-success silent-failure)
   "Invokes :AUDIO-QUERY hook with file name of audio file corresponding to
 given TEXT as first argument. TEXT may be a word or a phrase (i.e. several
 words). If the data base contains several files corresponding to the same
@@ -151,9 +154,12 @@ recording and NIL otherwise."
                      :args (quote-filename selected)
                      :in-thread t
                      :put-into-shell t)
-       (perform-hook :successful-audio-query
-                     :args (gethash selected *text-index*))
+       (setf *last-audio-query* text)
+       (unless silent-success
+         (perform-hook :successful-audio-query
+                       :args (gethash selected *text-index*)))
        t)
-     (perform-hook :failed-audio-query
-                   :args text)
-     nil)))
+     (unless silent-failure
+       (perform-hook :failed-audio-query
+                     :args text)
+       nil))))

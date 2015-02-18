@@ -114,6 +114,13 @@ identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  "Print a table of all lexemes defined in the actual language."
  :cmd-lexemes-s
  "Print all lexemes and their IDs."
+ :cmd-listen-l
+ "Listening comprehension exercise. Some relevant audio is played to you,
+you should recognize dictionary item and enter it correctly. Argument
+[PROGRESS](arg) denotes how many percents of progress you would like to
+make."
+ :cmd-listen-s
+ "Listening comprehension exercise."
  :cmd-query-l
  "Show information about (and translation of) given [WORD](arg)."
  :cmd-query-s
@@ -132,6 +139,13 @@ identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
 identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  :cmd-reset-s
  "Reset progress of specified dictionary item."
+ :cmd-train-l
+ "Comprehensive training. It includes all sorts of exercises: translation,
+writing, and audition in right order. It's recommended to use this command
+for all training. Argument [PROGRESS](arg) denotes how many percents of
+progress you would like to make."
+ :cmd-train-s
+ "Comprehensive training."
  :cmd-trans-l
  "This is translation exercise. In this exercise you are given a
 word (either in interface language or target language) and four possible
@@ -176,6 +190,9 @@ denotes how many percents of progress you would like to make."
  :exercise-constructor
  "Enter the word letter by letter (hint: you are given all letters of the
 word in prompt, but they are shuffled):"
+ :exercise-listening
+ "Listen to some recordings, recognize and enter target word (press
+[C-o](typ) to hear audio recording again):"
  :exercise-translation
  "Select correct translation of given dictionary item:"
  :failed-audio-query
