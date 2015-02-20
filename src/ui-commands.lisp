@@ -227,6 +227,24 @@
                 :in-thread t
                 :put-into-shell t))
 
+(define-command history (&optional ((items 10) integer))
+    (:cmd-history-s :cmd-history-l)
+  (flet ((auto-quote (str)
+           (if (find #\space str :test #'char=)
+               (format nil "\"~a\"" str)
+               str)))
+    (do ((i *command-counter* (1- i))
+         (h *session-history* (cdr h)))
+        ((or (null h)
+             (= (- *command-counter* i)
+                items)))
+      (let ((item (car h)))
+        (term:cat-print
+         (append (list (format nil "~4d" i) ": " (list (car item) :cmd))
+                 (mapcan (lambda (x)
+                           (list " " (list (auto-quote x) :arg)))
+                         (cdr item))))))))
+
 ;; Before we write definitions of exercises, we need to define some helpers.
 
 (defun pick-forms (aspect-index quantity)

@@ -49,6 +49,10 @@ terminated.")
 command that may be presented to user to choose from when there is no exact
 match.")
 
+(defparameter *session-history* nil
+  "List of all commands executed in current session (from newest to
+oldest).")
+
 (defclass command ()
   ((types
     :initarg :types
@@ -158,18 +162,14 @@ history R-LINE."
   "Generalized version of readline. It checks if current input stream is
 interactive. If it's interactive we use real GNU Readline library here,
 otherwise we just read a line of text after printing given prompt."
-  (awhen
-      (if (interactive-stream-p *standard-input*)
-          (rl:readline :prompt prompt
-                       :add-history add-history
-                       :num-chars num-chars
-                       :novelty-check #'novelty-check)
-          (progn
-            (princ prompt)
-            (read-line)))
-    (when add-history
-      (incf *command-counter*))
-    it))
+  (if (interactive-stream-p *standard-input*)
+      (rl:readline :prompt prompt
+                   :add-history add-history
+                   :num-chars num-chars
+                   :novelty-check #'novelty-check)
+      (progn
+        (princ prompt)
+        (read-line))))
 
 (defun read-command ()
   "Read command from user with editing, parse it and return a list of
@@ -261,9 +261,17 @@ will perform any necessary processing."
     (setf input (read-command))
     (awhen (and (not (emptyp input))
                 (correct-command input))
-      (perform-command it)))
+      (push it *session-history*)
+      (perform-command it)
+      (incf *command-counter*)))
   (perform-hook :session-end)
   (values))
+
+(defun last-command= (command)
+  "Check if last (newest) command in session history equal to given command
+COMMAND (must be a string designator)."
+  (string-equal (caar *session-history*)
+                command))
 
 (defun int-select-option (options &optional (item-style :default))
   "Interactively select an options from OPTIONS. Return the option on

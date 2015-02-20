@@ -100,6 +100,11 @@ commands. When [COMMAND](arg) argument given, it prints detailed description
 of the specific command."
  :cmd-help-s
  "Print info about commands."
+ :cmd-history-l
+ "Print current session history. Argument [ITEMS](arg) denotes how many
+history items should be printed."
+ :cmd-history-s
+ "Print history."
  :cmd-lang-l
  "The [lang](cmd) command prints name of the language that you're learning
 in the current Shtookovina session. It's useful for troubleshooting."
