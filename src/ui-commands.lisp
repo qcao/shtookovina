@@ -380,7 +380,9 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
                   :num-chars 1)
             (let ((it (if (emptyp it) #\newline (char it 0))))
               (vector-push-extend it acc)
-              (update parts (curry #'remove it) :test #'char-equal))))))))
+              (update parts (curry #'remove it)
+                      :test #'char-equal
+                      :count 1))))))))
 
 (define-command listen (&optional ((progress 20) integer))
     (:cmd-listen-s :cmd-listen-l)
@@ -439,8 +441,10 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
               (term:cat-print
                (list
                 filler
-                (substitute #\. #\nul revealed :test #'char=)
+                (list (substitute #\. #\nul revealed :test #'char=) :arg)
                 " - "
+                (list (lexeme-name type) :typ)
+                " "
                 (item-translation type default-form)
                 " "
                 (form-name type form-index)))
