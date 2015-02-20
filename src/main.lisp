@@ -60,7 +60,14 @@
 ;; test dictionary
 
 (add-item :vrb "make" "делать")
-(add-item :vrb "fake" "подделывать, обманывать")
-(add-item :adj "red" "красный")
+(add-item :adj "red"  "красный")
 (add-item :nom "face" "лицо")
 (add-item :adv "fast" "быстро")
+(add-item :nom "man"  "человек, мужчина")
+(add-item :nom "fox"  "лиса")
+(add-item :adv "quietly" "тихо")
+(add-item :vrb "like" "нравится")
+(add-item :vrb "love" "любить")
+(add-item :vrb "hate" "ненавидеть")
+(add-item :adv "never" "никогда")
+(add-item :nom "wood"  "лес")

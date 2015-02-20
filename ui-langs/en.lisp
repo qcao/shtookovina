@@ -70,6 +70,16 @@ correctly, letter by letter. Argument [PROGRESS](arg), denotes how many
 percents of progress you would like to make."
  :cmd-const-s
  "Word constructor exercise."
+ :cmd-crosswd-l
+ "Crossword exercise. This crossword doesn't show you visual representation
+of the crossing words. It doesn't really matter if such representation can
+be drawn or not. You cycle through various words and try to enter them
+correctly by their description. If you don't know a word, you can skip
+it. If you enter a word correctly, some letters of other words that coincide
+with the letters of the entered word are revealed. This exercise picks
+[WORDS](arg) words from your dictionary."
+ :cmd-crosswd-s
+ "Crossword exercise."
  :cmd-dict-l
  "Print information about the dictionary. If [PREFIX](arg) argument is
 given, show detailed information regarding every dictionary item which
@@ -194,7 +204,13 @@ denotes how many percents of progress you would like to make."
  "Changed translation of [~](typ) [~](arg)"
  :exercise-constructor
  "Enter the word letter by letter (hint: you are given all letters of the
-word in prompt, but they are shuffled):"
+word in the prompt, but they are shuffled):"
+ :exercise-crossword
+ "Cycle through various words and try to enter them correctly by their
+description. If you don't know a word, you can skip it (press [Enter](typ)
+entering empty line). If you enter a word correctly, some letters of other
+words that coincide with the letters of the entered word are revealed. The
+exercises continues until you enter all words correctly."
  :exercise-listening
  "Listen to some recordings, recognize and enter target word (press
 [Ctrl-o](typ) to hear audio recording again):"
@@ -231,8 +247,4 @@ word in prompt, but they are shuffled):"
  :value
  "Value"
  :where
- "where "
- :word-form
- "[~](typ) [~](arg)"
- :word-translated
- "[~](typ) ~ ~")
+ "where ")

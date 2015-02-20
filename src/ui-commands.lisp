@@ -137,6 +137,7 @@
                        &optional
                        ((form-index 0) integer))
     (:cmd-eform-s :cmd-eform-l)
+  (check-type form-index (integer 0))
   (if (edit-item-form type
                       default-form
                       new-form
@@ -229,6 +230,7 @@
 
 (define-command history (&optional ((items 10) integer))
     (:cmd-history-s :cmd-history-l)
+  (check-type items (integer 0))
   (flet ((auto-quote (str)
            (if (find #\space str :test #'char=)
                (format nil "\"~a\"" str)
@@ -259,7 +261,7 @@ them out."
                                   default-form
                                   (form-name type form-index)))
           (setf (item-form type default-form form-index)
-                (readline (format nil *session-prompt* "?")))
+                (readline (format nil +session-prompt+ "?")))
           (term:print (uie :dict-form-changed)
                       :args (list (lexeme-name type)
                                   default-form
@@ -296,7 +298,7 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
          (if ,forms
              (let ((targets (subseq ,forms 0 ,target-forms))
                    (helpers (nthcdr ,target-forms ,forms)))
-               (declare (ignorable helpers))
+               (declare (ignorable targets helpers))
                (unless ,executed-once
                  (term:print (uie ,description-uie)))
                (let ((result (progn ,@body)))
@@ -317,6 +319,7 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
 
 (define-command trans (&optional ((progress 20) integer))
     (:cmd-trans-s :cmd-trans-l)
+  (check-type progress (integer 1))
   (exercise (0 progress 1 3 :exercise-translation)
     (destructuring-bind (type default-form form-index) (car targets)
       (let* ((trans-word (zerop (random 2)))
@@ -330,13 +333,16 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
                                       (form-name type form-index))))))
              (target-item (funcall prepare (car targets))))
         (if trans-word
-            (term:print (uie :word-translated)
-                        :args (list (lexeme-name type)
-                                    (item-translation type default-form)
-                                    (form-name type form-index)))
-            (term:print (uie :word-form)
-                        :args (list (lexeme-name type)
-                                    (apply #'item-form (car targets)))))
+            (term:cat-print
+             (list (list (lexeme-name type) :typ)
+                   " "
+                   (item-translation type default-form)
+                   " "
+                   (form-name type form-index)))
+            (term:cat-print
+             (list (list (lexeme-name type) :typ)
+                   " "
+                   (list (apply #'item-form (car targets)) :arg))))
         (string= target-item
                  (int-select-option
                   (shuffle
@@ -345,13 +351,16 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
 
 (define-command const (&optional ((progress 20) integer))
     (:cmd-const-s :cmd-const-l)
+  (check-type progress (integer 1))
   (exercise (1 progress 1 0 :exercise-constructor)
     (destructuring-bind (type default-form form-index) (car targets)
       (let ((target-item (item-form type default-form form-index)))
-        (term:print (uie :word-translated)
-                    :args (list (lexeme-name type)
-                                (item-translation type default-form)
-                                (form-name type form-index)))
+        (term:cat-print
+         (list (list (lexeme-name type) :typ)
+               " "
+               (item-translation type default-form)
+               " "
+               (form-name type form-index)))
         (do ((parts (shuffle (copy-sequence 'string target-item)))
              (acc   (make-array 0
                                 :element-type 'character
@@ -366,7 +375,7 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
                (string-equal acc target-item)))
           (awhen (readline
                   (concatenate 'string
-                               (format nil *session-prompt* parts)
+                               (format nil +session-prompt+ parts)
                                acc)
                   :num-chars 1)
             (let ((it (if (emptyp it) #\newline (char it 0))))
@@ -375,15 +384,80 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
 
 (define-command listen (&optional ((progress 20) integer))
     (:cmd-listen-s :cmd-listen-l)
+  (check-type progress (integer 1))
   (exercise (2 progress 1 0 :exercise-listening)
     (destructuring-bind (type default-form form-index) (car targets)
       (let ((target-item (item-form type default-form form-index)))
         (audio-query target-item :silent-success t)
-        (awhen (readline (format nil *session-prompt* "?"))
+        (awhen (readline (format nil +session-prompt+ "?"))
           (string-equal target-item it))))))
 
-(define-command train (&optional ((progress 20) integer))
+(define-command crosswd (&optional ((words 12) integer))
+    (:cmd-crosswd-s :cmd-crosswd-l)
+  (check-type words (integer 1))
+  (term:print (uie :exercise-crossword))
+  (let* ((helpers
+          (remove-duplicates
+           (pick-forms 0 words)
+           :test (lambda (x y)
+                   (string-equal
+                    (apply #'item-form x)
+                    (apply #'item-form y)))))
+         (words (make-hash-table :test #'equal))
+         (prompt (format nil +session-prompt+ "?"))
+         (filler (substitute-if #\space (constantly t) prompt)))
+    (dolist (item helpers)
+      (let ((target-form (apply #'item-form item)))
+        (setf (gethash target-form words)
+              (list (substitute-if #\nul (constantly t) target-form)))))
+    (flet ((crossable (word i str)
+             (let ((crossings (cdr (gethash str words))))
+               (awhen (position (char word i) str :test #'char-equal)
+                 (not (or (find word crossings :test #'string= :key #'car)
+                          (find i crossings :test #'= :key #'cdr)))))))
+      (do ((word-list (hash-table-keys words)))
+          ((null word-list))
+        (let* ((word (pop word-list))
+               (indexes (set-difference
+                         (iota (length word))
+                         (mapcar #'cdr (cdr (gethash word words))))))
+          (dolist (i indexes)
+            (awhen (find-if (curry #'crossable word i) word-list)
+              (push (cons it (position (char word i) it :test #'char-equal))
+                    (cdr (gethash word words)))
+              (push (cons word i)
+                    (cdr (gethash it words))))))))
+    (do ((tail (apply #'circular-list helpers) (cdr tail)))
+        ((notany (lambda (x) (find #\nul x :test #'char=))
+                 (mapcar #'car (cdr (hash-table-values words)))))
+      (let* ((item (car tail))
+             (word (apply #'item-form item)))
+        (destructuring-bind (type default-form form-index) item
+          (destructuring-bind (revealed . crossings)
+              (gethash word words)
+            (when (find #\nul revealed :test #'char=)
+              (term:cat-print
+               (list
+                filler
+                (substitute #\. #\nul revealed :test #'char=)
+                " - "
+                (item-translation type default-form)
+                " "
+                (form-name type form-index)))
+              (let ((input (readline prompt)))
+                (unless (emptyp input)
+                  (if (string-equal input word)
+                      (progn
+                        (setf (car (gethash word words)) word)
+                        (dolist (crossing crossings)
+                          (destructuring-bind (target . index) crossing
+                            (setf (char (car (gethash target words)) index)
+                                  (char target index))))
+                        (audio-query word)
+                        (term:print (uie :correct)))
+                      (term:print (uie :incorrect))))))))))))
+
+(define-command train ()
     (:cmd-train-s :cmd-train-l)
-  (dolist (exercise '(trans const listen))
-    (perform-command (list (symbol-name exercise)
-                           (format nil "~a" progress)))))
+  (dolist (exercise '(trans const listen crosswd))
+    (perform-command (list (symbol-name exercise)))))

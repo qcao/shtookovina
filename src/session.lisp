@@ -36,7 +36,7 @@ Shtookovina REPL.")
   "Command counter. It's part of Shtookovina prompt. It's incremented every
 time READ-COMMAND gets some input successfully.")
 
-(defparameter *session-prompt* "[~a]> "
+(defparameter +session-prompt+ "[~a]> "
   "This is a control string that's passed to FORMAT function along with the
 value of *COMMAND-COUNTER* to produce Shtookovina session prompt.")
 
@@ -174,7 +174,7 @@ otherwise we just read a line of text after printing given prompt."
 (defun read-command ()
   "Read command from user with editing, parse it and return a list of
 strings."
-  (awhen (readline (format nil *session-prompt* *command-counter*)
+  (awhen (readline (format nil +session-prompt+ *command-counter*)
                    :add-history t)
     (let (result)
       (do ((i 0 (1+ i))
@@ -281,7 +281,7 @@ success and NIL on failure (canceled)."
                :index-style :arg
                :item-style  item-style)
   (let ((input (readline
-                (format nil *session-prompt*
+                (format nil +session-prompt+
                         (coerce (mapcar #'code-char
                                         (iota (length options)
                                               :start (char-code #\a)))
