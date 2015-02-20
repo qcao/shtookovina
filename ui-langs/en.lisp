@@ -197,7 +197,7 @@ denotes how many percents of progress you would like to make."
 word in prompt, but they are shuffled):"
  :exercise-listening
  "Listen to some recordings, recognize and enter target word (press
-[C-o](typ) to hear audio recording again):"
+[Ctrl-o](typ) to hear audio recording again):"
  :exercise-translation
  "Select correct translation of given dictionary item:"
  :failed-audio-query
