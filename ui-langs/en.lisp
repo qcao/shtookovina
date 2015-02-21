@@ -157,8 +157,7 @@ identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  :cmd-train-l
  "Comprehensive training. It includes all sorts of exercises: translation,
 writing, and audition in right order. It's recommended to use this command
-for all training. Argument [PROGRESS](arg) denotes how many percents of
-progress you would like to make."
+for all training."
  :cmd-train-s
  "Comprehensive training."
  :cmd-trans-l

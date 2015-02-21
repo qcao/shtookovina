@@ -222,35 +222,38 @@ is signaled."))
 
 (defun coerce-arg (target-type arg)
   "This is special version of COERCE to convert strings into Lisp
-objects. It converts STRING into object of type OUTPUT-TYPE."
-  (awhen (gethash target-type *arg-parsers*)
-    (handler-case
-        (let ((result (funcall it arg)))
-          (assert (typep result target-type))
-          result)
-      (error (condition)
-        (declare (ignore condition))
-        (error 'arg-parser-failed
-               :raw-arg arg
-               :target-type target-type)))))
+objects. It converts STRING into object of type OUTPUT-TYPE (unless ARG is
+already of desired type)."
+  (if (typep arg target-type)
+      arg
+      (awhen (gethash target-type *arg-parsers*)
+        (handler-case
+            (let ((result (funcall it arg)))
+              (assert (typep result target-type))
+              result)
+          (error (condition)
+            (declare (ignore condition))
+            (error 'arg-parser-failed
+                   :raw-arg arg
+                   :target-type target-type))))))
 
-(defun perform-command (command)
+(defun perform-command (command &rest args)
   "Cast arguments of the COMMAND to necessary types and call function that
 will perform any necessary processing."
-  (destructuring-bind (name . args) command
+  (let ((command (string-downcase command)))
     (handler-case
-        (awhen (gethash name *commands*)
+        (awhen (gethash command *commands*)
           (apply (fnc it) (mapcar #'coerce-arg (types it) args)))
       (arg-parser-failed (condition)
         (princ condition)
         (term:print (uie :help-command-reminder)
-                    :args name))
+                    :args command))
       (error (condition)
         (declare (ignore condition))
         (term:print (uie :command-invalid-call)
-                    :args name)
+                    :args command)
         (term:print (uie :help-command-reminder)
-                    :args name)))))
+                    :args command)))))
 
 (defun session ()
   "This is Shtookovina REPL."
@@ -262,7 +265,7 @@ will perform any necessary processing."
     (awhen (and (not (emptyp input))
                 (correct-command input))
       (push it *session-history*)
-      (perform-command it)
+      (apply #'perform-command it)
       (incf *command-counter*)))
   (perform-hook :session-end)
   (values))
@@ -339,7 +342,7 @@ command itself."
                      args
                      types))))
     (when-let* ((command (if (gethash command *commands*)
-                             command
+                             (string-downcase command)
                              (int-correct-command command)))
                 (it      (gethash command *commands*)))
       (term:cat-print
@@ -359,7 +362,7 @@ command itself."
 ;; default parsers
 
 (define-arg-parser string (arg)
-  arg)
+  (string arg))
 
 (define-arg-parser integer (arg)
   (parse-integer arg))

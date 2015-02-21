@@ -463,5 +463,4 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
 
 (define-command train ()
     (:cmd-train-s :cmd-train-l)
-  (dolist (exercise '(trans const listen crosswd))
-    (perform-command (list (symbol-name exercise)))))
+  (mapc #'perform-command '(trans const listen crosswd)))
