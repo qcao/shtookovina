@@ -37,12 +37,13 @@
                  (:file "user-utils"))
   :depends-on   (#:alexandria
                  #:anaphora
-                 #:trivial-shell
-                 #:trivial-update
+                 #:babel
                  #:bordeaux-threads
-                 #:split-sequence
+                 #:cl-ansi-term
+                 #:cl-readline
                  #:cl-store
                  #:mk-string-metrics
-                 #:cl-readline
-                 #:cl-ansi-term
-                 #:babel))
+                 #:split-sequence
+                 #:trivial-shell
+                 #:trivial-update
+                 #:unix-options))
