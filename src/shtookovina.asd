@@ -46,4 +46,4 @@
                  #:split-sequence
                  #:trivial-shell
                  #:trivial-update
-                 #:unix-options))
+                 #:unix-opts))
