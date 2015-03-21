@@ -19,55 +19,153 @@
 
 (in-package #:shtookovina)
 
-;;; Testing
+(defvar +shtookovina-version+ "[Shtookovina](hdr) [0.1.0](arg)"
+  "Version of the program.")
 
-(load "/home/mark/projects/programs/shtookovina/git/langs/en.lisp")
-(load "/home/mark/projects/programs/shtookovina/git/ui-langs/en.lisp")
+(defvar +shtookovina-ui-langs+
+  (make-pathname :directory '(:absolute "usr" "share" "shtookovina" "ui-langs"))
+  "Where to search for definitions of user interface languages.")
 
-(setf *shtooka-dirs*
-      '("/home/mark/Downloads/eng-balm-emmanuel/"
-        "/home/mark/Downloads/eng-balm-judith/"
-        "/home/mark/Downloads/eng-balm-judith-proverbs/"
-        "/home/mark/Downloads/eng-balm-verbs/"
-        "/home/mark/Downloads/eng-wcp-us/"
-        "/home/mark/Downloads/eng-wims-mary/"
-        "/home/mark/Downloads/eng-wims-mary-conversation/"
-        "/home/mark/Downloads/eng-wims-mary-num/"))
+(defvar +shtookovina-langs+
+  (make-pathname :directory '(:absolute "usr" "share" "shtookovina" "langs"))
+  "Where to search for definitions of target languages.")
 
-;; (setf *shtooka-dirs*
-;;       '("/home/mark/Downloads/fra-balm-conjug/"
-;;         "/home/mark/Downloads/fra-balm-flora-expr/"
-;;         "/home/mark/Downloads/fra-balm-flora-num/"
-;;         "/home/mark/Downloads/fra-balm-frank/"
-;;         "/home/mark/Downlaods/fra-balm-tnitot/"
-;;         "/home/mark/Downloads/fra-balm-voc/"
-;;         "/home/mark/Downloads/fra-nallet-camille/"
-;;         "/home/mark/Downloads/fra-nallet-caroline/"
-;;         "/home/mark/Downlaods/fra-nallet-christian/"
-;;         "/home/mark/Downloads/fra-nallet-denise/"
-;;         "/home/mark/Downloads/fra-nallet-marie/"
-;;         "/home/mark/Downloads/fra-nallet-nicolas/"
-;;         "/home/mark/Downloads/fra-nallet-odile/"
-;;         "/home/mark/Downloads/fra-wims-lettres fra-wims-voc/"))
+(defvar +shtookovina-local+
+  (merge-pathnames (make-pathname :directory '(:relative ".shtookovina"))
+                   (user-homedir-pathname))
+  "Local directory where user's personal data is stored.")
 
-(define-hook :audio-query (x)
-  (format nil "flac -cd ~a | aplay" x))
+(defvar +config-pathname+ (make-pathname :name "config" :type "lisp")
+  "Path name of configuration file.")
 
-(define-hook :query-ext (word)
-  (format nil "icecat -new-tab \"www.wordreference/enen/~a\""
-          (hexify-string word)))
+(defvar +dict-pathname+ (make-pathname :name "dict" :type "bin")
+  "Path name of dictionary file.")
 
-;; test dictionary
+(defvar +gnu-glp-notice+
+  "[Shtookovina](hdr) - program to help learn natural languages
 
-(add-item :vrb "make" "делать")
-(add-item :adj "red"  "красный")
-(add-item :nom "face" "лицо")
-(add-item :adv "fast" "быстро")
-(add-item :nom "man"  "человек, мужчина")
-(add-item :nom "fox"  "лиса")
-(add-item :adv "quietly" "тихо")
-(add-item :vrb "like" "нравится")
-(add-item :vrb "love" "любить")
-(add-item :vrb "hate" "ненавидеть")
-(add-item :adv "never" "никогда")
-(add-item :nom "wood"  "лес")
+Copyright (c) 2015 Mark Karpov
+
+Shtookovina is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.
+
+Shtookovina is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program. If not, see [<http://www.gnu.org/licenses/>](typ)."
+  "A notice about license of the program (GNU GLP, version 3).")
+
+(defparameter *virgin-user* nil
+  "This variable is bound to non-NIL value if the current user runs the
+program for the first time (at least with specified target language).")
+
+(opts:define-opts
+  (:name :target
+   :description "Set target language. This option is obligatory."
+   :short #\t
+   :long "target")
+  (:name :version
+   :description "Print version of the program."
+   :long "version")
+  (:name :license
+   :description "Print license of the program."
+   :long "license")
+  (:name :help
+   :description "Print description of command line options."
+   :long "help"))
+
+(defun unknown-option (condition)
+  "What to do if user has passed unknown command line option. CONDITION is
+raised condition."
+  (term:print (uie :warning-unknown-option)
+              :args (opts:option condition))
+  (invoke-restart 'opts:skip-option))
+
+(defun local-target-pathname (target-lang)
+  "Return local target pathname -- combination of shtookovina local
+directory and directory named after target language."
+  (merge-pathnames (make-pathname :directory (list :relative target-lang))
+                   +shtookovina-local+))
+
+(defun load-lisp (filename)
+  "Load given file FILENAME, evaluating it in SHTOOKOVINA package."
+  (let ((*package* (find-package 'shtookovina)))
+    (load filename
+          :if-does-not-exist nil
+          :verbose nil)))
+
+(defun use-ui-language (lang)
+  "Load file corresponding to specified language LANG, changing language of
+user interface. Return T on success and NIL on failure."
+  (load-lisp
+   (make-pathname :name lang
+                  :type "lisp"
+                  :defaults +shtookovina-ui-langs+)))
+
+(defun load-target-lang (lang)
+  "Load file corresponding to specified language LANG, setting target
+language for training. Retrun T on success and NIL on failure."
+  (load-lisp
+   (make-pathname :name lang
+                  :type "lisp"
+                  :defaults +shtookovina-langs+)))
+
+(defun load-config (local-target)
+  "Load configuration file located in LOCAL-TARGET directory."
+  (load-lisp (merge-pathnames +config-pathname+ local-target)))
+
+(defun load-dict (local-target)
+  "Load dictionary file located in LOCAL-TARGET directory."
+  (load-dictionary (merge-pathnames +dict-pathname+ local-target)))
+
+(defun ask-and-save-dict (local-target)
+  "Ask if user wants to save changes in his/her dictionary and save them."
+  (term:print (uie :ask-save-dict))
+  (when (int-yes-or-no t)
+    (save-dictionary (merge-pathnames +dict-pathname+ local-target))))
+
+(defun main ()
+  "Entry point of Shtookovina program."
+  (use-ui-language "en")
+  (multiple-value-bind (options free-args)
+      (handler-case
+          (handler-bind ((opts:unknown-option #'unknown-option))
+            (opts:get-opts))
+        (opts:missing-arg (condition)
+          (term:print (uie :fatal-option-needs-arg)
+                      :args (opts:option condition)))
+        (opts:arg-parser-failed (condition)
+          (term:print (uie :fatal-cannot-parse-option)
+                      :args (list (opts:raw-arg condition)
+                                  (opts:option  condition)))))
+    (declare (ignore free-args))
+    (when (getf options :version)
+      (term:print +shtookovina-version+)
+      (return-from main))
+    (when (getf options :license)
+      (term:print +gnu-glp-notice+)
+      (return-from main))
+    (when (getf options :help)
+      (term:print (opts:describe
+                   :prefix "[shtk](cmd) [[options]](arg)"))
+      (return-from main))
+    (let ((target-lang (getf options :target)))
+      (unless target-lang
+        (term:print (uie :fatal-no-target))
+        (return-from main))
+      (unless (load-target-lang target-lang)
+        (term:print (uie :fatal-missing-target)
+                    :args target-lang)
+        (return-from main))
+      (let ((local-target (local-target-pathname target-lang)))
+        (ensure-directories-exist local-target)
+        (load-config local-target)
+        (load-dict local-target)
+        (init-shtooka-db)
+        (session)
+        (ask-and-save-dict local-target)))))
