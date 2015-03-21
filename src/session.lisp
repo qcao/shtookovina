@@ -276,6 +276,16 @@ COMMAND (must be a string designator)."
   (string-equal (caar *session-history*)
                 command))
 
+(defun int-yes-or-no (default-yes)
+  "Interactively ask user to answer `yes' or `no'. If DEFAULT-YES is not
+NIL, consider empty input `yes', otherwise `no'."
+  (awhen (readline
+          (format nil +session-prompt+
+                  (if default-yes "Yn" "Ny")))
+    (if (emptyp it)
+        default-yes
+        (char-equal (char it 0) #\y))))
+
 (defun int-select-option (options &optional (item-style :default))
   "Interactively select an options from OPTIONS. Return the option on
 success and NIL on failure (canceled)."
