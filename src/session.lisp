@@ -107,7 +107,7 @@ has the same meaning as in usual lambda list. BODY is an implicit PROGN."
          (setf *command-list* (sort *command-list* #'string<))
          ',name))))
 
-(defun custom-complete (text start end)
+(defun session-std-complete (text start end)
   "Custom completion for Shtookovina REPL. First word is completed to a word
 from *COMMAND-LIST*, other words are currently not completed."
   (declare (ignore start end))
@@ -135,8 +135,6 @@ from *COMMAND-LIST*, other words are currently not completed."
                    els))))
     (select-completions *command-list*)))
 
-(rl:register-function :complete #'custom-complete)
-
 (defun repeat-audio-query (arg key)
   "Call AUDIO-QUERY silently with the same text as in its last call."
   (declare (ignore arg key))
@@ -144,8 +142,6 @@ from *COMMAND-LIST*, other words are currently not completed."
     (audio-query *last-audio-query*
                  :silent-success t
                  :silent-failure t)))
-
-(rl:bind-keyseq "\\C-o" #'repeat-audio-query)
 
 (defun string-to-list (str &optional (del #\space))
   "Transform string STR to list of words. Words are separated by DEL in
@@ -281,7 +277,8 @@ COMMAND (must be a string designator)."
 NIL, consider empty input `yes', otherwise `no'."
   (awhen (readline
           (format nil +session-prompt+
-                  (if default-yes "Yn" "Ny")))
+                  (if default-yes "Yn" "Ny"))
+          :num-chars 1)
     (if (emptyp it)
         default-yes
         (char-equal (char it 0) #\y))))

@@ -66,9 +66,11 @@ program for the first time (at least with specified target language).")
 
 (opts:define-opts
   (:name :target
-   :description "Set target language. This option is obligatory."
+   :description "Set target language LANG. This option is obligatory."
    :short #\t
-   :long "target")
+   :long "target"
+   :arg-parser #'identity
+   :meta-var "LANG")
   (:name :version
    :description "Print version of the program."
    :long "version")
@@ -129,8 +131,9 @@ language for training. Retrun T on success and NIL on failure."
   (when (int-yes-or-no t)
     (save-dictionary (merge-pathnames +dict-pathname+ local-target))))
 
-(defun main ()
+(defun main (&rest rest)
   "Entry point of Shtookovina program."
+  (declare (ignore rest))
   (use-ui-language "en")
   (multiple-value-bind (options free-args)
       (handler-case
@@ -152,7 +155,7 @@ language for training. Retrun T on success and NIL on failure."
       (return-from main))
     (when (getf options :help)
       (term:print (opts:describe
-                   :prefix "[shtk](cmd) [[options]](arg)"))
+                   :prefix "shtk [options]"))
       (return-from main))
     (let ((target-lang (getf options :target)))
       (unless target-lang
@@ -167,5 +170,7 @@ language for training. Retrun T on success and NIL on failure."
         (load-config local-target)
         (load-dict local-target)
         (init-shtooka-db)
+        (rl:register-function :complete #'session-std-complete)
+        (rl:bind-keyseq "\\C-o" #'repeat-audio-query)
         (session)
         (ask-and-save-dict local-target)))))

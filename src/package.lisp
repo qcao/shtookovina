@@ -22,4 +22,5 @@
             #:alexandria
             #:anaphora
             #:trivial-update
-            #:split-sequence))
+            #:split-sequence)
+  (:export  #:main))
