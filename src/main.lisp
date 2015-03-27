@@ -19,7 +19,7 @@
 
 (in-package #:shtookovina)
 
-(defvar +shtookovina-version+ "[Shtookovina](hdr) [0.1.0](arg)"
+(defvar +shtookovina-version+ "[Шτookωвiнα](hdr) [0.1.0](arg)"
   "Version of the program.")
 
 (defvar +shtookovina-ui-langs+
@@ -42,7 +42,7 @@
   "Path name of dictionary file.")
 
 (defvar +gnu-glp-notice+
-  "[Shtookovina](hdr) - program to help learn natural languages
+  "[Шτookωвiнα](hdr) - program to help learn natural languages
 
 Copyright (c) 2015 Mark Karpov
 
@@ -168,6 +168,7 @@ language for training. Retrun T on success and NIL on failure."
                            target-lang)))
           (let ((local-target (local-target-pathname target-lang)))
             (ensure-directories-exist local-target)
+            (term:print +shtookovina-version+)
             (load-config local-target)
             (load-dict local-target)
             (init-shtooka-db)
