@@ -46,9 +46,9 @@
  :correct
  "[Correct answer!](crc)"
  :cmd-add-l
- "Add new dictionary item of type [TYPE](arg). The item will have default
-form [DEFAULT-FORM](arg). If the item already exists in the dictionary, this
-command will have no effect."
+ "Add new dictionary item of type [TYPE](arg) (see [lexemes](cmd)). The item
+will have default form [DEFAULT-FORM](arg). If the item already exists in
+the dictionary, this command has no effect."
  :cmd-add-s
  "Add new item to the dicitonary."
  :cmd-audio-l
@@ -66,10 +66,10 @@ program."
  :cmd-conj-s
  "Show conjugation of given verb."
  :cmd-const-l
- "Word constructor exercise. You are given translation of the word and
-letters of the word, but they are shuffled. You need to enter the word
-correctly, letter by letter. Argument [PROGRESS](arg), denotes how many
-percents of progress you would like to make."
+ "Word constructor exercise. You are given translation and letters of the
+word, but they are shuffled. You need to enter the word correctly, letter by
+letter. Argument [PROGRESS](arg), denotes how many percents of progress you
+would like to make."
  :cmd-const-s
  "Word constructor exercise."
  :cmd-crosswd-l
@@ -102,8 +102,8 @@ by [TYPE](arg) and [DEFAULT-FORM](arg)."
  :cmd-etrans-s
  "Change translation of dictionary item."
  :cmd-forms-l
- "Print table with indexed forms of given [LEXEME](arg). You can get full
-list of all defined lexemes with [lexemes](cmd) command."
+ "Print table with indexed forms of given [LEXEME](arg). You can get list of
+all defined lexemes with [lexemes](cmd) command."
  :cmd-forms-s
  "Print forms of given lexeme."
  :cmd-help-l
@@ -128,9 +128,9 @@ identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  :cmd-learned-s
  "Mark specified item as learned."
  :cmd-lexemes-l
- "Print a table of all lexemes defined in the actual language."
+ "Print a table of all lexemes defined for actual language."
  :cmd-lexemes-s
- "Print all lexemes and their IDs."
+ "Print all lexemes."
  :cmd-listen-l
  "Listening comprehension exercise. Some relevant audio is played to you,
 you should recognize dictionary item and enter it correctly. Argument
@@ -143,9 +143,9 @@ make."
  :cmd-query-s
  "Show translation of given word."
  :cmd-quit-l
- "Quit the Shtookovina REPL."
+ "Quit the Шτookωвiнα REPL."
  :cmd-quit-s
- "Quit the Shtookovina REPL."
+ "Quit the Шτookωвiнα REPL."
  :cmd-rem-l
  "Remove specified dictionary item. The dictionary item is identified by its
 [TYPE](arg) and [DEFAULT-FORM](arg)."
