@@ -251,7 +251,7 @@
 
 (defun pick-forms (aspect-index quantity)
   "Return forms for exercises. If some forms are unknown, ask user to fill
-them out."
+them out. If there is not enough forms in the dictionary, return NIL."
   (let ((forms (pick-some-forms aspect-index quantity)))
     (dolist (form forms forms)
       (when (apply #'unknown-form-p form)
@@ -397,7 +397,6 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
 (define-command crosswd (&optional ((words 12) integer))
     (:cmd-crosswd-s :cmd-crosswd-l)
   (check-type words (integer 1))
-  (term:print (uie :exercise-crossword))
   (let* ((helpers
           (remove-duplicates
            (pick-forms 0 words)
@@ -408,6 +407,9 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
          (words (make-hash-table :test #'equal))
          (prompt (format nil +session-prompt+ "?"))
          (filler (substitute-if #\space (constantly t) prompt)))
+    (term:print (uie (if helpers
+                         :exercise-crossword
+                         :not-enough-forms)))
     (dolist (item helpers)
       (let ((target-form (apply #'item-form item)))
         (setf (gethash target-form words)
