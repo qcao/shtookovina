@@ -1,4 +1,4 @@
-![Шτookωвiнα Logo](doc/logo.svg)
+![Шτookωвiнα Logo](https://cdn.rawgit.com/mrkkrp/shtookovina/master/doc/logo.svg)
 
 # Шτookωвiнα
 
