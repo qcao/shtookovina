@@ -220,23 +220,35 @@ learned). Return NIL if there is no such dictionary item and T otherwise."
 (defun pick-next-form (aspect-index)
   "Get type, default form, and form index of randomly selected dictionary
 item for ASPECT-INDEX."
+  (declare (type array-index aspect-index)
+           (type (simple-array array-length) *weight-sums*)
+           (optimize (safety 0) (speed 3) (space 3)))
   (let ((index (random (aref *weight-sums* aspect-index))))
-    (when (plusp (dictionary-item-count))
+    (declare (type array-index index))
+    (when (plusp (the array-length (dictionary-item-count)))
       (block the-block
         (maphash (lambda (key value)
-                   (if (<= index (aref (item-weight value) aspect-index))
+                   (if (<= index (aref (the (simple-array array-length)
+                                            (item-weight value))
+                                       aspect-index))
                        (destructuring-bind (type . default-form) key
                          (return-from the-block
-                           (values type
-                                   default-form
-                                   (do ((i 0 (1+ i)))
-                                       ((<= index (aref (weights value)
-                                                        i
-                                                        aspect-index)) i)
-                                     (decf index (aref (weights value)
-                                                       i
-                                                       aspect-index))))))
-                       (decf index (aref (item-weight value) aspect-index))))
+                           (values
+                            type
+                            default-form
+                            (do ((i 0 (1+ i)))
+                                ((<= index
+                                     (aref (the (simple-array array-length)
+                                                (weights value))
+                                           i
+                                           aspect-index)) i)
+                              (decf index (aref (the (simple-array array-length)
+                                                     (weights value))
+                                                i
+                                                aspect-index))))))
+                       (decf index (aref (the (simple-array array-length)
+                                              (item-weight value))
+                                         aspect-index))))
                  *dictionary*)))))
 
 (defun pick-some-forms (aspect-index number)
