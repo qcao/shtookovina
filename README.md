@@ -1,5 +1,3 @@
-![Шτookωвiнα Logo](https://cdn.rawgit.com/mrkkrp/shtookovina/master/doc/logo.svg)
-
 # Шτookωвiнα
 
 This will be some Lispy stuff for language learning. It will be based on
