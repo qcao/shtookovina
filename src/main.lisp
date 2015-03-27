@@ -66,7 +66,7 @@ program for the first time (at least with specified target language).")
 
 (opts:define-opts
   (:name :target
-   :description "Set target language LANG. This option is obligatory."
+   :description "Set target language LANG. This option is a must."
    :short #\t
    :long "target"
    :arg-parser #'identity
@@ -84,7 +84,7 @@ program for the first time (at least with specified target language).")
 (defun unknown-option (condition)
   "What to do if user has passed unknown command line option. CONDITION is
 raised condition."
-  (term:print (uie :warning-unknown-option)
+  (term:print "[Warning](err): \"~\" option is unknown"
               :args (opts:option condition))
   (invoke-restart 'opts:skip-option))
 
@@ -134,43 +134,46 @@ language for training. Retrun T on success and NIL on failure."
 (defun main (&rest rest)
   "Entry point of Shtookovina program."
   (declare (ignore rest))
-  (use-ui-language "en")
-  (multiple-value-bind (options free-args)
-      (handler-case
-          (handler-bind ((opts:unknown-option #'unknown-option))
-            (opts:get-opts))
-        (opts:missing-arg (condition)
-          (term:print (uie :fatal-option-needs-arg)
-                      :args (opts:option condition)))
-        (opts:arg-parser-failed (condition)
-          (term:print (uie :fatal-cannot-parse-option)
-                      :args (list (opts:raw-arg condition)
-                                  (opts:option  condition)))))
-    (declare (ignore free-args))
-    (when (getf options :version)
-      (term:print +shtookovina-version+)
-      (return-from main))
-    (when (getf options :license)
-      (term:print +gnu-glp-notice+)
-      (return-from main))
-    (when (getf options :help)
-      (term:print (opts:describe
-                   :prefix "shtk [options]"))
-      (return-from main))
-    (let ((target-lang (getf options :target)))
-      (unless target-lang
-        (term:print (uie :fatal-no-target))
-        (return-from main))
-      (unless (load-target-lang target-lang)
-        (term:print (uie :fatal-missing-target)
-                    :args target-lang)
-        (return-from main))
-      (let ((local-target (local-target-pathname target-lang)))
-        (ensure-directories-exist local-target)
-        (load-config local-target)
-        (load-dict local-target)
-        (init-shtooka-db)
-        (rl:register-function :complete #'session-std-complete)
-        (rl:bind-keyseq "\\C-o" #'repeat-audio-query)
-        (session)
-        (ask-and-save-dict local-target)))))
+  (handler-case
+      (multiple-value-bind (options free-args)
+          (handler-case
+              (handler-bind ((opts:unknown-option #'unknown-option))
+                (opts:get-opts))
+            (opts:missing-arg (condition)
+              (error (format nil "option ~s needs an argument"
+                             (opts:option condition))))
+            (opts:arg-parser-failed (condition)
+              (error (format nil "cannot parse ~s as argument of ~s"
+                             (opts:raw-arg condition)
+                             (opts:option  condition)))))
+        (declare (ignore free-args))
+        (setf *random-state* (make-random-state t))
+        (unless (use-ui-language "en")
+          (error "couldn't load default user language"))
+        (when (getf options :version)
+          (term:print +shtookovina-version+)
+          (return-from main))
+        (when (getf options :license)
+          (term:print +gnu-glp-notice+)
+          (return-from main))
+        (when (getf options :help)
+          (term:print (opts:describe
+                       :prefix "shtk [options]"))
+          (return-from main))
+        (let ((target-lang (getf options :target)))
+          (unless target-lang
+            (error "you must specify target language, for example \"en\""))
+          (unless (load-target-lang target-lang)
+            (error (format nil "cannot find definition for ~s"
+                           target-lang)))
+          (let ((local-target (local-target-pathname target-lang)))
+            (ensure-directories-exist local-target)
+            (load-config local-target)
+            (load-dict local-target)
+            (init-shtooka-db)
+            (rl:register-function :complete #'session-std-complete)
+            (rl:bind-keyseq "\\C-o" #'repeat-audio-query)
+            (session)
+            (ask-and-save-dict local-target))))
+    (error (condition)
+      (term:print "[Fatal](err): ~" :args (princ-to-string condition)))))

@@ -219,14 +219,6 @@ exercises continues until you enter all words correctly."
  "Select correct translation of given dictionary item:"
  :failed-audio-query
  "[Cannot](err) find any relevant audio for [\"~\"](arg)"
- :fatal-cannot-parse-option
- "[Fatal](err): cannot parse [~](arg) as argument of [~](typ)"
- :fatal-no-target
- "[Fatal](err): you must specify target language, for example \"[en](arg)\""
- :fatal-missing-target
- "[Fatal](err): cannot find definition for \"[~](arg)\""
- :fatal-option-needs-arg
- "[Fatal](err): option [~](arg) needs an argument"
  :help-command-reminder
  "For information about the command use: [help](cmd) [~](arg)"
  :incorrect
@@ -255,7 +247,5 @@ exercises continues until you enter all words correctly."
  "[~](typ) [~](arg) ~ is [unknown](err), fill it out to continue:"
  :value
  "Value"
- :warning-unknown-option
- "[Warning](err): [~](arg) option is unknown"
  :where
  "where ")
