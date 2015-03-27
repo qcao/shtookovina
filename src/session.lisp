@@ -1,16 +1,16 @@
 ;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; -*-
 ;;;
-;;; This is Shtookovina API to define new user functions and the REPL
+;;; This is Шτookωвiнα API to define new user functions and the REPL
 ;;; itself.
 ;;;
 ;;; Copyright (c) 2015 Mark Karpov
 ;;;
-;;; Shtookovina is free software: you can redistribute it and/or modify it
+;;; Шτookωвiнα is free software: you can redistribute it and/or modify it
 ;;; under the terms of the GNU General Public License as published by the
 ;;; Free Software Foundation, either version 3 of the License, or (at your
 ;;; option) any later version.
 ;;;
-;;; Shtookovina is distributed in the hope that it will be useful, but
+;;; Шτookωвiнα is distributed in the hope that it will be useful, but
 ;;; WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 ;;; Public License for more details.
@@ -30,18 +30,18 @@ autocompletion.")
 
 (defparameter *arg-parsers* (make-hash-table)
   "Parsers that are used to parse various types of command arguments in
-Shtookovina REPL.")
+Шτookωвiнα REPL.")
 
 (defparameter *command-counter* 0
-  "Command counter. It's part of Shtookovina prompt. It's incremented every
+  "Command counter. It's part of Шτookωвiнα prompt. It's incremented every
 time READ-COMMAND gets some input successfully.")
 
 (defparameter +session-prompt+ "[~a]> "
   "This is a control string that's passed to FORMAT function along with the
-value of *COMMAND-COUNTER* to produce Shtookovina session prompt.")
+value of *COMMAND-COUNTER* to produce Шτookωвiнα session prompt.")
 
 (defparameter *session-terminated* nil
-  "If this variable is bound to non-NIL value, Shtookovina REPL will be
+  "If this variable is bound to non-NIL value, Шτookωвiнα REPL will be
 terminated.")
 
 (defparameter *command-recognition-threshold* 1
@@ -80,7 +80,7 @@ oldest).")
   (make-load-form-saving-slots self :environment env))
 
 (defmacro define-command (name args (short-desc-id long-desc-id) &body body)
-  "Define new user command. It will available in Shtookovina REPL. NAME must
+  "Define new user command. It will available in Шτookωвiнα REPL. NAME must
 be a string designator. It's the name that user will be able to use to
 execute the command. ARGS must be a list describing arguments of the
 function where every element is of form (SYMBOL TYPE), where SYMBOL is the
@@ -108,7 +108,7 @@ has the same meaning as in usual lambda list. BODY is an implicit PROGN."
          ',name))))
 
 (defun session-std-complete (text start end)
-  "Custom completion for Shtookovina REPL. First word is completed to a word
+  "Custom completion for Шτookωвiнα REPL. First word is completed to a word
 from *COMMAND-LIST*, other words are currently not completed."
   (declare (ignore start end))
   (labels ((common-prefix (items)
@@ -252,7 +252,7 @@ will perform any necessary processing."
                     :args command)))))
 
 (defun session ()
-  "This is Shtookovina REPL."
+  "This is Шτookωвiнα REPL."
   (setf *session-terminated* nil)
   (perform-hook :session-start)
   (do (input)

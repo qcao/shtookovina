@@ -1,15 +1,15 @@
 #!/bin/sh
 #
-# Sthookovina Installation Script
+# Шτookωвiнα Installation Script
 #
 # Copyright (c) 2015 Mark Karpov
 #
-# Shtookovina Installation Script is free software: you can redistribute it
+# Шτookωвiнα Installation Script is free software: you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation, either version 3 of the
 # License, or (at your option) any later version.
 #
-# Shtookovina Installation Script is distributed in the hope that it will be
+# Шτookωвiнα Installation Script is distributed in the hope that it will be
 # useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 # Public License for more details.
@@ -31,7 +31,7 @@ bad_exit() # prints error message and exits the program
 
 ### main
 
-echo 'Shtookovina installation has been started;'
+echo 'Шτookωвiнα installation has been started;'
 
 # 1. check if actual user is root (must be root to install the software)
 

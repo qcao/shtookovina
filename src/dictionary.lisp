@@ -7,12 +7,12 @@
 ;;;
 ;;; Copyright (c) 2015 Mark Karpov
 ;;;
-;;; Shtookovina is free software: you can redistribute it and/or modify it
+;;; Шτookωвiнα is free software: you can redistribute it and/or modify it
 ;;; under the terms of the GNU General Public License as published by the
 ;;; Free Software Foundation, either version 3 of the License, or (at your
 ;;; option) any later version.
 ;;;
-;;; Shtookovina is distributed in the hope that it will be useful, but
+;;; Шτookωвiнα is distributed in the hope that it will be useful, but
 ;;; WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 ;;; Public License for more details.
@@ -39,7 +39,7 @@ consequent values of weight.")
 
 (defvar +aspects-count+ 3
   "Number of 'aspects' (exercise types) per form. In this version of
-Shtookovina we have three aspects: translation, writing, and listening.")
+Шτookωвiнα we have three aspects: translation, writing, and listening.")
 
 (defparameter *weight-sums* (make-array +aspects-count+ :initial-element 0)
   "Vector of sums of all weights per aspect.")

@@ -4,12 +4,12 @@
 ;;;
 ;;; Copyright (c) 2015 Mark Karpov
 ;;;
-;;; Shtookovina is free software: you can redistribute it and/or modify it
+;;; Шτookωвiнα is free software: you can redistribute it and/or modify it
 ;;; under the terms of the GNU General Public License as published by the
 ;;; Free Software Foundation, either version 3 of the License, or (at your
 ;;; option) any later version.
 ;;;
-;;; Shtookovina is distributed in the hope that it will be useful, but
+;;; Шτookωвiнα is distributed in the hope that it will be useful, but
 ;;; WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 ;;; Public License for more details.
@@ -132,7 +132,7 @@ language for training. Retrun T on success and NIL on failure."
     (save-dictionary (merge-pathnames +dict-pathname+ local-target))))
 
 (defun main (&rest rest)
-  "Entry point of Shtookovina program."
+  "Entry point of Шτookωвiнα program."
   (declare (ignore rest))
   (handler-case
       (multiple-value-bind (options free-args)

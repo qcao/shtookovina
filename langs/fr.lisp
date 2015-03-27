@@ -1,15 +1,15 @@
 ;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; -*-
 ;;;
-;;; Definition of French language for Shtookovina.
+;;; Definition of French language for Шτookωвiнα.
 ;;;
 ;;; Copyright (c) 2015 Mark Karpov
 ;;;
-;;; Shtookovina is free software: you can redistribute it and/or modify it
+;;; Шτookωвiнα is free software: you can redistribute it and/or modify it
 ;;; under the terms of the GNU General Public License as published by the
 ;;; Free Software Foundation, either version 3 of the License, or (at your
 ;;; option) any later version.
 ;;;
-;;; Shtookovina is distributed in the hope that it will be useful, but
+;;; Шτookωвiнα is distributed in the hope that it will be useful, but
 ;;; WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 ;;; Public License for more details.

@@ -1,16 +1,16 @@
-# Shtookovina
+# Шτookωвiнα
 
 This will be some Lispy stuff for language learning. It will be based on
 recordings from [Shtooka Project](http://shtooka.net/).
 
 *Note: this is beginning to be usable, you can install it and try. However,
-Shtookovina is not very user-friendly at the moment.*
+Шτookωвiнα is not very user-friendly at the moment.*
 
 ## Installation
 
 Installation process is pretty straightforward:
 
-1. Install [SBCL](http://www.sbcl.org/), Shtookovina is written in standard
+1. Install [SBCL](http://www.sbcl.org/), Шτookωвiнα is written in standard
    Common Lisp and it doesn't rely on any specific features of SBCL, however
    only version compiled with SBCL is tested and guaranteed to work;
 
@@ -39,7 +39,7 @@ Installation process is pretty straightforward:
    $ make
    ```
 
-6. Now you should have Shtookovina's binary `build/shtk`, you can install it
+6. Now you should have Шτookωвiнα's binary `build/shtk`, you can install it
    this way:
 
    ```

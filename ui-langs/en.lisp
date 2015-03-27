@@ -4,12 +4,12 @@
 ;;;
 ;;; Copyright (c) 2015 Mark Karpov
 ;;;
-;;; Shtookovina is free software: you can redistribute it and/or modify it
+;;; Шτookωвiнα is free software: you can redistribute it and/or modify it
 ;;; under the terms of the GNU General Public License as published by the
 ;;; Free Software Foundation, either version 3 of the License, or (at your
 ;;; option) any later version.
 ;;;
-;;; Shtookovina is distributed in the hope that it will be useful, but
+;;; Шτookωвiнα is distributed in the hope that it will be useful, but
 ;;; WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 ;;; Public License for more details.
@@ -119,7 +119,7 @@ history items should be printed."
  "Print history."
  :cmd-lang-l
  "The [lang](cmd) command prints name of the language that you're learning
-in the current Shtookovina session. It's useful for troubleshooting."
+in the current Шτookωвiнα session. It's useful for troubleshooting."
  :cmd-lang-s
  "Print name of the language you're learning."
  :cmd-learned-l
