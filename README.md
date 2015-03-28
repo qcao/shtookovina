@@ -26,7 +26,7 @@ Installation process is pretty straightforward:
 
 3. Install [Buildapp](http://www.xach.com/lisp/buildapp/);
 
-4. Download or clone Sthookovina's repo:
+4. Download or clone Шτookωвiнα's repo:
 
    ```
    $ git clone https://github.com/mrkkrp/shtookovina.git master
