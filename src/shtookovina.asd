@@ -34,6 +34,7 @@
                  (:file "default-hooks")
                  (:file "default-style")
                  (:file "main")
+                 (:file "wizard")
                  (:file "user-utils"))
   :depends-on   (#:alexandria
                  #:anaphora

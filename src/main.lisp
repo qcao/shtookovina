@@ -65,21 +65,24 @@ with this program. If not, see [<http://www.gnu.org/licenses/>](typ)."
 program for the first time (at least with specified target language).")
 
 (opts:define-opts
+  (:name :help
+   :description "Print description of command line options."
+   :long "help")
+  (:name :license
+   :description "Print license of the program."
+   :long "license")
+  (:name :version
+   :description "Print version of the program."
+   :long "version")
   (:name :target
    :description "Set target language LANG. This option is a must."
    :short #\t
    :long "target"
    :arg-parser #'identity
    :meta-var "LANG")
-  (:name :version
-   :description "Print version of the program."
-   :long "version")
-  (:name :license
-   :description "Print license of the program."
-   :long "license")
-  (:name :help
-   :description "Print description of command line options."
-   :long "help"))
+  (:name :no-wizard
+   :description "Don't invoke wizard."
+   :long "no-wizard"))
 
 (defun unknown-option (condition)
   "What to do if user has passed unknown command line option. CONDITION is
@@ -95,7 +98,8 @@ directory and directory named after target language."
                    +shtookovina-local+))
 
 (defun load-lisp (filename)
-  "Load given file FILENAME, evaluating it in SHTOOKOVINA package."
+  "Load given file FILENAME, evaluating it in SHTOOKOVINA package. Return T
+on success and NIL on failure."
   (let ((*package* (find-package 'shtookovina)))
     (load filename
           :if-does-not-exist nil
@@ -117,12 +121,19 @@ language for training. Retrun T on success and NIL on failure."
                   :type "lisp"
                   :defaults +shtookovina-langs+)))
 
-(defun load-config (local-target)
-  "Load configuration file located in LOCAL-TARGET directory."
-  (load-lisp (merge-pathnames +config-pathname+ local-target)))
+(defun load-config (local-target &optional no-wizard)
+  "Load configuration file located in LOCAL-TARGET directory. Retrun T on
+success and NIL on failure."
+  (let ((filename (merge-pathnames +config-pathname+ local-target)))
+    (unless (or (load-lisp filename) no-wizard)
+      (with-open-file (stream filename
+                              :direction :output
+                              :if-exists :rename)
+        (wizard stream)))))
 
 (defun load-dict (local-target)
-  "Load dictionary file located in LOCAL-TARGET directory."
+  "Load dictionary file located in LOCAL-TARGET directory. Retrun T on
+success and NIL on failure."
   (load-dictionary (merge-pathnames +dict-pathname+ local-target)))
 
 (defun ask-and-save-dict (local-target)
@@ -169,7 +180,7 @@ language for training. Retrun T on success and NIL on failure."
           (let ((local-target (local-target-pathname target-lang)))
             (ensure-directories-exist local-target)
             (term:print +shtookovina-version+)
-            (load-config local-target)
+            (load-config local-target (getf options :no-wizard))
             (load-dict local-target)
             (init-shtooka-db)
             (rl:register-function :complete #'session-std-complete)
