@@ -20,8 +20,22 @@
 
 (in-package #:shtookovina)
 
-(defun wizard (out)
+(defun wizard-ui-lang (stream)
+  "Ask user about his/her preferred user interface language and write
+necessary code to the user's configuration file in order to set this
+language on every start."
+  (term:print (uie :wizard-ui-lang))
+  (do (input)
+      ((and input (use-ui-language input))
+       (print `(use-ui-language ,input) stream))
+    (when input
+      (term:print (uie :wizard-ui-lang-bad)
+                  :args input))
+    (setf input (readline (format nil +session-prompt+ "?"))))
+  (term:print (uie :wizard-ui-lang-ok)
+              :args (get-ui-locale)))
+
+(defun wizard (stream)
   "Generate user configuration file by asking simple questions. Contents of
 the generated file should be sent to OUT (stream)."
-  (print '(1 2 3) out)
-  (term:print "[Not Finished!](err)"))
+  (wizard-ui-lang stream))

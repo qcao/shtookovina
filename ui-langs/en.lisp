@@ -248,4 +248,12 @@ exercises continues until you enter all words correctly."
  :value
  "Value"
  :where
- "where ")
+ "where "
+ :wizard-ui-lang
+ "Please select language that will be used for user interface. Enter two
+letters, for example: [\"en\"](arg) for English."
+ :wizard-ui-lang-bad
+ "This your input [\"~\"](arg) doesn't designate any defined language, try
+again."
+ :wizard-ui-lang-ok
+ "OK, using [~](arg) for user interface.")
