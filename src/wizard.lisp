@@ -44,20 +44,19 @@ language on every start."
   "Ask user about directory containing Shtooka audio databases downloaded
 from Shtooka website, traverse supplied directory and add code that will
 bind special variable *SHTOOKA-DIRS* on every start."
-  (flet ((get-dir (path)
+  (flet ((get-dirs (path)
            (remove-if-not #'fad:directory-exists-p
                           (fad:list-directory path))))
     (term:print (uie :wizard-shtooka-dirs))
-    (let (input)
-      (do (non-virgin)
-          (input (run-and-print `(setf *shtooka-dirs* ',input) stream))
-        (when non-virgin
+    (let (dirs)
+      (do (input)
+          (dirs (run-and-print `(setf *shtooka-dirs* ',dirs) stream))
+        (when input
           (term:print (uie :wizard-shtooka-dirs-bad)
                       :args input))
-        (setf input
-              (get-dir (or (readline (format nil +session-prompt+ "?")) ""))
-              non-virgin t))
-      (term:table (cons (uie :wizard-shtooka-dirs-ok) input)
+        (setf input (or (readline (format nil +session-prompt+ "?")) "")
+              dirs  (get-dirs input)))
+      (term:table (cons (uie :wizard-shtooka-dirs-ok) dirs)
                   :border-style nil
                   :margin 2
                   :header-style :hdr
