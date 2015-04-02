@@ -41,6 +41,7 @@
                  #:babel
                  #:bordeaux-threads
                  #:cl-ansi-term
+                 #:cl-fad
                  #:cl-readline
                  #:cl-store
                  #:mk-string-metrics

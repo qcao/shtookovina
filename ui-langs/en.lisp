@@ -249,6 +249,15 @@ exercises continues until you enter all words correctly."
  "Value"
  :where
  "where "
+ :wizard-shtooka-dirs
+ "Шτookωвiнα needs to know where Shtooka audio bases are located in your
+system. You can download audio recordings for your language from official
+site of Shtooka project [<http://download.shtooka.net/>](typ). Untar them
+and put into one directory, then enter path to the directory here:"
+ :wizard-shtooka-dirs-bad
+ "Directory [\"~\"](arg) does not exist or it's empty, try again."
+ :wizard-shtooka-dirs-ok
+ "Added directories"
  :wizard-ui-lang
  "Please select language that will be used for user interface. Enter two
 letters, for example: [\"en\"](arg) for English."
