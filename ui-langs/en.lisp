@@ -249,6 +249,10 @@ exercises continues until you enter all words correctly."
  "Value"
  :where
  "where "
+ :wizard-audio-query
+ "Please select how Шτookωвiнα should play FLAC files:"
+ :wizard-audio-query-manually
+ "OK, define hook [:audio-query](typ) yourself in your configuration file."
  :wizard-shtooka-dirs
  "Шτookωвiнα needs to know where Shtooka audio bases are located in your
 system. You can download audio recordings for your language from official

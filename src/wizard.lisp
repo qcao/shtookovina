@@ -62,8 +62,22 @@ bind special variable *SHTOOKA-DIRS* on every start."
                   :header-style :hdr
                   :cell-style :typ))))
 
+(defun wizard-audio-query (stream)
+  "Determine how to play audio files. Print definition of :AUDIO-QUERY hook
+to STREAM."
+  (let ((options '("flac -cd ~s | aplay"
+                   "mplayer ~s")))
+    (term:print (uie :wizard-audio-query))
+    (aif (int-select-option options :arg)
+         (run-and-print `(define-hook :audio-query (x)
+                           (format nil ,it x))
+                        stream)
+         (term:print (uie :wizard-audio-query-manually)))))
+
 (defun wizard (stream)
   "Generate user configuration file by asking simple questions. Contents of
 the generated file should be sent to OUT (stream)."
-  (wizard-ui-lang stream)
-  (wizard-shtooka-dirs stream))
+  (dolist (fnc (list #'wizard-ui-lang
+                     #'wizard-shtooka-dirs
+                     #'wizard-audio-query))
+    (funcall fnc stream)))
