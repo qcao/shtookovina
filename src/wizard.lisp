@@ -69,15 +69,35 @@ to STREAM."
                    "mplayer ~s")))
     (term:print (uie :wizard-audio-query))
     (aif (int-select-option options :arg)
-         (run-and-print `(define-hook :audio-query (x)
-                           (format nil ,it x))
+         (run-and-print `(define-hook :audio-query (filename)
+                           (format nil ,it filename))
                         stream)
          (term:print (uie :wizard-audio-query-manually)))))
+
+(defun wizard-query-ext (stream)
+  "Generate example of :QUERY-EXT hook, write it to STREAM, print a message
+to *STANDARD-OUTPUT*."
+  (run-and-print '(define-hook :query-ext (word)
+                   (format nil "icecat -new-tab \"localhost/~a\""
+                    (hexify-string word)))
+                 stream)
+  (term:print (uie :wizard-query-ext)))
+
+(defun wizard-conj-ext (stream)
+  "Generate example of :CONJ-EXT hook, write it to STREAM, print a message
+to *STANDARD-OUTPUT*."
+  (run-and-print '(define-hook :conj-ext (verb)
+                   (format nil "icecat -new-tab \"localhost/~a\""
+                    (hexify-string verb)))
+                 stream)
+  (term:print (uie :wizard-conj-ext)))
 
 (defun wizard (stream)
   "Generate user configuration file by asking simple questions. Contents of
 the generated file should be sent to OUT (stream)."
   (dolist (fnc (list #'wizard-ui-lang
                      #'wizard-shtooka-dirs
-                     #'wizard-audio-query))
+                     #'wizard-audio-query
+                     #'wizard-query-ext
+                     #'wizard-conj-ext))
     (funcall fnc stream)))

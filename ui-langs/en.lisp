@@ -253,6 +253,12 @@ exercises continues until you enter all words correctly."
  "Please select how Шτookωвiнα should play FLAC files:"
  :wizard-audio-query-manually
  "OK, define hook [:audio-query](typ) yourself in your configuration file."
+ :wizard-conj-ext
+ "Edit example of [:conj-ext](typ) hook in your configuration file to
+activate [conj](cmd) command."
+ :wizard-query-ext
+ "Edit example of [:query-ext](typ) hook in your configuration file to
+activate [query](cmd) command."
  :wizard-shtooka-dirs
  "Шτookωвiнα needs to know where Shtooka audio bases are located in your
 system. You can download audio recordings for your language from official
