@@ -70,14 +70,14 @@ databases from
 [http://download.shtooka.net/](http://download.shtooka.net/). Don't forget
 to uncompress the archives.
 
-Third, the wizard will ask your which way you would like to play audio files
+Third, the wizard will ask your how you would like to play audio files
 (Shtooka project uses FLAC files). You should choose between listed options.
 
 Finally, to use `query` and `conj` commands (open web-page with description
 of given word or conjugation of given verb) you currently need to manually
 edit relevant hooks in your configuration files, since we cannot know which
 web-service your prefer to use for this task, and thus we cannot know how to
-transform the word to URL.
+transform the word into URL.
 
 ## License
 
