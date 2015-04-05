@@ -48,6 +48,37 @@ Installation process is pretty straightforward:
 
 7. Done (you can use `uninstall.sh` to uninstall the program).
 
+## Wizard and Audio
+
+Now, you hopefully has installed Шτookωвiнα. However, it should be
+configured before you can use it. Initially Шτookωвiнα was planned as a
+hardcore program for Lisp geeks, but later I decided to make it more
+user-friendly, so more people could use it. To make Шτookωвiнα work you're
+supposed to write some Lisp in your configuration file setting some
+variables and defining some hooks. Now we have wizard that can do this
+automatically.
+
+When you start Шτookωвiнα for the first time, wizard will be called (unless
+you start it with `--no-wizard` option). First it asks about interface
+language in English (it's default language, Шτookωвiнα will use your
+preferred language as soon as it knows which one it is).
+
+Second, Шτookωвiнα needs to know where audio databases are located in your
+system. Шτookωвiнα uses databases from Shtooka project and for speed they
+should be downloaded and placed in one directory. You can download the
+databases from
+[http://download.shtooka.net/](http://download.shtooka.net/). Don't forget
+to uncompress the archives.
+
+Third, the wizard will ask your which way you would like to play audio files
+(Shtooka project uses FLAC files). You should choose between listed options.
+
+Finally, to use `query` and `conj` commands (open web-page with description
+of given word or conjugation of given verb) you currently need to manually
+edit relevant hooks in your configuration files, since we cannot know which
+web-service your prefer to use for this task, and thus we cannot know how to
+transform the word to URL.
+
 ## License
 
 Copyright (c) 2015 Mark Karpov
