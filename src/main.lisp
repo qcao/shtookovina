@@ -2,7 +2,7 @@
 ;;;
 ;;; This is the place where we put it all together.
 ;;;
-;;; Copyright (c) 2015 Mark Karpov
+;;; Copyright © 2015 Mark Karpov
 ;;;
 ;;; Шτookωвiнα is free software: you can redistribute it and/or modify it
 ;;; under the terms of the GNU General Public License as published by the
@@ -44,7 +44,7 @@
 (defvar +gnu-glp-notice+
   "[Шτookωвiнα](hdr) - program to help learn natural languages
 
-Copyright (c) 2015 Mark Karpov
+Copyright © 2015 Mark Karpov
 
 Шτookωвiнα is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free

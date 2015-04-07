@@ -5,7 +5,7 @@
 ;;; training, change parameters of the words according to progress or
 ;;; regress made by the user, as revealed through practice session.
 ;;;
-;;; Copyright (c) 2015 Mark Karpov
+;;; Copyright © 2015 Mark Karpov
 ;;;
 ;;; Шτookωвiнα is free software: you can redistribute it and/or modify it
 ;;; under the terms of the GNU General Public License as published by the

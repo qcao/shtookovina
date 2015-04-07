@@ -2,7 +2,7 @@
 ;;;
 ;;; English translation of user interface.
 ;;;
-;;; Copyright (c) 2015 Mark Karpov
+;;; Copyright © 2015 Mark Karpov
 ;;;
 ;;; Шτookωвiнα is free software: you can redistribute it and/or modify it
 ;;; under the terms of the GNU General Public License as published by the
@@ -184,7 +184,7 @@ denotes how many percents of progress you would like to make."
  :dict-cleared
  "The dictionary is cleared, [~](arg) item(s) removed"
  :dict-entry-header
- "[~](arg), [~](typ) - ~ [[~](arg) %]"
+ "[~](arg), [~](typ) — ~ [[~](arg) %]"
  :dict-general
  "[~](arg) word(s) in the dictionary, overall progress [~](arg) %"
  :dict-form-changed

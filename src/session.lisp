@@ -3,7 +3,7 @@
 ;;; This is Шτookωвiнα API to define new user functions and the REPL
 ;;; itself.
 ;;;
-;;; Copyright (c) 2015 Mark Karpov
+;;; Copyright © 2015 Mark Karpov
 ;;;
 ;;; Шτookωвiнα is free software: you can redistribute it and/or modify it
 ;;; under the terms of the GNU General Public License as published by the
