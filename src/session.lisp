@@ -257,20 +257,27 @@ will perform any necessary processing."
   (perform-hook :session-start)
   (do (input)
       (*session-terminated*)
+    (perform-hook :tutorial-hook)
     (setf input (read-command))
     (awhen (and (not (emptyp input))
                 (correct-command input))
       (push it *session-history*)
       (apply #'perform-command it)
-      (incf *command-counter*)))
+      (incf *command-counter*)
+      (perform-hook :after-command
+                    :args it)))
   (perform-hook :session-end)
   (values))
 
-(defun last-command= (command)
+(defun last-command= (command &optional arg-predicate)
   "Check if last (newest) command in session history equal to given command
-COMMAND (must be a string designator)."
-  (string-equal (caar *session-history*)
-                command))
+COMMAND (must be a string designator). If ARG-PREDICATE is supplied it must
+be predicate to check arguments of the command. Only if the predicate
+returns non-NIL value LAST-COMMAND= will return T."
+  (destructuring-bind (c . a) (car *session-history*)
+    (and (string-equal c command)
+         (or (not arg-predicate)
+             (funcall arg-predicate a)))))
 
 (defun int-yes-or-no (default-yes)
   "Interactively ask user to answer `yes' or `no'. If DEFAULT-YES is not

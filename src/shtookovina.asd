@@ -31,10 +31,11 @@
                  (:file "ui-language")
                  (:file "session")
                  (:file "ui-commands")
+                 (:file "wizard")
+                 (:file "tutorial")
                  (:file "default-hooks")
                  (:file "default-style")
                  (:file "main")
-                 (:file "wizard")
                  (:file "user-utils"))
   :depends-on   (#:alexandria
                  #:anaphora

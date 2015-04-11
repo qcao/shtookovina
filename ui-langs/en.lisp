@@ -128,7 +128,7 @@ identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  :cmd-learned-s
  "Mark specified item as learned."
  :cmd-lexemes-l
- "Print a table of all lexemes defined for actual language."
+ "Print a table of all lexemes defined for target language."
  :cmd-lexemes-s
  "Print all lexemes."
  :cmd-listen-l
@@ -241,6 +241,55 @@ exercises continues until you enter all words correctly."
  "Progress"
  :proposed-audio
  "Proposed audio: [\"~\"](arg)"
+ :tutorial-0
+ "[Welcome to Шτookωвiнα](hdr), program that will help you to learn
+[~](arg). In Шτookωвiнα you enter commands and their arguments to make
+various things happen. This way you can add words to your dictionary and
+edit them, run various exercises with these words, and other interesting
+things. Every command is thoroughly documented, so the first thing you
+should learn about this environment is how to discover new commands and get
+description of command you're interested in. [help](cmd) command comes in
+handy here. Try to call it without arguments now."
+ :tutorial-1
+ "[Great!](hdr) As you can see there are quite a few commands available in
+Шτookωвiнα. Pick any of them and call [help](cmd) command with name of the
+command as an argument, for example [help](cmd) [help](arg)."
+ :tutorial-2
+ "[Fantastic!](hdr) Now, that you know how to explore the environment, you
+can continue on your own, but we would like to show you how to add words to
+your dictionary first. Use command [add](cmd) to do so. If you check it with
+help of [help](cmd) [add](arg) command, you will see that it takes four
+arguments! Understand what to pass to [add](cmd) command and add first word
+to your dictionary."
+ :tutorial-3
+ "[Fine!](hdr) Now add [11](arg) more words of different types. You should
+have [12](arg) words in your dictionary to continue with this tutorial. Note
+that you can get some statistic with help of [dict](cmd) command. This
+command can be used to display statistic about some specific words that
+share common prefix. Pass that prefix as first argument to [dict](cmd)
+command to use this functionality."
+ :tutorial-4
+ "[12 words should be enough](hdr) to start our training. Шτookωвiнα has
+several exercises to train different aspects of word recognition:
+[translation](typ), [writing](typ), and [listening](typ). It even has some
+sort of crossword game! You can use commands to start any of these
+exercises, but we advise you use [train](cmd) command that tries to provide
+comprehensive training experience using all these exercise in the right
+order. Call [train](cmd) command without arguments."
+ :tutorial-5
+ "[So, that's how Шτookωвiнα can help you remember words.](hdr) There are
+statistic per word that helps Шτookωвiнα determine which words need more
+training. Call [dict](cmd) command and see for yourself that you've made
+some progress!"
+ :tutorial-6
+ "[Not bad at all!](hdr) Шτookωвiнα supports other functionality too. You
+can teach it how to lookup definition and/or translation of given word in
+online dictionaries. You can also reprogram Шτookωвiнα putting some code
+into your configuration file. You can even define new commands, etc. This
+tutorial has shown you very basic commands and I fear it's come to its
+end. To exit the interactive environment use [quit](cmd). Good luck!"
+ :tutorial-try-again
+ "[Too bad.](inc) Try again."
  :uncorrectable-command
  "[Cannot](err) correct command [~](cmd)"
  :unknown-form-query

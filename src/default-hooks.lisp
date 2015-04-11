@@ -31,3 +31,7 @@
 (define-hook :unknown-command (command)
   (awhen (int-correct-command (car command))
     (cons it (cdr command))))
+
+(define-hook :tutorial-hook ()
+  (awhen *tutorial-on*
+    (tutorial)))

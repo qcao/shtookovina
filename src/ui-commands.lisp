@@ -443,8 +443,8 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
               (term:cat-print
                (list
                 filler
-                (list (substitute #\. #\nul revealed :test #'char=) :arg)
-                " - "
+                (list (substitute #\· #\nul revealed :test #'char=) :arg)
+                " — "
                 (list (lexeme-name type) :typ)
                 " "
                 (item-translation type default-form)

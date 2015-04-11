@@ -82,7 +82,10 @@ program for the first time (at least with specified target language).")
    :meta-var "LANG")
   (:name :no-wizard
    :description "Don't invoke wizard."
-   :long "no-wizard"))
+   :long "no-wizard")
+  (:name :no-tutorial
+   :description "Omit tutorial."
+   :long "no-tutorial"))
 
 (defun unknown-option (condition)
   "What to do if user has passed unknown command line option. CONDITION is
@@ -181,7 +184,8 @@ success and NIL on failure."
             (ensure-directories-exist local-target)
             (term:print +shtookovina-version+)
             (load-config local-target (getf options :no-wizard))
-            (load-dict local-target)
+            (setf *tutorial-on* (not (or (load-dict local-target)
+                                         (getf options :no-tutorial))))
             (init-shtooka-db)
             (rl:register-function :complete #'session-std-complete)
             (rl:bind-keyseq "\\C-o" #'repeat-audio-query)
