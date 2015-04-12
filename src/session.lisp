@@ -274,10 +274,11 @@ will perform any necessary processing."
 COMMAND (must be a string designator). If ARG-PREDICATE is supplied it must
 be predicate to check arguments of the command. Only if the predicate
 returns non-NIL value LAST-COMMAND= will return T."
-  (destructuring-bind (c . a) (car *session-history*)
-    (and (string-equal c command)
-         (or (not arg-predicate)
-             (funcall arg-predicate a)))))
+  (awhen (car *session-history*)
+    (destructuring-bind (c . a) it
+      (and (string-equal c command)
+           (or (not arg-predicate)
+               (funcall arg-predicate a))))))
 
 (defun int-yes-or-no (default-yes)
   "Interactively ask user to answer `yes' or `no'. If DEFAULT-YES is not
