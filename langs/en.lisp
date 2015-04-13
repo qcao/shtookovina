@@ -19,15 +19,16 @@
 
 (set-language
  "English"
- '((:adj "adjective")
-   (:adv "adverb")
-   (:art "article")
-   (:cnj "conjunction")
-   (:int "interjection")
-   (:nom "noun")
-   (:phr "phrase")
-   (:prp "preposition")
-   (:prn "pronoun")
-   (:vrb "verb"
-    :ss-forms
-    ("Infinitive" "Past" "Past Participle"))))
+ '((:adjective    "adjective")
+   (:adverb       "adverb")
+   (:article      "article")
+   (:conjunction  "conjunction")
+   (:interjection "interjection")
+   (:noun         "noun")
+   (:numeral      "numeral"
+    :ss-forms     ("(cardinal)" "(ordinal)"))
+   (:phrase       "phrase")
+   (:preposition  "preposition")
+   (:pronoun      "pronoun")
+   (:verb         "verb"
+    :ss-forms     ("Infinitive" "Past" "Past Participle"))))

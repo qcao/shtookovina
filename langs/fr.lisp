@@ -18,27 +18,24 @@
 ;;; with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (set-language
- "français"
- '((:adj "adjectif"
-    :form-aspects
-    (("m" "f")
-     ("" " pl")))
-   (:adv "adverbe")
-   (:art "article")
-   (:cnj "conjonction")
-   (:int "interjection")
-   (:nom "nom"
-    :form-aspects
-    (("m" "f")))
-   (:phr "phrase")
-   (:prp "préposition")
-   (:prn "pronom")
-   (:vrb "verbe"
+ "Français"
+ '((:adjectif     "adjectif"
+    :form-aspects (("m" "f") ("" " pl")))
+   (:adverbe      "adverbe")
+   (:article      "article")
+   (:conjonction  "conjonction")
+   (:interjection "interjection")
+   (:nom          "nom"
+    :form-aspects (("m" "f")))
+   (:phrase       "phrase")
+   (:pronom       "pronom")
+   (:préposition  "préposition")
+   (:verbe        "verbe"
     :ss-forms
     ("Infinitif" "Participe Passe" "Gérondif")
     :form-aspects
-    (("Present de l'indicatif"
+    (("Présent de l'indicatif"
       "Futur simple"
       "Imparfait"
-      "Present du subjonctif")
+      "Présent du subjonctif")
      (" (je)" " (tu)" " (il)" " (nous)" " (vous)" " (ils)")))))
