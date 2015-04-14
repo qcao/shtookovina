@@ -18,10 +18,11 @@
 ;;; with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ;; This is English translation of the user interface. Other translations can
-;; be easily written by substitution of corresponding English words and
-;; phrases. To apply some style (see documentation of CL-ANSI-TERM library)
-;; enclose text in brackets, and immediately after closing bracket ']', put
-;; name of desired style in parenthesis. For example: [my text](cmd).
+;; be easily written via replacing of corresponding English strings. To
+;; apply some style (see documentation of CL-ANSI-TERM library) enclose text
+;; in brackets, and immediately after closing bracket ']', put name of
+;; desired style in parenthesis. For example: [my text](cmd). To get full
+;; list of default styles, see `src/default-style.lisp'.
 
 (set-ui-language
  "English"
@@ -53,7 +54,8 @@ the dictionary, this command has no effect."
  "Add new item to the dicitonary."
  :cmd-audio-l
  "Search Shtooka databases, pick and play some audio file that's relevant to
-given [TEXT](arg)."
+given [TEXT](arg). Note that you can use [Ctrl-o](typ) to repeat the last
+audio query."
  :cmd-audio-s
  "Play audio that's relevant to given text."
  :cmd-clear-l
@@ -272,7 +274,7 @@ command to use this functionality."
  "[12 words should be enough](hdr) to start our training. Шτookωвiнα has
 several exercises to train different aspects of word recognition:
 [translation](typ), [writing](typ), and [listening](typ). It even has some
-sort of crossword game! You can use commands to start any of these
+sort of crossword game! You can use specific commands to start any of these
 exercises, but we advise you use [train](cmd) command that tries to provide
 comprehensive training experience using all these exercise in the right
 order. Call [train](cmd) command without arguments."
@@ -319,7 +321,7 @@ and put into one directory, then enter path to the directory here:"
  "Added directories"
  :wizard-ui-lang
  "Please select language that will be used for user interface. Enter two
-letters, for example: [\"en\"](arg) for English."
+letters, for example [\"en\"](arg) for English."
  :wizard-ui-lang-bad
  "This your input [\"~\"](arg) doesn't designate any defined language, try
 again."
