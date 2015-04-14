@@ -31,9 +31,9 @@
   "Where to search for definitions of target languages.")
 
 (defvar +shtookovina-local+
-  (merge-pathnames (make-pathname :directory '(:relative ".shtookovina"))
-                   (user-homedir-pathname))
-  "Local directory where user's personal data is stored.")
+  (make-pathname :directory '(:relative ".shtookovina"))
+  "Local directory where user's personal data is stored. Use
+SHTOOKOVINA-LOCAL function to get absolute path at run time.")
 
 (defvar +config-pathname+ (make-pathname :name "config" :type "lisp")
   "Path name of configuration file.")
@@ -94,11 +94,15 @@ raised condition."
               :args (opts:option condition))
   (invoke-restart 'opts:skip-option))
 
+(defun shtookovina-local ()
+  "Return local directory where user's personal data is stored."
+  (merge-pathnames +shtookovina-local+ (user-homedir-pathname)))
+
 (defun local-target-pathname (target-lang)
   "Return local target pathname -- combination of shtookovina local
 directory and directory named after target language."
   (merge-pathnames (make-pathname :directory (list :relative target-lang))
-                   +shtookovina-local+))
+                   (shtookovina-local)))
 
 (defun load-lisp (filename)
   "Load given file FILENAME, evaluating it in SHTOOKOVINA package. Return T
