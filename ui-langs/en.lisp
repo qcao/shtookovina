@@ -17,13 +17,6 @@
 ;;; You should have received a copy of the GNU General Public License along
 ;;; with this program. If not, see <http://www.gnu.org/licenses/>.
 
-;; This is English translation of the user interface. Other translations can
-;; be easily written via replacing of corresponding English strings. To
-;; apply some style (see documentation of CL-ANSI-TERM library) enclose text
-;; in brackets, and immediately after closing bracket ']', put name of
-;; desired style in parenthesis. For example: [my text](cmd). To get full
-;; list of default styles, see `src/default-style.lisp'.
-
 (set-ui-language
  "English"
  :arg-parser-failed
