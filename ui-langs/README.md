@@ -11,7 +11,7 @@ strings. To apply some style (see documentation of
 [`cl-ansi-term`](https://mrkkrp.github.io/cl-ansi-term/) library) enclose
 text in brackets, and immediately after closing bracket `]`, put name of
 desired style in parenthesis. For example: `[my text](cmd)`. To get full
-list of default styles, see `src/default-style.lisp'.
+list of default styles, see `src/default-style.lisp`.
 
 First of all, edit commentary on the top of the file mentioning name of
 language of user interface. Now just edit arguments of `set-ui-language`
