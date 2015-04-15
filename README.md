@@ -1,12 +1,39 @@
 # Шτookωвiнα
 
-This will be some Lispy stuff for language learning. It will be based on
-recordings from [Shtooka Project](http://shtooka.net/).
+*Шτookωвiнα is in beta-testing stage. Please give it a try.*
 
-*Note: this is beginning to be usable, you can install it and try. However,
-Шτookωвiнα is not very user-friendly at the moment.*
+This program is designed to be useful for learners of foreign
+languages. Some features of Шτookωвiнα for a quick start:
 
-## Installation
+* it uses audio recordings from [Shtooka Project](http://shtooka.net/),
+  these recordings are made by native speaking volunteers rather than
+  robots;
+
+* it has minimalistic command line interface that still tries to be friendly
+  with help of [cl-readline](https://github.com/mrkkrp/cl-readline) and
+  [cl-ansi-term](https://github.com/mrkkrp/cl-ansi-term);
+
+* it has various exercises that help user work on different aspects of
+  remembering a word: translation, writing, and listening;
+
+* it also has «crossword» exercise;
+
+* it's fully hackable via configuration script written in Common Lisp, user
+  can define new commands and change absolutely everything in Шτookωвiнα;
+
+* this program doesn't make any assumptions about «target» language, this
+  allows to add definitions of new languages very easily;
+
+* language of user interface also can be specified, new translations are
+  made by copying of existing UI language definition and editing list of
+  strings;
+
+* for users that don't know Common Lisp there is Wizard that can configure
+  most of parameters;
+
+* there's also a built-in tutorial.
+
+## Building and Installation
 
 Installation process is pretty straightforward:
 
@@ -48,6 +75,20 @@ Installation process is pretty straightforward:
 
 7. Done (you can use `uninstall.sh` to uninstall the program).
 
+## How to Start Шτookωвiнα?
+
+Шτookωвiнα can be used to learn several languages at once. Thus it must keep
+different dictionaries and configuration files for every «target»
+language. You specify the language with option `-t` or `--target`:
+
+```
+$ shtk -t en # if you want to learn English
+```
+
+This option is mandatory. When adding new languages please refer to
+[ISO 639-2](http://www.loc.gov/standards/iso639-2/php/code_list.php) when
+choosing their two-letter codes.
+
 ## Wizard and Audio
 
 Now, you hopefully has installed Шτookωвiнα. However, it should be
@@ -55,8 +96,8 @@ configured before you can use it. Initially Шτookωвiнα was planned as a
 hardcore program for Lisp geeks, but later I decided to make it more
 user-friendly, so more people could use it. To make Шτookωвiнα work you're
 supposed to write some Lisp in your configuration file setting some
-variables and defining some hooks. Now we have wizard that can do this
-automatically.
+variables and defining some hooks. Fortunately, we have wizard that can do
+this automatically.
 
 When you start Шτookωвiнα for the first time, wizard will be called (unless
 you start it with `--no-wizard` option). First it asks about interface
@@ -78,6 +119,23 @@ of given word or conjugation of given verb) you currently need to manually
 edit relevant hooks in your configuration files, since we cannot know which
 web-service your prefer to use for this task, and thus we cannot know how to
 transform the word into URL.
+
+## Tutorial
+
+*Coming soon.*
+
+## How to contribute
+
+There are many ways to help the project:
+
+* define your language if it's missing, see `langs` directory for
+  instructions and examples;
+
+* translate user interface, see `ui-langs` directory for instructions and
+  examples;
+
+* translate this `README.md` file, append two-letter code of your language
+  to the filename like this `README-fr.md` (for French).
 
 ## License
 
