@@ -328,7 +328,7 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
                             (apply #'item-form x)
                             (destructuring-bind (type default-form form-index)
                                 x
-                              (format nil "~a ~a"
+                              (format nil "~a — ~a"
                                       (item-translation type default-form)
                                       (form-name type form-index))))))
              (target-item (funcall prepare (car targets))))
