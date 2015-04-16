@@ -141,9 +141,46 @@ The following topics are covered:
 * How to display information about the whole dictionary and detailed
   information about some specific entries?
 
+## Exercises
+
+Currently there are four different exercises:
+
+### Translation
+
+![Translation Exercise](img/translation.png)
+
+In this exercise you are given a word (either in interface language or
+target language) and four possible translations. You should select correct
+one.
+
+### Word Constructor (writing)
+
+![Word Constructor Exercise](img/constructor.png)
+
+You are given translation and letters of the word, but they are
+shuffled. You need to enter the word correctly, letter by letter.
+
+### Listening
+
+![Listening Exercise](img/listening.png)
+
+Some relevant audio is played to you, you should recognize dictionary item
+and enter it correctly.
+
+### Crossword
+
+![Crossword Exercise](img/crossword.png)
+
+This crossword doesn't show you visual representation of the crossing
+words. It doesn't really matter if such representation can be drawn or
+not. You cycle through various words and try to enter them correctly by
+their description. If you don't know a word, you can skip it. If you enter a
+word correctly, some letters of other words that coincide with the letters
+of the entered word are revealed.
+
 ## How to contribute?
 
-There are many ways to help the project:
+We need your help. There are many ways to help the project:
 
 * define your language if it's missing, see `langs` directory for
   instructions and examples;
