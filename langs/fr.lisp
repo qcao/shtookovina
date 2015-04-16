@@ -26,7 +26,7 @@
    (:conjonction  "conjonction")
    (:interjection "interjection")
    (:nom          "nom"
-    :form-aspects (("" " pl")))
+    :form-aspects (("" "pl")))
    (:phrase       "phrase")
    (:pronom       "pronom")
    (:préposition  "préposition")
