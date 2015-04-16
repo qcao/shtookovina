@@ -124,7 +124,22 @@ transform the word into URL.
 
 ## Tutorial
 
-*Coming soon.*
+Шτookωвiнα has built-in interactive tutorial that shows basic commands:
+
+![Шτookωвiнα Tutorial](img/tutorial.png)
+
+The following topics are covered:
+
+* How to find new commands and explore features of the program?
+
+* How to get full description of any command?
+
+* How to add words and phrases to user's dictionary?
+
+* What sort of exercises can be used to remember these words?
+
+* How to display information about the whole dictionary and detailed
+  information about some specific entries?
 
 ## How to contribute?
 
@@ -137,7 +152,10 @@ There are many ways to help the project:
   examples;
 
 * translate this `README.md` file, append two-letter code of your language
-  to the filename like this `README-fr.md` (for French).
+  to the filename like this `README-fr.md` (for French);
+
+* if you have encountered a bug, please
+  [open an issue](https://github.com/mrkkrp/shtookovina/issues).
 
 ## License
 
