@@ -1,6 +1,6 @@
 # Шτookωвiнα
 
-*Шτookωвiнα is in beta-testing stage. Please give it a try.*
+*Шτookωвiнα is on beta-testing stage. Please give it a try.*
 
 This program is designed to be useful for learners of foreign
 languages. Some features of Шτookωвiнα for a quick start:
@@ -99,6 +99,8 @@ supposed to write some Lisp in your configuration file setting some
 variables and defining some hooks. Fortunately, we have wizard that can do
 this automatically.
 
+![Шτookωвiнα Wizard](img/wizard.png)
+
 When you start Шτookωвiнα for the first time, wizard will be called (unless
 you start it with `--no-wizard` option). First it asks about interface
 language in English (it's default language, Шτookωвiнα will use your
@@ -124,7 +126,7 @@ transform the word into URL.
 
 *Coming soon.*
 
-## How to contribute
+## How to contribute?
 
 There are many ways to help the project:
 
