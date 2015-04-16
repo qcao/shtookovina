@@ -337,7 +337,7 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
              (list (list (lexeme-name type) :typ)
                    " "
                    (item-translation type default-form)
-                   " "
+                   " — "
                    (form-name type form-index)))
             (term:cat-print
              (list (list (lexeme-name type) :typ)

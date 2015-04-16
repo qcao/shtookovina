@@ -26,7 +26,7 @@
    (:conjonction  "conjonction")
    (:interjection "interjection")
    (:nom          "nom"
-    :form-aspects (("m" "f")))
+    :form-aspects ("" " pl"))
    (:phrase       "phrase")
    (:pronom       "pronom")
    (:préposition  "préposition")
@@ -38,4 +38,4 @@
       "Futur simple"
       "Imparfait"
       "Présent du subjonctif")
-     (" (je)" " (tu)" " (il)" " (nous)" " (vous)" " (ils)")))))
+     (" (je)" " (tu)" " (il)" " (nous)" " (vous)" " (ils/elles)")))))
