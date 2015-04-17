@@ -31,7 +31,7 @@ languages. Some features of Шτookωвiнα for a quick start:
 * for users that don't know Common Lisp there is Wizard that can configure
   most of parameters;
 
-* there's also a built-in tutorial.
+* there's also a built-in interactive tutorial.
 
 ## Building and Installation
 
@@ -39,7 +39,7 @@ Installation process is pretty straightforward:
 
 1. Install [SBCL](http://www.sbcl.org/), Шτookωвiнα is written in standard
    Common Lisp and it doesn't rely on any specific features of SBCL, however
-   only version compiled with SBCL is tested and guaranteed to work;
+   only version compiled with SBCL is tested;
 
 2. Install [Quicklisp](http://www.quicklisp.org/) to automatically get all
    dependencies, in short, here is what to do:
@@ -93,7 +93,7 @@ choosing their two-letter codes.
 
 Now, you hopefully has installed Шτookωвiнα. However, it should be
 configured before you can use it. Initially Шτookωвiнα was planned as a
-hardcore program for Lisp geeks, but later I decided to make it more
+hardcore program for Lisp geeks, but later we decided to make it more
 user-friendly, so more people could use it. To make Шτookωвiнα work you're
 supposed to write some Lisp in your configuration file setting some
 variables and defining some hooks. Fortunately, we have wizard that can do
