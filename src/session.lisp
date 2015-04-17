@@ -340,7 +340,7 @@ command itself."
                       (if (consp arg)
                           (progn
                             (push (list (car arg) :arg) result)
-                            (push " -> " result)
+                            (push " → " result)
                             (push (list (cadr arg) :arg) result))
                           (push (list arg :arg) result))
                       (push "]" result))
@@ -351,7 +351,7 @@ command itself."
            (let ((last (lastcar args)))
              (mapcan (lambda (a p)
                        (list (list (if (consp a) (car a) a) :arg)
-                             " - "
+                             " — "
                              (list p :typ)
                              (if (eql a last) "" ", ")))
                      args
