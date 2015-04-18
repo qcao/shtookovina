@@ -191,7 +191,7 @@
  :dict-entry-header
  "[~](arg), [~](typ) — ~ [[~](arg) %]"
  :dict-general
- "В словаре [~](arg) слов, общий прогресс [~](arg) %"
+ "В словаре [~](arg) слов(а), общий прогресс [~](arg) %"
  :dict-form-changed
  "Изменён [~](typ) [~](arg) ~"
  :dict-item-added
@@ -305,7 +305,7 @@
  :uncorrectable-command
  "[Невозможно](err) скорректировать команду [~](cmd)"
  :unknown-form-query
- "[~](typ) [~](arg) ~ is [unknown](err), fill it out to continue:"
+ "Форма [~](typ) [~](arg) ~ [неизвестна](err), введите её чтобы продолжить:"
  :value
  "Написание"
  :where
