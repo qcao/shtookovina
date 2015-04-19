@@ -24,7 +24,7 @@ build/shtk : $(wildcard src/*.lisp src/shtookovina.asd) install-deps
 
 install-deps : src/shtookovina.asd
 	mkdir -vp build
-	sbcl --non-interactive \
+	sbcl --non-interactive --load ~/quicklisp/setup.lisp \
 	--load src/shtookovina.asd --eval "(ql:quickload :shtookovina)" \
 	--eval '(ql:write-asdf-manifest-file "build/manifest.txt")'
 	echo $(abspath ./src/shtookovina.asd) >> build/manifest.txt
