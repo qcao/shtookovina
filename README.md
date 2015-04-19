@@ -92,7 +92,7 @@ choosing their two-letter codes.
 
 ## Wizard and Audio
 
-Now, you hopefully has installed Шτookωвiнα. However, it should be
+Now, you hopefully have installed Шτookωвiнα. However, it should be
 configured before you can use it. Initially Шτookωвiнα was planned as a
 hardcore program for Lisp geeks, but later we decided to make it more
 user-friendly, so more people could use it. To make Шτookωвiнα work you're
@@ -119,7 +119,7 @@ Third, the wizard will ask your how you would like to play audio files
 
 Finally, to use `query` and `conj` commands (open web-page with description
 of given word or conjugation of given verb) you currently need to manually
-edit relevant hooks in your configuration files, since we cannot know which
+edit relevant hooks in your configuration file, since we cannot know which
 web-service your prefer to use for this task, and thus we cannot know how to
 transform the word into URL.
 
