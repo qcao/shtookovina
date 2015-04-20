@@ -38,4 +38,4 @@
       "Futur simple"
       "Imparfait"
       "Présent du subjonctif")
-     (" (je)" " (tu)" " (il)" " (nous)" " (vous)" " (ils/elles)")))))
+     (" (je)" " (tu)" " (il/elle)" " (nous)" " (vous)" " (ils/elles)")))))
