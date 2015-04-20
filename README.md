@@ -51,12 +51,19 @@ Installation process is pretty straightforward:
    * (quit)
    ```
 
-3. Install [Buildapp](http://www.xach.com/lisp/buildapp/);
+3. Install [Buildapp](http://www.xach.com/lisp/buildapp/), please prefer
+   most recent version:
+
+   ```
+   $ git clone https://github.com/xach/buildapp.git
+   $ cd buildapp
+   # make install
+   ```
 
 4. Download or clone Шτookωвiнα's repo:
 
    ```
-   $ git clone https://github.com/mrkkrp/shtookovina.git master
+   $ git clone https://github.com/mrkkrp/shtookovina.git
    ```
 
 5. `cd` into the directory and `make` the program:
@@ -70,7 +77,7 @@ Installation process is pretty straightforward:
    this way:
 
    ```
-   # sh install.sh
+   # bash install.sh
    ```
 
 7. Done (you can use `uninstall.sh` to uninstall the program).

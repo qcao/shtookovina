@@ -56,12 +56,19 @@
    * (quit)
    ```
 
-3. Установите [Buildapp](http://www.xach.com/lisp/buildapp/);
+3. Установите [Buildapp](http://www.xach.com/lisp/buildapp/), отдавайте
+   предпочтение более свежим версиям:
+
+   ```
+   $ git clone https://github.com/xach/buildapp.git
+   $ cd buildapp
+   # make install
+   ```
 
 4. Скачайте или клонируйте Шτookωвiнα репозиторий:
 
    ```
-   $ git clone https://github.com/mrkkrp/shtookovina.git master
+   $ git clone https://github.com/mrkkrp/shtookovina.git
    ```
 
 5. Перейдите в созданную директорию и соберите программу:
@@ -75,7 +82,7 @@
    `build/shtk`, вы можете установить его так:
 
    ```
-   # sh install.sh
+   # bash install.sh
    ```
 
 7. Готово (вы можете использовать `uninstall.sh` чтобы удалить эту
