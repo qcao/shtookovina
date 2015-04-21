@@ -187,7 +187,7 @@
                            :cell-style '(:arg :default :default :arg)
                            :header-style :hdr
                            :border-style nil
-                           :column-width '(10 30 30 10))
+                           :column-width '(6 35 36 3))
                (terpri)))
         (maphash (lambda (key item)
                    (destructuring-bind (type . default-form) key

@@ -233,7 +233,7 @@ exercises continues until you enter all words correctly."
  :possible-corrections
  "Possible corrections for [~](cmd):"
  :progress
- "Progress"
+ "%"
  :proposed-audio
  "Proposed audio: [\"~\"](arg)"
  :tutorial-0

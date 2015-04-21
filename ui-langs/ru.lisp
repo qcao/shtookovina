@@ -244,7 +244,7 @@
  :possible-corrections
  "Команда [~](cmd) может быть исправлена следующим образом:"
  :progress
- "Прогресс"
+ "%"
  :proposed-audio
  "Предлагаемая запись: [\"~\"](arg)"
  :tutorial-0
