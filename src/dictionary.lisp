@@ -26,14 +26,14 @@
   "Hash table that allows to get dictionary item by its type and string
 representation of the main form (they should be CONSed to get key).")
 
-(defvar *initial-weight* 24
+(defvar *initial-weight* 30
   "When the user gives right answer when training a word, the weight is
 decreased, otherwise it's increased. This is upper limit of the weight.")
 
 (defvar *base-weight* 1
   "This is a number that represents lower limit of weight of form.")
 
-(defvar *weight-step* 8
+(defvar *weight-step* 10
   "Weight is changed discretely, *WEIGHT-STEP* is minimal difference between
 consequent values of weight.")
 
