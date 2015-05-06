@@ -1,8 +1,8 @@
 ;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; -*-
 ;;;
-;;; Traducción en Español de la interfaz de usuario
+;;; Spanish translation of user interface.
 ;;;
-;;; Copyright © 2015 Mark Karpov
+;;; Copyright © 2015 Mark Karpov, Nicolás Bonader
 ;;;
 ;;; Шτookωвiнα is free software: you can redistribute it and/or modify it
 ;;; under the terms of the GNU General Public License as published by the
@@ -311,7 +311,7 @@ activate [conj](cmd) command."
  "Edit example of [:query-ext](typ) hook in your configuration file to
 activate [query](cmd) command."
  :wizard-shtooka-dirs
- "Шτookωвiнα necesita saber dónde están las fuentes de audio de Shtooka 
+ "Шτookωвiнα necesita saber dónde están las fuentes de audio de Shtooka
 en tu sistema. Puedes descargar grabaciones de audio en tu idioma desde
 el sitio oficial del Proyect Shtooka [<http://download.shtooka.net/>](typ).
 Desarchívalas y ubícalas en un directorio, luego ingresa la ruta del
