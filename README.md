@@ -1,6 +1,6 @@
 # Шτookωвiнα
 
-*Шτookωвiнα is on beta-testing stage. Please give it a try.*
+*Шτookωвiнα is in beta-testing stage. Please give it a try.*
 
 This program is designed to be useful for learners of foreign
 languages. Some features of Шτookωвiнα for a quick start:
