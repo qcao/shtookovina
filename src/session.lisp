@@ -305,7 +305,9 @@ success and NIL on failure (canceled)."
                                               :start (char-code #\a)))
                                 'string))
                 :num-chars 1)))
-    (when (and input (not (emptyp input)))
+    (when (and input
+               (not (emptyp input))
+               (alpha-char-p (char input 0)))
       (nth (- (char-code (char input 0))
               (char-code #\a))
            options))))
