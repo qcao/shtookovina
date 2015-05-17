@@ -26,14 +26,14 @@
   "Hash table that allows to get dictionary item by its type and string
 representation of the main form (they should be CONSed to get key).")
 
-(defvar *initial-weight* 30
+(defvar *initial-weight* 100
   "When the user gives right answer when training a word, the weight is
 decreased, otherwise it's increased. This is upper limit of the weight.")
 
 (defvar *base-weight* 1
   "This is a number that represents lower limit of weight of form.")
 
-(defvar *weight-step* 10
+(defvar *weight-step* 33
   "Weight is changed discretely, *WEIGHT-STEP* is minimal difference between
 consequent values of weight.")
 
@@ -223,32 +223,31 @@ item for ASPECT-INDEX."
   (declare (type array-index aspect-index)
            (type (simple-array array-length) *weight-sums*)
            (optimize (safety 0) (speed 3) (space 3)))
-  (let ((index (random (aref *weight-sums* aspect-index))))
-    (declare (type array-index index))
+  (let ((φ (random (aref *weight-sums* aspect-index))))
+    (declare (type array-index φ))
     (when (plusp (the array-length (dictionary-item-count)))
       (block the-block
         (maphash (lambda (key value)
-                   (if (<= index (aref (the (simple-array array-length)
-                                            (item-weight value))
-                                       aspect-index))
-                       (destructuring-bind (type . default-form) key
-                         (return-from the-block
-                           (values
-                            type
-                            default-form
-                            (do ((i 0 (1+ i)))
-                                ((<= index
-                                     (aref (the (simple-array array-length)
-                                                (weights value))
-                                           i
-                                           aspect-index)) i)
-                              (decf index (aref (the (simple-array array-length)
-                                                     (weights value))
-                                                i
-                                                aspect-index))))))
-                       (decf index (aref (the (simple-array array-length)
-                                              (item-weight value))
-                                         aspect-index))))
+                   (let ((w (aref (the (simple-array array-length)
+                                       (item-weight value))
+                                  aspect-index)))
+                     (if (<= φ w)
+                         (destructuring-bind (type . default-form) key
+                           (return-from the-block
+                             (values
+                              type
+                              default-form
+                              (do ((i 0 (1+ i)))
+                                  ((<= φ
+                                       (aref (the (simple-array array-length)
+                                                  (weights value))
+                                             i
+                                             aspect-index)) i)
+                                (decf φ (aref (the (simple-array array-length)
+                                                       (weights value))
+                                                  i
+                                                  aspect-index))))))
+                         (decf φ w))))
                  *dictionary*)))))
 
 (defun pick-some-forms (aspect-index number)
