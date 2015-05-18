@@ -1,42 +1,44 @@
 # Шτookωвiнα
 
-*Шτookωвiнα est en phase d'évaluation (bêta). Essayez-la, s'il vous plaît!*
+*Шτookωвiнα est en phase d'évaluation (bêta). Essayez-la, s'il vous plaît !*
 
 Ce programme est destiné à être utile pour des apprenants de langues
 étrangères. Voici quelques caractéristiques intéressantes de Шτookωвiнα pour
 un démarrage rapide :
 
-* it uses audio recordings from [Shtooka Project](http://shtooka.net/),
-  these recordings are made by native speaking volunteers rather than
-  robots;
+* le programme utilise enregistrements sonores de
+  [Shtooka Project](http://shtooka.net/), ils ont été enregistrés par
+  locuteurs bénévoles, plutôt que des robots ;
 
-* it has minimalistic command line interface that still tries to be friendly
-  with help of [cl-readline](https://github.com/mrkkrp/cl-readline) and
-  [cl-ansi-term](https://github.com/mrkkrp/cl-ansi-term);
+* ce programme a interface de ligne de commande, mais il essaye d'être
+  convival avec l'aide de
+  [cl-readline](https://github.com/mrkkrp/cl-readline) et
+  [cl-ansi-term](https://github.com/mrkkrp/cl-ansi-term) ;
 
-* it has various exercises that help user work on different aspects of
-  remembering a word: translation, writing, and listening;
+* il y a différentes exercices qui vous aident à travailler sur divers
+  aspects d'un mot : traduction, écriture et écoute ;
 
-* it also has «crossword» exercise;
+* le programme a aussi «mots croisés» exercice ;
 
-* it's fully hackable via configuration script written in Common Lisp, user
-  can define new commands and change absolutely everything in Шτookωвiнα;
+* c'est bien modifiable par l'intermédiaire d'un ficher de configuration en
+  Common Lisp, le utilisateur peut définir nouvelles commandes et changer
+  absolument tout dans Шτookωвiнα ;
 
-* this program doesn't make any assumptions about «target» language, this
-  allows to add definitions of new languages very easily;
+* le programme ne fait pas des hypothèses sur la langue étudiée et ceci
+  permet de ajouter très facilement définitions de nouvelles langues ;
 
-* language of user interface also can be specified, new translations are
-  made by copying of existing UI language definition and editing list of
-  strings;
+* on peut aussi choisir langue d'interface utilisateur, nouvelles
+  traductions sont écrites par duplication de définition actuelle de
+  certaine langue d'interface utilisateur et replaçant de liste de chaînes ;
 
-* for users that don't know Common Lisp there is Wizard that can configure
-  most of parameters;
+* pour des utilisateurs qui ne connaissent pas Common Lisp, il y a un
+  assistant qui peut configurer la plupart des paramètres;
 
-* there's also a built-in interactive tutorial.
+* il y a un tutoriel interactif intégré.
 
-## Building and Installation
+## Compilation et installation
 
-Installation process is pretty straightforward:
+Le processus d'installation est très simple :
 
 1. Install [SBCL](http://www.sbcl.org/), Шτookωвiнα is written in standard
    Common Lisp and it doesn't rely on any specific features of SBCL, however
@@ -204,6 +206,6 @@ We need your help. There are many ways to help the project:
 
 ## License
 
-Copyright © 2015 Mark Karpov
+Droit d'auteur © 2015 Mark Karpov
 
-Distributed under GNU GPL, version 3.
+Distribué sous GNU GPL, version 3.
