@@ -12,7 +12,7 @@ un démarrage rapide :
 
 * ce programme a interface de ligne de commande, mais il essaye d'être
   convival avec l'aide de
-  [cl-readline](https://github.com/mrkkrp/cl-readline) et
+  [cl-readline](https://github.com/mrkkrp/cl-readline) et de
   [cl-ansi-term](https://github.com/mrkkrp/cl-ansi-term) ;
 
 * il y a différentes exercices qui vous aident à travailler sur divers
@@ -20,12 +20,12 @@ un démarrage rapide :
 
 * le programme a aussi «mots croisés» exercice ;
 
-* c'est bien modifiable par l'intermédiaire d'un ficher de configuration en
+* c'est bien modifiable par l'intermédiaire d'un fichier de configuration en
   Common Lisp, le utilisateur peut définir nouvelles commandes et changer
   absolument tout dans Шτookωвiнα ;
 
 * le programme ne fait pas des hypothèses sur la langue étudiée et ceci
-  permet de ajouter très facilement définitions de nouvelles langues ;
+  permet d'ajouter très facilement définitions de nouvelles langues ;
 
 * on peut aussi choisir langue d'interface utilisateur, nouvelles
   traductions sont écrites par duplication de définition actuelle de
@@ -40,12 +40,12 @@ un démarrage rapide :
 
 Le processus d'installation est très simple :
 
-1. Install [SBCL](http://www.sbcl.org/), Шτookωвiнα is written in standard
-   Common Lisp and it doesn't rely on any specific features of SBCL, however
-   only version compiled with SBCL is tested;
+1. Installez [SBCL](http://www.sbcl.org/), Шτookωвiнα est écrite en Common
+   Lisp standard et elle ne mise pas sur caractéristiques spécifiques de
+   SBCL, mais seule version compilée avec SBCL est testée ;
 
-2. Install [Quicklisp](http://www.quicklisp.org/) to automatically get all
-   dependencies, in short, here is what to do:
+2. Installez [Quicklisp](http://www.quicklisp.org/) pour obtenir
+   automatiquement toutes les dépendances, bref, voici comment procéder :
 
    ```
    $ curl -O http://beta.quicklisp.org/quicklisp.lisp
@@ -54,8 +54,8 @@ Le processus d'installation est très simple :
    * (quit)
    ```
 
-3. Install [Buildapp](http://www.xach.com/lisp/buildapp/), please prefer
-   most recent version:
+3. Installez [Buildapp](http://www.xach.com/lisp/buildapp/), préférez la
+   version la plus récente, s'il vous plaît :
 
    ```
    $ git clone https://github.com/xach/buildapp.git
@@ -63,43 +63,46 @@ Le processus d'installation est très simple :
    # make install
    ```
 
-4. Download or clone Шτookωвiнα's repo:
+4. Téléchargez ou clonez dépôt de Шτookωвiнα :
 
    ```
    $ git clone https://github.com/mrkkrp/shtookovina.git
    ```
 
-5. `cd` into the directory and `make` the program:
+5. `cd` dans le répertoire et compilez le programme avec `make` :
 
    ```
    $ cd shtookovina
    $ make
    ```
 
-6. Now you should have Шτookωвiнα's binary `build/shtk`, you can install it
-   this way:
+6. Vous devez maintenant avoir fichier exécutable de Шτookωвiнα dans
+   `build/shtk`, vous pouvez l'installer de cette façon :
 
    ```
    # bash install.sh
    ```
 
-7. Done (you can use `uninstall.sh` to uninstall the program).
+7. C'est fini (vous pouvez utiliser `uninstall.sh` pour désinstaller le
+   programme).
 
-## How to Start Шτookωвiнα?
+## Comment exécuter Шτookωвiнα ?
 
-Шτookωвiнα can be used to learn several languages at once. Thus it must keep
-different dictionaries and configuration files for every «target»
-language. You specify the language with option `-t` or `--target`:
+On peut utiliser Шτookωвiнα pour apprendre plusieurs langues en même
+temps. Ainsi, elle doit maintenir dictionnaires distincts et fichiers de
+configuration pour chaque langue étudiée. Vous spécifiez la langue avec la
+option `-t` ou `--target` :
 
 ```
-$ shtk -t en # if you want to learn English
+$ shtk -t en # si vous voulez apprendre anglaise
 ```
 
-This option is mandatory. When adding new languages please refer to
-[ISO 639-2](http://www.loc.gov/standards/iso639-2/php/code_list.php) when
-choosing their two-letter codes.
+Cette option est obligatoire. Lorsque vous voulez ajouter nouvelles langues,
+veuillez vous reporter à
+[ISO 639-2](http://www.loc.gov/standards/iso639-2/php/code_list.php) pour
+choisir leurs codes à deux caractères, s'il vous plaît.
 
-## Wizard and Audio
+## Assistant et audio
 
 Now, you hopefully have installed Шτookωвiнα. However, it should be
 configured before you can use it. Initially Шτookωвiнα was planned as a
