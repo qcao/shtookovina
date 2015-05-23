@@ -86,7 +86,7 @@ Installation process is pretty straightforward:
 
 Шτookωвiнα can be used to learn several languages at once. Thus it must keep
 different dictionaries and configuration files for every «target»
-language. You specify the language with option `-t` or `--target`:
+language. You specify the language with the option `-t` or `--target`:
 
 ```
 $ shtk -t en # if you want to learn English
