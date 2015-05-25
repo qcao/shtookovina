@@ -19,7 +19,7 @@
 
 (asdf:defsystem :shtookovina
   :version      "0.1.0"
-  :description  "Шτookωвiнα -- program to help learn natural languages"
+  :description  "Шτookωвiнα — program to help learn natural languages"
   :author       "Mark Karpov"
   :serial       t
   :license      "GNU GPL, version 3"
