@@ -16,18 +16,19 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
-.PHONY : install-deps clear
+.PHONY : clear
 
-build/shtk : src/*.lisp src/shtookovina.asd install-deps
+build/shtk : src/*.lisp src/shtookovina.asd build/install-deps
 	buildapp --output build/shtk --manifest-file build/manifest.txt \
 	--load-system shtookovina --entry shtookovina:main
 
-install-deps : src/shtookovina.asd
+build/install-deps : src/shtookovina.asd
 	mkdir -vp build
 	sbcl --non-interactive --load ~/quicklisp/setup.lisp \
 	--load src/shtookovina.asd --eval "(ql:quickload :shtookovina)" \
 	--eval '(ql:write-asdf-manifest-file "build/manifest.txt")'
 	echo $(abspath ./src/shtookovina.asd) >> build/manifest.txt
+	touch build/install-deps
 
 clear :
 	rm -vr build
