@@ -18,7 +18,7 @@
 
 .PHONY : install-deps clear
 
-build/shtk : $(wildcard src/*.lisp src/shtookovina.asd) install-deps
+build/shtk : src/*.lisp src/shtookovina.asd install-deps
 	buildapp --output build/shtk --manifest-file build/manifest.txt \
 	--load-system shtookovina --entry shtookovina:main
 
