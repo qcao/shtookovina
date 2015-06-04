@@ -1,5 +1,5 @@
 install:
-  - sudo apt-get gpg
+  - sudo apt-get gnupg
   - sudo apt-get sbcl
   - curl -O https://beta.quicklisp.org/quicklisp.lisp
   - curl -O https://beta.quicklisp.org/quicklisp.lisp.asc
