@@ -1,0 +1,16 @@
+install:
+  - sudo apt-get gpg
+  - sudo apt-get sbcl
+  - curl -O https://beta.quicklisp.org/quicklisp.lisp
+  - curl -O https://beta.quicklisp.org/quicklisp.lisp.asc
+  - gpg --verify quicklisp.lisp.asc quicklisp.lisp
+  - sbcl --load quicklisp.lisp --eval "(progn (quicklisp-quickstart:install) (quit))"
+  - git clone https://github.com/xach/buildapp.git
+  - cd buildapp
+  - sudo make install
+
+script:
+  - make
+
+notifications:
+  email: false
