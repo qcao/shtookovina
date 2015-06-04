@@ -1,6 +1,6 @@
 install:
-  - sudo apt-get gnupg
-  - sudo apt-get sbcl
+  - sudo apt-get install gnupg
+  - sudo apt-get install sbcl
   - curl -O https://beta.quicklisp.org/quicklisp.lisp
   - curl -O https://beta.quicklisp.org/quicklisp.lisp.asc
   - gpg --verify quicklisp.lisp.asc quicklisp.lisp
