@@ -60,20 +60,10 @@ You should have received a copy of the GNU General Public License along
 with this program. If not, see [<http://www.gnu.org/licenses/>](typ)."
   "A notice about license of the program (GNU GLP, version 3).")
 
-(defparameter *virgin-user* nil
-  "This variable is bound to non-NIL value if the current user runs the
-program for the first time (at least with specified target language).")
-
 (opts:define-opts
   (:name :help
    :description "Print description of command line options."
    :long "help")
-  (:name :license
-   :description "Print license of the program."
-   :long "license")
-  (:name :version
-   :description "Print version of the program."
-   :long "version")
   (:name :target
    :description "Set target language LANG. This option is a must."
    :short #\t
@@ -85,7 +75,13 @@ program for the first time (at least with specified target language).")
    :long "no-wizard")
   (:name :no-tutorial
    :description "Omit tutorial."
-   :long "no-tutorial"))
+   :long "no-tutorial")
+  (:name :license
+   :description "Print license of the program."
+   :long "license")
+  (:name :version
+   :description "Print version of the program."
+   :long "version"))
 
 (defun unknown-option (condition)
   "What to do if user has passed unknown command line option. CONDITION is
@@ -175,8 +171,10 @@ success and NIL on failure."
           (term:print +gnu-glp-notice+)
           (return-from main))
         (when (getf options :help)
-          (term:print (opts:describe
-                       :prefix "shtk [options]"))
+          (term:print
+           (opts:describe
+            :prefix "Шτookωвiнα — program to help learn natural languages"
+            :usage-of "shtk"))
           (return-from main))
         (let ((target-lang (getf options :target)))
           (unless target-lang
