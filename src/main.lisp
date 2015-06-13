@@ -64,6 +64,12 @@ with this program. If not, see [<http://www.gnu.org/licenses/>](typ)."
   (:name :help
    :description "Print description of command line options."
    :long "help")
+  (:name :license
+   :description "Print license of the program."
+   :long "license")
+  (:name :version
+   :description "Print version of the program."
+   :long "version")
   (:name :target
    :description "Set target language LANG. This option is a must."
    :short #\t
@@ -75,13 +81,7 @@ with this program. If not, see [<http://www.gnu.org/licenses/>](typ)."
    :long "no-wizard")
   (:name :no-tutorial
    :description "Omit tutorial."
-   :long "no-tutorial")
-  (:name :license
-   :description "Print license of the program."
-   :long "license")
-  (:name :version
-   :description "Print version of the program."
-   :long "version"))
+   :long "no-tutorial"))
 
 (defun unknown-option (condition)
   "What to do if user has passed unknown command line option. CONDITION is
