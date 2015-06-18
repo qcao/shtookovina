@@ -34,11 +34,11 @@ decreased, otherwise it's increased. This is upper limit of the weight.")
   "This is a number that represents lower limit of weight of form.")
 
 (defvar *weight-step* 33
-  "Weight is changed discretely, *WEIGHT-STEP* is minimal difference between
-consequent values of weight.")
+  "Weight is changed discretely, `*weight-step*' is minimal difference
+between consequent values of weight.")
 
 (defvar +aspects-count+ 3
-  "Number of 'aspects' (exercise types) per form. In this version of
+  "Number of «aspects» (exercise types) per form. In this version of
 Шτookωвiнα we have three aspects: translation, writing, and listening.")
 
 (defparameter *weight-sums* (make-array +aspects-count+ :initial-element 0)
@@ -103,7 +103,7 @@ table should be done with this function."))
 
 (defun save-dictionary (filename)
   "Write current dictionary image to the file with the name FILENAME. This
-mainly serializes contents of *DICTIONARY* and *WEIGHT-SUMS* variables."
+mainly serializes contents of `*dictionary*' and `*weight-sums*' variables."
   (with-open-file (stream filename
                           :direction :output
                           :if-exists :supersede
@@ -114,7 +114,7 @@ mainly serializes contents of *DICTIONARY* and *WEIGHT-SUMS* variables."
 
 (defun load-dictionary (filename)
   "Try to load dictionary from file that has name FILENAME. This operation
-sets values of *DICTIONARY* and *WEIGHT-SUMS* variables. The function
+sets values of `*dictionary*' and `*weight-sums*' variables. The function
 returns T on success and NIL on failure."
   (with-open-file (stream filename
                           :direction :input
@@ -137,9 +137,10 @@ NIL otherwise."
 
 (defun add-item (type default-form translation)
   "Add item to the dictionary. The item will have type TYPE (according to
-definition of LANGUAGE) and default form DEFAULT-FORM. If the dictionary
-already contains this item, the function has no effect. Return NIL value if
-there was no such item in the dictionary and non-NIL value otherwise."
+definition of current language) and default form DEFAULT-FORM. If the
+dictionary already contains this item, the function has no effect. Return
+NIL value if there was no such item in the dictionary and non-NIL value
+otherwise."
   (unless (gethash (cons type default-form) *dictionary*)
     (setf (gethash (cons type default-form) *dictionary*)
           (make-instance 'dictionary-item
@@ -158,8 +159,7 @@ dictionary items."
      *dictionary*)
     total))
 
-(defun edit-item-form
-    (type default-form new-form &optional (form-index 0))
+(defun edit-item-form (type default-form new-form &optional (form-index 0))
   "Edit dictionary item changing one of its forms. Target item is identified
 by TYPE and DEFAULT-FORM. Selected form at FORM-INDEX will be replaced with
 NEW-FORM. Return NIL if there is no such item in the dictionary and NEW-FORM
@@ -190,13 +190,13 @@ identified by TYPE and DEFAULT-FORM in the dictionary."
     (alter-weight it form-index aspect-index (- *weight-step*))))
 
 (defun item-inc-weight (type default-form form-index aspect-index)
-  "Decrease weight of ASPECT-INDEX aspect of form at FORM-INDEX of item
+  "Increase weight of ASPECT-INDEX aspect of form at FORM-INDEX of item
 identified by TYPE and DEFAULT-FORM in the dictionary."
   (awhen (gethash (cons type default-form) *dictionary*)
     (alter-weight it form-index aspect-index *weight-step*)))
 
 (defun item-reset-progress (type default-form)
-  "Set all weights for all forms to *INITIAL-WEIGHT* value (= 0 %
+  "Set all weights for all forms to `*initial-weight*' value (= 0 %
 learned). Return NIL if there is no such dictionary item and T otherwise."
   (awhen (gethash (cons type default-form) *dictionary*)
     (dotimes (form-index (length (forms it)))
@@ -205,7 +205,7 @@ learned). Return NIL if there is no such dictionary item and T otherwise."
     t))
 
 (defun item-mark-as-learned (type default-form)
-  "Set all weights for all forms to *BASE-WEIGHT* value (= 100 %
+  "Set all weights for all forms to `*base-weight*' value (= 100 %
 learned). Return NIL if there is no such dictionary item and T otherwise."
   (awhen (gethash (cons type default-form) *dictionary*)
     (dotimes (form-index (length (forms it)))
@@ -255,7 +255,7 @@ item for ASPECT-INDEX."
 specifies how many elements returned list should have. If there is not
 enough forms in the dictionary, i.e. NUMBER < number of forms in the
 dictionary, return NIL. Otherwise return NUMBER randomly selected items as
-with GET-NEXT-FORM. Big values of NUMBER are not recommended."
+with `get-next-form'. Big values of NUMBER are not recommended."
   (when (block the-block
           (let ((total 0))
             (maphash-values

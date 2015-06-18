@@ -33,7 +33,7 @@
 (defvar +shtookovina-local+
   (make-pathname :directory '(:relative ".shtookovina"))
   "Local directory where user's personal data is stored. Use
-SHTOOKOVINA-LOCAL function to get absolute path at run time.")
+`shtookovina-local' function to get absolute path at run time.")
 
 (defvar +config-pathname+ (make-pathname :name "config" :type "lisp")
   "Path name of configuration file.")
@@ -85,7 +85,7 @@ with this program. If not, see [<http://www.gnu.org/licenses/>](typ)."
 
 (defun unknown-option (condition)
   "What to do if user has passed unknown command line option. CONDITION is
-raised condition."
+the raised condition."
   (term:print "[Warning](err): \"~\" option is unknown"
               :args (opts:option condition))
   (invoke-restart 'opts:skip-option))
@@ -95,14 +95,14 @@ raised condition."
   (merge-pathnames +shtookovina-local+ (user-homedir-pathname)))
 
 (defun local-target-pathname (target-lang)
-  "Return local target pathname -- combination of shtookovina local
-directory and directory named after target language."
+  "Return local target pathname — combination of shtookovina local directory
+and directory named after target language TARGET-LANG."
   (merge-pathnames (make-pathname :directory (list :relative target-lang))
                    (shtookovina-local)))
 
 (defun load-lisp (filename)
-  "Load given file FILENAME, evaluating it in SHTOOKOVINA package. Return T
-on success and NIL on failure."
+  "Load given file FILENAME, evaluating it in `shtookovina' package. Return
+T on success and NIL on failure."
   (let ((*package* (find-package 'shtookovina)))
     (load filename
           :if-does-not-exist nil
@@ -126,7 +126,8 @@ language for training. Retrun T on success and NIL on failure."
 
 (defun load-config (local-target &optional no-wizard)
   "Load configuration file located in LOCAL-TARGET directory. Retrun T on
-success and NIL on failure."
+success and NIL on failure. If NO-WIZARD is not NIL, don't start wizard even
+if the specified configuration file does not exist."
   (let ((filename (merge-pathnames +config-pathname+ local-target)))
     (unless (or (load-lisp filename) no-wizard)
       (with-open-file (stream filename
@@ -140,7 +141,7 @@ success and NIL on failure."
   (load-dictionary (merge-pathnames +dict-pathname+ local-target)))
 
 (defun ask-and-save-dict (local-target)
-  "Ask if user wants to save changes in his/her dictionary and save them."
+  "Ask if user wants to save changes in his dictionary and save them."
   (term:print (uie :ask-save-dict))
   (when (int-yes-or-no t)
     (save-dictionary (merge-pathnames +dict-pathname+ local-target))))

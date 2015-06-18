@@ -42,7 +42,7 @@ associated with EVENT and NIL otherwise."
 (defun perform-hook (event &key args in-thread put-into-shell)
   "Call hook associated with given EVENT with arguments ARGS (must be a list
 designator). If IN-THREAD is non-NIL, create separate thread for the
-function (return no value in this case). If PUT-INTO-SHELL is non-NIL,
+function (return no value in this case). If `put-into-shell' is non-NIL,
 result of the function will be feed into the system shell (the result must
 be a string). Return value actual function evaluates to, or NIL if there is
 no such function registered."
