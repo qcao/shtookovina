@@ -250,8 +250,10 @@
 ;; Before we write definitions of exercises, we need to define some helpers.
 
 (defun pick-forms (aspect-index quantity)
-  "Return forms for exercises. If some forms are unknown, ask user to fill
-them out. If there is not enough forms in the dictionary, return NIL."
+  "Return forms for exercises. aspect-index tells the function which aspect
+of word recognition will be trained. QUANTITY is number to words to return.
+If some forms are unknown, ask user to fill them out. If there is not enough
+forms in the dictionary, return NIL."
   (let ((forms (pick-some-forms aspect-index quantity)))
     (dolist (form forms forms)
       (when (apply #'unknown-form-p form)

@@ -21,14 +21,14 @@
 (in-package #:shtookovina)
 
 (defun run-and-print (sexp stream)
-  "Eval given s expression SEXP and print it to stream STREAM."
+  "Eval given s-expression SEXP and print it to stream STREAM."
   (eval sexp)
   (print sexp stream))
 
 (defun wizard-ui-lang (stream)
-  "Ask user about his/her preferred user interface language and write
-necessary code to the user's configuration file in order to set this
-language on every start."
+  "Ask user about his preferred user interface language and write necessary
+code to the user's configuration file in order to set this language on every
+start."
   (term:print (uie :wizard-ui-lang))
   (do (input)
       ((and input (use-ui-language input))
@@ -43,7 +43,7 @@ language on every start."
 (defun wizard-shtooka-dirs (stream)
   "Ask user about directory containing Shtooka audio databases downloaded
 from Shtooka website, traverse supplied directory and add code that will
-bind special variable *SHTOOKA-DIRS* on every start."
+bind special variable `*shtooka-dirs*' on every start."
   (flet ((get-dirs (path)
            (remove-if-not #'fad:directory-exists-p
                           (fad:list-directory path))))
@@ -76,7 +76,7 @@ to STREAM."
 
 (defun wizard-query-ext (stream)
   "Generate example of :QUERY-EXT hook, write it to STREAM, print a message
-to *STANDARD-OUTPUT*."
+to `*standard-output*'."
   (run-and-print '(define-hook :query-ext (word)
                    (format nil "icecat -new-tab \"localhost/~a\""
                     (hexify-string word)))
@@ -85,7 +85,7 @@ to *STANDARD-OUTPUT*."
 
 (defun wizard-conj-ext (stream)
   "Generate example of :CONJ-EXT hook, write it to STREAM, print a message
-to *STANDARD-OUTPUT*."
+to `*standard-output*'."
   (run-and-print '(define-hook :conj-ext (verb)
                    (format nil "icecat -new-tab \"localhost/~a\""
                     (hexify-string verb)))
@@ -94,7 +94,7 @@ to *STANDARD-OUTPUT*."
 
 (defun wizard (stream)
   "Generate user configuration file by asking simple questions. Contents of
-the generated file should be sent to OUT (stream)."
+the generated file should be sent to STREAM."
   (dolist (fnc (list #'wizard-ui-lang
                      #'wizard-shtooka-dirs
                      #'wizard-audio-query

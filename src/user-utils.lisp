@@ -1,7 +1,7 @@
 ;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; -*-
 ;;;
 ;;; Some utilities that user may find useful when writing hooks and
-;;; customization in his/her init-file.
+;;; customization in configuration file.
 ;;;
 ;;; Copyright © 2015 Mark Karpov
 ;;;
@@ -37,9 +37,9 @@
   "Vector translating bytes to URI-encoded percent-sequences.")
 
 (defun hexify-string (string)
-  "URI-encode URL and return the result. If URL is multibyte, it is first
-converted to a utf-8 byte string. Each byte corresponding to an allowed
-character is left as-is, while all other bytes are converted to a
+  "URI-encode URL string STRING and return the result. If URL is multi-byte,
+it is first converted to a utf-8 byte string. Each byte corresponding to an
+allowed character is left as-is, while all other bytes are converted to a
 three-character string (percent-encoding): \"%\" followed by two upper-case
 hex digits."
   (with-output-to-string (stream)

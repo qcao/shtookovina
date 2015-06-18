@@ -34,11 +34,11 @@ autocompletion.")
 
 (defparameter *command-counter* 0
   "Command counter. It's part of Шτookωвiнα prompt. It's incremented every
-time READ-COMMAND gets some input successfully.")
+time `read-command' returns some input successfully.")
 
 (defparameter +session-prompt+ "[~a]> "
   "This is a control string that's passed to FORMAT function along with the
-value of *COMMAND-COUNTER* to produce Шτookωвiнα session prompt.")
+value of `*command-counter*' to produce Шτookωвiнα session prompt.")
 
 (defparameter *session-terminated* nil
   "If this variable is bound to non-NIL value, Шτookωвiнα REPL will be
@@ -65,11 +65,11 @@ oldest).")
    (short-desc-id
     :initarg :short-desc-id
     :accessor short-desc-id
-    :documentation "this is id of short description of the command")
+    :documentation "id of short description of the command")
    (long-desc-id
     :initarg :long-desc-id
     :accessor long-desc-id
-    :documentation "this is id of detailed description of the command")
+    :documentation "id of detailed description of the command")
    (lambda-list
     :initarg :lambda-list
     :accessor lambda-list
@@ -85,7 +85,7 @@ be a string designator. It's the name that user will be able to use to
 execute the command. ARGS must be a list describing arguments of the
 function where every element is of form (SYMBOL TYPE), where SYMBOL is the
 name of the variable and TYPE is its type. Symbol &OPTIONAL is allowed, it
-has the same meaning as in usual lambda list. BODY is an implicit PROGN."
+has the same meaning as in usual lambda list. BODY is an implicit progn."
   (flet ((make-arg (types arg)
            (cond ((listp arg)
                   (if types (cdr arg) (list (car arg))))
@@ -109,7 +109,7 @@ has the same meaning as in usual lambda list. BODY is an implicit PROGN."
 
 (defun session-std-complete (text start end)
   "Custom completion for Шτookωвiнα REPL. First word is completed to a word
-from *COMMAND-LIST*, other words are currently not completed."
+from `*command-list*', other words are currently not completed."
   (declare (ignore start end))
   (labels ((common-prefix (items)
              (subseq
@@ -136,7 +136,7 @@ from *COMMAND-LIST*, other words are currently not completed."
     (select-completions *command-list*)))
 
 (defun repeat-audio-query (arg key)
-  "Call AUDIO-QUERY silently with the same text as in its last call."
+  "Call `audio-query' silently with the same text as in its last call."
   (declare (ignore arg key))
   (when *last-audio-query*
     (audio-query *last-audio-query*
@@ -157,7 +157,10 @@ history R-LINE."
 (defun readline (prompt &key add-history (num-chars 0))
   "Generalized version of readline. It checks if current input stream is
 interactive. If it's interactive we use real GNU Readline library here,
-otherwise we just read a line of text after printing given prompt."
+otherwise we just read a line of text after printing given prompt. PROMPT is
+prompt to print, ADD-HISTORY, if given, specifies whether to add current
+input to the history, NUM-CHARS is the number of characters to read (zero
+means unlimited)."
   (if (interactive-stream-p *standard-input*)
       (rl:readline :prompt prompt
                    :add-history add-history
@@ -191,10 +194,10 @@ hook, its non-NIL return value will be used as replacement."
                     :args (list command))))
 
 (defmacro define-arg-parser (target-type args &body body)
-  "Defined new argument parser for TARGET-TYPE. ARGS must be lambda-list of
+  "Defined new argument parser for TARGET-TYPE. ARGS must be lambda list of
 arguments that parsing function can take. It should be able to take at least
-one argument - string that represents an argument to parse. BODY is an
-implicit PROGN."
+one argument — string that represents an argument to parse. BODY is an
+implicit progn."
   `(setf (gethash ',target-type *arg-parsers*)
          (lambda ,args
            ,@body)))
@@ -213,13 +216,12 @@ implicit PROGN."
                          :stream stream)))
   (:documentation "The condition is signaled when argument parser cannot
 fulfill its task: when returned value is not of target type or when the
-parser signals any condition itself. In both cases, condition of this type
-is signaled."))
+parser itself signals a condition."))
 
 (defun coerce-arg (target-type arg)
-  "This is special version of COERCE to convert strings into Lisp
-objects. It converts STRING into object of type OUTPUT-TYPE (unless ARG is
-already of desired type)."
+  "This is special version of `coerce' to convert strings into Lisp
+objects. It converts string ARG into object of type TARGET-TYPE (unless ARG
+is already of desired type)."
   (if (typep arg target-type)
       arg
       (awhen (gethash target-type *arg-parsers*)
@@ -273,7 +275,7 @@ will perform any necessary processing."
   "Check if last (newest) command in session history equal to given command
 COMMAND (must be a string designator). If ARG-PREDICATE is supplied it must
 be predicate to check arguments of the command. Only if the predicate
-returns non-NIL value LAST-COMMAND= will return T."
+returns non-NIL value `last-command=' will return T."
   (awhen (car *session-history*)
     (destructuring-bind (c . a) it
       (and (string-equal c command)
@@ -281,8 +283,8 @@ returns non-NIL value LAST-COMMAND= will return T."
                (funcall arg-predicate a))))))
 
 (defun int-yes-or-no (default-yes)
-  "Interactively ask user to answer `yes' or `no'. If DEFAULT-YES is not
-NIL, consider empty input `yes', otherwise `no'."
+  "Interactively ask user to answer «yes» or «no». If DEFAULT-YES is not
+NIL, consider empty input «yes», otherwise «no»."
   (awhen (readline
           (format nil +session-prompt+
                   (if default-yes "Yn" "Ny"))
@@ -292,8 +294,8 @@ NIL, consider empty input `yes', otherwise `no'."
         (char-equal (char it 0) #\y))))
 
 (defun int-select-option (options &optional (item-style :default))
-  "Interactively select an options from OPTIONS. Return the option on
-success and NIL on failure (canceled)."
+  "Interactively select an option from OPTIONS. Return the option on success
+and NIL on failure (canceled)."
   (term:o-list options
                :index       :letter
                :index-style :arg
@@ -376,7 +378,7 @@ command itself."
                   :margin 2))
     (values)))
 
-;; default parsers
+;; Default Parsers
 
 (define-arg-parser string (arg)
   (string arg))

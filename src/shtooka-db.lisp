@@ -30,7 +30,7 @@ recordings.")
 
 (defvar *audio-index* nil
   "This hash table allows to lookup names of audio files relevant to given
-word (not necessary in its base form). INIT-SHTOOKA-DB reads Shtooka
+word (not necessary in its base form). `init-shtooka-db' reads Shtooka
 database index and fills this hash table.")
 
 (defvar *text-index* nil
@@ -43,16 +43,16 @@ search fails and before invocation of :FAILED-AUDIO-QUERY
 or :SUCCESSFUL-AUDIO-QUERY hooks.")
 
 (defparameter *target-tag* "SWAC_TEXT"
-  "This tag will be used to fill out *AUDIO-INDEX*.")
+  "This tag will be used to fill out `*audio-index*'.")
 
 (defparameter *uniqueness-threshold* 1/250
   "A word is considered auxiliary in current language, if it appears in
 this (or greater) share of all texts in data base. Auxiliary words are
-deleted from *AUDIO-INDEX* to speed up playback. One can find all auxiliary
-words in *AUXILIARY-INDEX* hash table.")
+deleted from `*audio-index*' to speed up playback. One can find all
+auxiliary words in `*auxiliary-index*' hash table.")
 
 (defvar *last-audio-query* nil
-  "Last text given to AUDIO-QUERY function.")
+  "Last text given to `audio-query' function.")
 
 (defun extract-words (str)
   "Split text into words, according to Sthookovina concept of word."
@@ -62,9 +62,9 @@ words in *AUXILIARY-INDEX* hash table.")
    :test #'string-equal))
 
 (defun init-shtooka-db (&aux (total 0))
-  "Generate contents of *AUDIO-INDEX*, *TEXT-INDEX*, and
-*AUXILIARY-INDEX*. This function must be called before the first call of
-AUDIO-QUERY. Invalid directories will be ignored silently."
+  "Generate contents of `*audio-index*', `*text-index*', and
+`*auxiliary-index*'. This function must be called before the first call of
+`audio-query.' Invalid directories will be ignored silently."
   (labels ((headerp (str)
              (and (not (emptyp str))
                   (char= (first-elt str) #\[)
@@ -118,7 +118,7 @@ AUDIO-QUERY. Invalid directories will be ignored silently."
                *audio-index*))))
 
 (defun audio-query (text &key silent-success silent-failure)
-  "Invokes :AUDIO-QUERY hook with file name of audio file corresponding to
+  "Invoke :AUDIO-QUERY hook with file name of audio file corresponding to
 given TEXT as first argument. TEXT may be a word or a phrase (i.e. several
 words). If the data base contains several files corresponding to the same
 text, one of them will be randomly selected. This function

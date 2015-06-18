@@ -21,8 +21,8 @@
 (in-package #:shtookovina)
 
 (defvar *ui-language* nil
-  "This variable is normally bound to an instance of class UI-LANGUAGE that
-is used to lookup phrases in current UI language to print them on the
+  "This variable is normally bound to an instance of class `ui-language'
+that is used to lookup phrases in current UI language to print them on the
 screen.")
 
 (defclass ui-language ()
@@ -43,7 +43,7 @@ screen.")
 
 (defun add-ui-elements (plist)
   "Add new user interface elements (translations). PLIST is a plist of pairs
-'keyword - string' that represent local translations of user interface
+«keyword — string» that represent local translations of user interface
 elements."
   (do ((tail plist (cddr tail)))
       ((null tail) (values))
@@ -54,7 +54,7 @@ elements."
 
 (defun set-ui-language (name &rest plist)
   "Set user interface language. NAME is name of the language and PLIST is a
-plist of pairs 'keyword - string' that represent local translations of user
+plist of pairs «keyword — string» that represent local translations of user
 interface elements."
   (setf *ui-language*
         (make-instance 'ui-language
@@ -64,7 +64,7 @@ interface elements."
   (values))
 
 (defun get-ui-locale ()
-  "Returns name of active UI langauge."
+  "Return name of active UI language."
   (name *ui-language*))
 
 (defun uie (id)
