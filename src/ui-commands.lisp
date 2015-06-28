@@ -402,10 +402,8 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
   (let* ((helpers
           (remove-duplicates
            (pick-forms 0 words)
-           :test (lambda (x y)
-                   (string-equal
-                    (apply #'item-form x)
-                    (apply #'item-form y)))))
+           :test #'string-equal
+           :key (lambda (x) (apply #'item-form x))))
          (words (make-hash-table :test #'equal))
          (prompt (format nil +session-prompt+ "?"))
          (filler (substitute-if #\space (constantly t) prompt)))
