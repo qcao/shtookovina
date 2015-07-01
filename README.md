@@ -10,7 +10,7 @@ languages. Some features of Шτookωвiнα for a quick start:
   robots;
 
 * it has minimalistic command line interface that still tries to be friendly
-  with help of [cl-readline](https://github.com/mrkkrp/cl-readline) and
+  with help of [cl-readline](https://github.com/mrkkrp/cl-readline) and of
   [cl-ansi-term](https://github.com/mrkkrp/cl-ansi-term);
 
 * it has various exercises that help user work on different aspects of
