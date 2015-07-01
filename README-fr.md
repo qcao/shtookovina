@@ -21,7 +21,7 @@ un démarrage rapide :
 * le programme a aussi «mots croisés» exercice ;
 
 * c'est bien modifiable par l'intermédiaire d'un fichier de configuration en
-  Common Lisp, le utilisateur peut définir nouvelles commandes et changer
+  Common Lisp, l'utilisateur peut définir nouvelles commandes et changer
   absolument tout dans Шτookωвiнα ;
 
 * le programme ne fait pas des hypothèses sur la langue étudiée et ceci
@@ -29,10 +29,11 @@ un démarrage rapide :
 
 * on peut aussi choisir langue d'interface utilisateur, nouvelles
   traductions sont écrites par duplication de définition actuelle de
-  certaine langue d'interface utilisateur et replaçant de liste de chaînes ;
+  certaine langue d'interface utilisateur et remplacement de liste de
+  chaînes ;
 
 * pour des utilisateurs qui ne connaissent pas Common Lisp, il y a un
-  assistant qui peut configurer la plupart des paramètres;
+  assistant qui peut configurer la plupart des paramètres ;
 
 * il y a un tutoriel interactif intégré.
 
@@ -76,8 +77,8 @@ Le processus d'installation est très simple :
    $ make
    ```
 
-6. Vous devez maintenant avoir fichier exécutable de Шτookωвiнα dans
-   `build/shtk`, vous pouvez l'installer de cette façon :
+6. Vous devez maintenant avoir fichier exécutable de Шτookωвiнα dans la
+   répertoire `build/`, vous pouvez l'installer de cette façon :
 
    ```
    # bash install.sh
@@ -90,8 +91,8 @@ Le processus d'installation est très simple :
 
 On peut utiliser Шτookωвiнα pour apprendre plusieurs langues en même
 temps. Ainsi, elle doit maintenir dictionnaires distincts et fichiers de
-configuration pour chaque langue étudiée. Vous spécifiez la langue avec la
-option `-t` ou `--target` :
+configuration pour chaque langue étudiée. Vous spécifiez la langue avec
+l'option `-t` ou `--target` :
 
 ```
 $ shtk -t en # si vous voulez apprendre anglaise
@@ -104,110 +105,113 @@ choisir leurs codes à deux caractères, s'il vous plaît.
 
 ## Assistant et audio
 
-Now, you hopefully have installed Шτookωвiнα. However, it should be
-configured before you can use it. Initially Шτookωвiнα was planned as a
-hardcore program for Lisp geeks, but later we decided to make it more
-user-friendly, so more people could use it. To make Шτookωвiнα work you're
-supposed to write some Lisp in your configuration file setting some
-variables and defining some hooks. Fortunately, we have wizard that can do
-this automatically.
+Maintenant, vous devriez avoir installé Шτookωвiнα. Toutefois, elle doit
+être configurée avant de pouvoir l'utiliser. Pour le faire fonctionner, vous
+êtes censés écrire code en Common Lisp dans votre fichier de
+configuration. Heureusement, nous avons l'assistant qui peut le faire
+automatiquement.
 
-![Шτookωвiнα Wizard](img/wizard.png)
+![L'assistant](img/wizard.png)
 
-When you start Шτookωвiнα for the first time, wizard will be called (unless
-you start it with `--no-wizard` option). First it asks about interface
-language in English (it's default language, Шτookωвiнα will use your
-preferred language as soon as it knows which one it is).
+Lorsque vous exécutez Шτookωвiнα pour la première fois, l'assistant est
+appelé (sauf si vous exécutez le programme avec l'option
+`--no-wizard`). D'abord il vous demande concernant langue d'interface
+utilisateur en anglaise (c'est la langue par défaut, Шτookωвiнα utilisera
+votre langue préférée, dès que elle la sait).
 
-Second, Шτookωвiнα needs to know where audio databases are located in your
-system. Шτookωвiнα uses databases from Shtooka project and for speed they
-should be downloaded and placed in one directory. You can download the
-databases from
-[http://download.shtooka.net/](http://download.shtooka.net/). Don't forget
-to uncompress the archives.
+Deuxièmement, Шτookωвiнα doit savoir où enregistrements sonores sont situés
+dans votre système. Le programme utilise base de données de Shtooka Project
+et pour la vitesse ils doivent être téléchargés et placés dans seul
+répertoire. Vous pouvez obtenir la base de données ici
+[http://download.shtooka.net/](http://download.shtooka.net/). N'oubliez pas
+de décompresser les archives.
 
-Third, the wizard will ask your how you would like to play audio files
-(Shtooka project uses FLAC files). You should choose between listed options.
+Troisièmement, l'assistant vous demandera comment vous voudriez jouer
+audio. Vous devez choisir entre options cotées.
 
-Finally, to use `query` and `conj` commands (open web-page with description
-of given word or conjugation of given verb) you currently need to manually
-edit relevant hooks in your configuration file, since we cannot know which
-web-service your prefer to use for this task, and thus we cannot know how to
-transform the word into URL.
+Finalement, pour utiliser `query` et `conj` commandes, vous devez éditer
+manuellement certain hameçons dans votre fichier de configuration, puisque
+nous ne pouvons pas savoir quel service web vous préférez, et donc nous ne
+pouvons pas savoir comment composer URL pour requête.
 
-## Tutorial
+## Le tutoriel
 
-Шτookωвiнα has built-in interactive tutorial that shows basic commands:
+Шτookωвiнα a un tutoriel interactif intégré qui présente quelques ordres de
+base :
 
-![Шτookωвiнα Tutorial](img/tutorial.png)
+![Le tutoriel](img/tutorial.png)
 
-The following topics are covered:
+Les sujets suivantes sont couverts :
 
-* How to find new commands and explore features of the program?
+* Comment chercher nouvelles commandes et explorer caractéristiques du
+  programme ?
 
-* How to get full description of any command?
+* Comment obtenir description complète de toutes commandes ?
 
-* How to add words and phrases to user's dictionary?
+* Comment ajouter des mots et phrases à votre dictionnaire ?
 
-* What sort of exercises can be used to remember these words?
+* Quel type d'exercices puet être utilisé pour apprendre les mots ?
 
-* How to display information about the whole dictionary and detailed
-  information about some specific entries?
+* Comment voir information concernant tout le dictionnaire et information
+  détaillée autour de certaines entrées particulières ?
 
-## Exercises
+## Exercices
 
-Currently there are four different exercises:
+Actuellement, il y a quatre différents exercices :
 
-### Translation
+### Traduction
 
-![Translation Exercise](img/translation.png)
+![Traduction](img/translation.png)
 
-In this exercise you are given a word (either in interface language or
-target language) and four possible translations. You should select correct
-one.
+Dans cet exercice, vous obtenez un mot (en la langue de l'interface
+utilisateur ou ce que vous apprenez) et quatre traductions
+possibles. Choisissez la meilleure traduction.
 
-### Word Constructor (writing)
+### Le constructeur de mots (écriture)
 
-![Word Constructor Exercise](img/constructor.png)
+![Le constructeur de mots](img/constructor.png)
 
-You are given translation and letters of the word, but they are
-shuffled. You need to enter the word correctly, letter by letter.
+Vous obtenez une traduction et lettres de un mot, mais elles sont
+mélangées. Vous devez entrer correctement le mot.
 
-### Listening
+### Écoute
 
-![Listening Exercise](img/listening.png)
+![Écoute](img/listening.png)
 
-Some relevant audio is played to you, you should recognize dictionary item
-and enter it correctly.
+Certain audio pertinent est joué, vous devez reconnaître entrée de
+dictionnaire et l'entrer correctement.
 
-### Crossword
+### Mots croisés
 
-![Crossword Exercise](img/crossword.png)
+![Mots croisés](img/crossword.png)
 
-This crossword doesn't show you visual representation of the crossing
-words. It doesn't really matter if such representation can be drawn or
-not. You cycle through various words and try to enter them correctly by
-their description. If you don't know a word, you can skip it. If you enter a
-word correctly, some letters of other words that coincide with the letters
-of the entered word are revealed.
+Dans cet exercice, vous ne voyez pas représentation visuelle de mots
+croisés. Peu importe que telle représentation peut être dessinée ou
+non. Vous faites défiler divers mots et essayez les entrer par leurs
+désignations. Si vous ne savez pas un mot vous pouvez le passer. Lorsque
+vous entrez un mot correctement, certains lettres d'autres mots coïncidant
+avec les lettres du mot entré sont révélées.
 
-## How to contribute?
+## Comment contribuer ?
 
-We need your help. There are many ways to help the project:
+Nous avons besoin de votre aide. Il y a plusieurs moyens aider le projet :
 
-* define your language if it's missing, see `langs` directory for
-  instructions and examples;
+* définissez votre langue si elle est manquante, voir la répertoire `langs`
+  pour obtenir des instructions et des exemples (c'est en anglais
+  seulement);
 
-* translate user interface, see `ui-langs` directory for instructions and
-  examples;
+* traduisez l'interface utilisateur, voir la répertoire `ui-langs` pour
+  obtenir des instructions et des exemples ;
 
-* translate this `README.md` file, append two-letter code of your language
-  to the filename like this `README-fr.md` (for French);
+* traduisez ce fichier `README.md`, ajoutez code à deux caractères de votre
+  langue au nom du fichier, comme celui-ci : `README-es.md` (pour espagnol)
+  ;
 
-* if you have encountered a bug, please
-  [open an issue](https://github.com/mrkkrp/shtookovina/issues).
+* si vous avez rencontré un bogue,
+  [rapporter-le](https://github.com/mrkkrp/shtookovina/issues), s'il vous
+  plaît.
 
-## License
+## Licence
 
 Droit d'auteur © 2015 Mark Karpov
 
