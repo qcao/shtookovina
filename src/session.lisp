@@ -229,7 +229,7 @@ is already of desired type)."
             (let ((result (funcall it arg)))
               (assert (typep result target-type))
               result)
-          (error (condition)
+          (condition (condition)
             (declare (ignore condition))
             (error 'arg-parser-failed
                    :raw-arg arg
@@ -246,12 +246,24 @@ will perform any necessary processing."
         (princ condition)
         (term:print (uie :help-command-reminder)
                     :args command))
-      (error (condition)
+      (condition (condition)
         (declare (ignore condition))
         (term:print (uie :command-invalid-call)
                     :args command)
         (term:print (uie :help-command-reminder)
                     :args command)))))
+
+(defmacro with-exit-on-sigint (global &body body)
+  "Immediately exit BODY if SIGINT is sent. If GLOBAL is not NIL, set
+variable of `*session-terminated*' to T."
+  `(handler-case
+       (progn ,@body)
+     (sb-sys:interactive-interrupt (condition) ; fix: implementation dependent
+       (declare (ignore condition))
+       (terpri)
+       (finish-output)
+       ,(when global
+          '(setf *session-terminated* t)))))
 
 (defun session ()
   "This is Шτookωвiнα REPL."
@@ -259,15 +271,16 @@ will perform any necessary processing."
   (perform-hook :session-start)
   (do (input)
       (*session-terminated*)
-    (perform-hook :tutorial-hook)
-    (setf input (read-command))
-    (awhen (and (not (emptyp input))
-                (correct-command input))
-      (push it *session-history*)
-      (apply #'perform-command it)
-      (incf *command-counter*)
-      (perform-hook :after-command
-                    :args it)))
+    (with-exit-on-sigint t
+      (perform-hook :tutorial-hook)
+      (setf input (read-command))
+      (awhen (and (not (emptyp input))
+                  (correct-command input))
+        (push it *session-history*)
+        (apply #'perform-command it)
+        (incf *command-counter*)
+        (perform-hook :after-command
+                      :args it))))
   (perform-hook :session-end)
   (values))
 

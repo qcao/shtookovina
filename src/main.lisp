@@ -194,5 +194,5 @@ success and NIL on failure."
             (rl:bind-keyseq "\\C-o" #'repeat-audio-query)
             (session)
             (ask-and-save-dict local-target))))
-    (error (condition)
+    (condition (condition)
       (term:print "[Fatal](err): ~" :args (princ-to-string condition)))))

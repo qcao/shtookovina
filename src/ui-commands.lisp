@@ -322,146 +322,150 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
 (define-command trans (&optional ((progress 20) integer))
     (:cmd-trans-s :cmd-trans-l)
   (check-type progress (integer 1))
-  (exercise (0 progress 1 3 :exercise-translation)
-    (destructuring-bind (type default-form form-index) (car targets)
-      (let* ((trans-word (zerop (random 2)))
-             (prepare (lambda (x)
-                        (if trans-word
-                            (apply #'item-form x)
-                            (destructuring-bind (type default-form form-index)
-                                x
-                              (format nil "~a ~a"
-                                      (item-translation type default-form)
-                                      (form-name type form-index))))))
-             (target-item (funcall prepare (car targets))))
-        (if trans-word
-            (term:cat-print
-             (list (list (lexeme-name type) :typ)
-                   " "
-                   (item-translation type default-form)
-                   " "
-                   (form-name type form-index)))
-            (term:cat-print
-             (list (list (lexeme-name type) :typ)
-                   " "
-                   (list (apply #'item-form (car targets)) :arg))))
-        (string= target-item
-                 (int-select-option
-                  (shuffle
-                   (cons target-item
-                         (mapcar prepare helpers)))))))))
+  (with-exit-on-sigint nil
+    (exercise (0 progress 1 3 :exercise-translation)
+      (destructuring-bind (type default-form form-index) (car targets)
+        (let* ((trans-word (zerop (random 2)))
+               (prepare (lambda (x)
+                          (if trans-word
+                              (apply #'item-form x)
+                              (destructuring-bind (type default-form form-index)
+                                  x
+                                (format nil "~a ~a"
+                                        (item-translation type default-form)
+                                        (form-name type form-index))))))
+               (target-item (funcall prepare (car targets))))
+          (if trans-word
+              (term:cat-print
+               (list (list (lexeme-name type) :typ)
+                     " "
+                     (item-translation type default-form)
+                     " "
+                     (form-name type form-index)))
+              (term:cat-print
+               (list (list (lexeme-name type) :typ)
+                     " "
+                     (list (apply #'item-form (car targets)) :arg))))
+          (string= target-item
+                   (int-select-option
+                    (shuffle
+                     (cons target-item
+                           (mapcar prepare helpers))))))))))
 
 (define-command const (&optional ((progress 20) integer))
     (:cmd-const-s :cmd-const-l)
   (check-type progress (integer 1))
-  (exercise (1 progress 1 0 :exercise-constructor)
-    (destructuring-bind (type default-form form-index) (car targets)
-      (let ((target-item (item-form type default-form form-index)))
-        (term:cat-print
-         (list (list (lexeme-name type) :typ)
-               " "
-               (item-translation type default-form)
-               " "
-               (form-name type form-index)))
-        (do ((parts (shuffle (copy-sequence 'string target-item)))
-             (acc   (make-array 0
-                                :element-type 'character
-                                :adjustable t
-                                :fill-pointer 0)))
-            ((or (= (length acc) (length target-item))
-                 (not (starts-with-subseq acc
-                                          target-item
-                                          :test #'char-equal)))
-             (progn
-               (audio-query target-item)
-               (string-equal acc target-item)))
-          (awhen (readline
-                  (concatenate 'string
-                               (format nil +session-prompt+ parts)
-                               acc)
-                  :num-chars 1)
-            (let ((it (if (emptyp it) #\newline (char it 0))))
-              (vector-push-extend it acc)
-              (update parts (curry #'remove it)
-                      :test #'char-equal
-                      :count 1))))))))
+  (with-exit-on-sigint nil
+    (exercise (1 progress 1 0 :exercise-constructor)
+      (destructuring-bind (type default-form form-index) (car targets)
+        (let ((target-item (item-form type default-form form-index)))
+          (term:cat-print
+           (list (list (lexeme-name type) :typ)
+                 " "
+                 (item-translation type default-form)
+                 " "
+                 (form-name type form-index)))
+          (do ((parts (shuffle (copy-sequence 'string target-item)))
+               (acc   (make-array 0
+                                  :element-type 'character
+                                  :adjustable t
+                                  :fill-pointer 0)))
+              ((or (= (length acc) (length target-item))
+                   (not (starts-with-subseq acc
+                                            target-item
+                                            :test #'char-equal)))
+               (progn
+                 (audio-query target-item)
+                 (string-equal acc target-item)))
+            (awhen (readline
+                    (concatenate 'string
+                                 (format nil +session-prompt+ parts)
+                                 acc)
+                    :num-chars 1)
+              (let ((it (if (emptyp it) #\newline (char it 0))))
+                (vector-push-extend it acc)
+                (update parts (curry #'remove it)
+                        :test #'char-equal
+                        :count 1)))))))))
 
 (define-command listen (&optional ((progress 20) integer))
     (:cmd-listen-s :cmd-listen-l)
   (check-type progress (integer 1))
-  (exercise (2 progress 1 0 :exercise-listening)
-    (destructuring-bind (type default-form form-index) (car targets)
-      (let ((target-item (item-form type default-form form-index)))
-        (audio-query target-item :silent-success t)
-        (awhen (readline (format nil +session-prompt+ "?"))
-          (string-equal target-item it))))))
+  (with-exit-on-sigint nil
+    (exercise (2 progress 1 0 :exercise-listening)
+      (destructuring-bind (type default-form form-index) (car targets)
+        (let ((target-item (item-form type default-form form-index)))
+          (audio-query target-item :silent-success t)
+          (awhen (readline (format nil +session-prompt+ "?"))
+            (string-equal target-item it)))))))
 
 (define-command crosswd (&optional ((words 12) integer))
     (:cmd-crosswd-s :cmd-crosswd-l)
   (check-type words (integer 1))
-  (let* ((helpers
-          (remove-duplicates
-           (pick-forms 0 words)
-           :test #'string-equal
-           :key (lambda (x) (apply #'item-form x))))
-         (words (make-hash-table :test #'equal))
-         (prompt (format nil +session-prompt+ "?"))
-         (filler (substitute-if #\space (constantly t) prompt)))
-    (term:print (uie (if helpers
-                         :exercise-crossword
-                         :not-enough-forms)))
-    (dolist (item helpers)
-      (let ((target-form (apply #'item-form item)))
-        (setf (gethash target-form words)
-              (list (substitute-if #\nul (constantly t) target-form)))))
-    (flet ((crossable (word i str)
-             (let ((crossings (cdr (gethash str words))))
-               (awhen (position (char word i) str :test #'char-equal)
-                 (not (or (find word crossings :test #'string= :key #'car)
-                          (find i crossings :test #'= :key #'cdr)))))))
-      (do ((word-list (hash-table-keys words)))
-          ((null word-list))
-        (let* ((word (pop word-list))
-               (indexes (set-difference
-                         (iota (length word))
-                         (mapcar #'cdr (cdr (gethash word words))))))
-          (dolist (i indexes)
-            (awhen (find-if (curry #'crossable word i) word-list)
-              (push (cons it (position (char word i) it :test #'char-equal))
-                    (cdr (gethash word words)))
-              (push (cons word i)
-                    (cdr (gethash it words))))))))
-    (do ((tail (apply #'circular-list helpers) (cdr tail)))
-        ((notany (lambda (x) (find #\nul x :test #'char=))
-                 (mapcar #'car (cdr (hash-table-values words)))))
-      (let* ((item (car tail))
-             (word (apply #'item-form item)))
-        (destructuring-bind (type default-form form-index) item
-          (destructuring-bind (revealed . crossings)
-              (gethash word words)
-            (when (find #\nul revealed :test #'char=)
-              (term:cat-print
-               (list
-                filler
-                (list (substitute #\· #\nul revealed :test #'char=) :arg)
-                " — "
-                (list (lexeme-name type) :typ)
-                " "
-                (item-translation type default-form)
-                " "
-                (form-name type form-index)))
-              (let ((input (readline prompt)))
-                (unless (emptyp input)
-                  (if (string-equal input word)
-                      (progn
-                        (setf (car (gethash word words)) word)
-                        (dolist (crossing crossings)
-                          (destructuring-bind (target . index) crossing
-                            (setf (char (car (gethash target words)) index)
-                                  (char target index))))
-                        (audio-query word)
-                        (term:print (uie :correct)))
-                      (term:print (uie :incorrect))))))))))))
+  (with-exit-on-sigint nil
+    (let* ((helpers
+            (remove-duplicates
+             (pick-forms 0 words)
+             :test #'string-equal
+             :key (lambda (x) (apply #'item-form x))))
+           (words (make-hash-table :test #'equal))
+           (prompt (format nil +session-prompt+ "?"))
+           (filler (substitute-if #\space (constantly t) prompt)))
+      (term:print (uie (if helpers
+                           :exercise-crossword
+                           :not-enough-forms)))
+      (dolist (item helpers)
+        (let ((target-form (apply #'item-form item)))
+          (setf (gethash target-form words)
+                (list (substitute-if #\nul (constantly t) target-form)))))
+      (flet ((crossable (word i str)
+               (let ((crossings (cdr (gethash str words))))
+                 (awhen (position (char word i) str :test #'char-equal)
+                   (not (or (find word crossings :test #'string= :key #'car)
+                            (find i crossings :test #'= :key #'cdr)))))))
+        (do ((word-list (hash-table-keys words)))
+            ((null word-list))
+          (let* ((word (pop word-list))
+                 (indexes (set-difference
+                           (iota (length word))
+                           (mapcar #'cdr (cdr (gethash word words))))))
+            (dolist (i indexes)
+              (awhen (find-if (curry #'crossable word i) word-list)
+                (push (cons it (position (char word i) it :test #'char-equal))
+                      (cdr (gethash word words)))
+                (push (cons word i)
+                      (cdr (gethash it words))))))))
+      (do ((tail (apply #'circular-list helpers) (cdr tail)))
+          ((notany (lambda (x) (find #\nul x :test #'char=))
+                   (mapcar #'car (cdr (hash-table-values words)))))
+        (let* ((item (car tail))
+               (word (apply #'item-form item)))
+          (destructuring-bind (type default-form form-index) item
+            (destructuring-bind (revealed . crossings)
+                (gethash word words)
+              (when (find #\nul revealed :test #'char=)
+                (term:cat-print
+                 (list
+                  filler
+                  (list (substitute #\· #\nul revealed :test #'char=) :arg)
+                  " — "
+                  (list (lexeme-name type) :typ)
+                  " "
+                  (item-translation type default-form)
+                  " "
+                  (form-name type form-index)))
+                (let ((input (readline prompt)))
+                  (unless (emptyp input)
+                    (if (string-equal input word)
+                        (progn
+                          (setf (car (gethash word words)) word)
+                          (dolist (crossing crossings)
+                            (destructuring-bind (target . index) crossing
+                              (setf (char (car (gethash target words)) index)
+                                    (char target index))))
+                          (audio-query word)
+                          (term:print (uie :correct)))
+                        (term:print (uie :incorrect)))))))))))))
 
 (define-command train ()
     (:cmd-train-s :cmd-train-l)
