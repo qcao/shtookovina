@@ -42,7 +42,7 @@
   "Path name of dictionary file.")
 
 (defvar +gnu-glp-notice+
-  "[Шτookωвiнα](hdr) - program to help learn natural languages
+  "[Шτookωвiнα](hdr) — program to help learn natural languages
 
 Copyright © 2015 Mark Karpov
 
