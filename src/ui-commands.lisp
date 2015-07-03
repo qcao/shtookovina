@@ -285,16 +285,12 @@ achieve). TARGET-WORDS words will be generated and bound to symbol TARGETS,
 HELPER-WORDS words will be generated and bound to symbol HELPERS. Return
 value of BODY affects weights of words specified in TARGETS variable, if
 BODY evaluates to NIL, weights will be increased, otherwise decreased."
-  (with-gensyms (executed-once not-enough init-progress forms)
+  (with-gensyms (executed-once not-enough actual-progress forms)
     `(do (,executed-once
           ,not-enough
-          (,init-progress (dictionary-progress ,aspect-index)))
+          (,actual-progress 0))
          ((or ,not-enough
-              (and ,executed-once
-                   (>= (dictionary-progress ,aspect-index)
-                       (min (+ ,init-progress
-                               ,progress)
-                            100)))))
+              (>= ,actual-progress ,progress)))
        (let ((,forms (pick-forms ,aspect-index
                                  ,(+ target-forms helper-forms))))
          (if ,forms
@@ -314,6 +310,7 @@ BODY evaluates to NIL, weights will be increased, otherwise decreased."
                               form-index
                               ,aspect-index)))
                  (term:print (uie (if result :correct :incorrect)))
+                 (incf ,actual-progress (if result +1 -1))
                  (setf ,executed-once t)))
              (progn
                (setf ,not-enough t)
