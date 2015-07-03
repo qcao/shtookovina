@@ -41,7 +41,7 @@
 (defvar +dict-pathname+ (make-pathname :name "dict" :type "bin")
   "Path name of dictionary file.")
 
-(defvar +gnu-glp-notice+
+(defvar +gnu-gpl-notice+
   "[Шτookωвiнα](hdr) — program to help learn natural languages
 
 Copyright © 2015 Mark Karpov
@@ -169,7 +169,7 @@ success and NIL on failure."
           (term:print +shtookovina-version+)
           (return-from main))
         (when (getf options :license)
-          (term:print +gnu-glp-notice+)
+          (term:print +gnu-gpl-notice+)
           (return-from main))
         (when (getf options :help)
           (term:print
