@@ -63,8 +63,8 @@ program."
  :cmd-const-l
  "Word constructor exercise. You are given translation and letters of the
 word, but they are shuffled. You need to enter the word correctly, letter by
-letter. Argument [PROGRESS](arg), denotes how many percents of progress you
-would like to make."
+letter. Argument [PROGRESS](arg), denotes progress you would like to
+make (as number of correct answers)."
  :cmd-const-s
  "Word constructor exercise."
  :cmd-crosswd-l
@@ -129,8 +129,8 @@ identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  :cmd-listen-l
  "Listening comprehension exercise. Some relevant audio is played to you,
 you should recognize dictionary item and enter it correctly. Argument
-[PROGRESS](arg) denotes how many percents of progress you would like to
-make."
+[PROGRESS](arg) denotes progress you would like to make (as number of
+correct answers)."
  :cmd-listen-s
  "Listening comprehension exercise."
  :cmd-query-l
@@ -161,7 +161,7 @@ for all training."
  "This is translation exercise. In this exercise you are given a
 word (either in interface language or target language) and four possible
 translations. You should select correct one. Argument [PROGRESS](arg)
-denotes how many percents of progress you would like to make."
+denotes progress you would like to make (as number of correct answers)."
  :cmd-trans-s
  "Translation exercise."
  :cmd-ui-lang-l

@@ -64,7 +64,7 @@ programa externo."
  "Ejercicio constructor de palabra. Tienes la traducción y las letras de
 la palabra, pero éstas estan desordenadas. Debes ingresar la palabra
 correctamete, letra por letra. El argumento [PROGRESS](arg) muestra el
-porcentaje de progreso que te gustaría alcanzar."
+progreso que te gustaría alcanzar."
  :cmd-const-s
  "Ejercicio constructor de palabra."
  :cmd-crosswd-l
@@ -129,9 +129,8 @@ diccionario es identificado por su [TYPE](arg) y [DEFAULT-FORM](arg)."
  "Imprimir todos los lexemas."
  :cmd-listen-l
  "Ejercicio de comprensión auditiva. Algunos audios se reproducen,
-debes reconocer un ítem del diccionario e ingresarlo correctamente.
-El argumento [PROGRESS](arg) indica el porcentaje de progreso que
-te gustaría alcanzar."
+debes reconocer un ítem del diccionario e ingresarlo correctamente. El
+argumento [PROGRESS](arg) indica el progreso que te gustaría alcanzar."
  :cmd-listen-s
  "Ejercicio de comprensión auditiva."
  :cmd-query-l
@@ -163,7 +162,7 @@ para todo entrenamiento."
  "Éste es un ejercicio de traducción. En este ejercicio tienes una
 palabra (en el idioma de la interfaz o el que estás aprendiendo) y cuatro
 posible traducciones. Debes seleccionar la correcta. El argumento
-[PROGRESS](arg) indica qué porcentaje de progreso te gustaría alcanzar."
+[PROGRESS](arg) indica qué progreso te gustaría alcanzar."
  :cmd-trans-s
  "Ejercicio de traducción."
  :cmd-ui-lang-l
