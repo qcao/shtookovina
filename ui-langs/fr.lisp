@@ -20,46 +20,48 @@
 (set-ui-language
  "Français"
  :arg-parser-failed
- "[Cannot](err) parse [\"~\"](inc) as [~](typ)"
+ "[Impossible](err) de analyser [\"~\"](inc) comme [~](typ)"
  :ask-save-dict
- "Do you want to save all changes of your dictionary made in this session?"
+ "Voudriez-vous enregistrer les modifications de votre dictionnaire faites
+dans cette session ?"
  :aspect
  "Aspect"
  :aspect-listening
- "Listening"
+ "Écoute"
  :aspect-translation
- "Translation"
+ "Traduction"
  :aspect-writing
- "Writing"
+ "Écriture"
  :available-commands
- "Available Commands:"
+ "Commandes disponibles:"
  :command
- "Command"
+ "Commande"
  :command-invalid-call
- "[Cannot](err) call [~](cmd) with these arguments"
+ "[Impossible](err) de appeler [~](cmd) avec ces arguments"
  :correct
- "[Correct answer!](crc)"
+ "[Bonne réponse !](crc)"
  :cmd-add-l
- "Add new dictionary item of type [TYPE](arg) (see [lexemes](cmd)). The item
-will have default form [DEFAULT-FORM](arg). If the item already exists in
-the dictionary, this command has no effect."
+ "Ajouter nouvel élément de type type [TYPE](arg) (voir
+[lexemes](cmd)). L'élément aura formulaire par défaut
+[DEFAULT-FORM](arg). Si l'élément existe déjà dans le dictionnaire, cette
+commande n'aura pas d'effet."
  :cmd-add-s
- "Add new item to the dicitonary."
+ "Ajouter nouvel élément au dictionnaire."
  :cmd-audio-l
- "Search Shtooka databases, pick and play some audio file that's relevant to
-given [TEXT](arg). Note that you can use [Ctrl-o](typ) to repeat the last
-audio query."
+ "Rechercher base de données de Shtooka projet et jouer un fichier audio qui
+est pertinent au texte donné [TEXT](arg). Notez que vous pouvez utiliser
+[Ctrl-o](typ) à répéter le dernier requête audio."
  :cmd-audio-s
- "Play audio that's relevant to given text."
+ "Jouter audio qui est pertinent au texte donné."
  :cmd-clear-l
- "Clear the dictionary deleting all its items."
+ "Effacer le dictionnaire suppriment tous ses éléments."
  :cmd-clear-s
- "Clear the dictionary."
+ "Effacer le dictionnaire."
  :cmd-conj-l
- "Show conjugation of given [VERB](arg), possibly with help of an external
-program."
+ "Présenter conjugaison de verbe donné [VERB](arg), possiblement avec aide
+d'un programme externe."
  :cmd-conj-s
- "Show conjugation of given verb."
+ "Présenter conjugaison de verbe donné."
  :cmd-const-l
  "Word constructor exercise. You are given translation and letters of the
 word, but they are shuffled. You need to enter the word correctly, letter by
