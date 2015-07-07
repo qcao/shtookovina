@@ -205,7 +205,7 @@
  :dict-item-removed
  "[~](typ) [~](arg) было удаленно из вашего словаря"
  :dict-item-reset
- "прогресс [~](typ) [~](arg) был сброшен"
+ "Прогресс [~](typ) [~](arg) был сброшен"
  :dict-no-such-item
  "[Невозможно](err) найти [~](typ) [~](arg), нет такого объекта"
  :dict-trans-changed

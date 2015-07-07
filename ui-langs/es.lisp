@@ -194,7 +194,7 @@ posible traducciones. Debes seleccionar la correcta. El argumento
  :dict-item-removed
  "[~](typ) [~](arg) borrados de tu diccionario."
  :dict-item-reset
- "el progreso de [~](typ) [~](arg) ha sido reestablecido."
+ "El progreso de [~](typ) [~](arg) ha sido reestablecido."
  :dict-no-such-item
  "[No se pudo](err) encontrar [~](typ) [~](arg), no existe tal ítem"
  :dict-trans-changed

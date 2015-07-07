@@ -193,7 +193,7 @@ denotes progress you would like to make (as number of correct answers)."
  :dict-item-removed
  "[~](typ) [~](arg) removed from your dictionary"
  :dict-item-reset
- "progress of [~](typ) [~](arg) was reset"
+ "Progress of [~](typ) [~](arg) was reset"
  :dict-no-such-item
  "[Cannot](err) find [~](typ) [~](arg), no such item"
  :dict-trans-changed
