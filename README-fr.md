@@ -171,7 +171,7 @@ possibles. Choisissez la meilleure traduction.
 
 ![Le constructeur de mots](img/constructor.png)
 
-Vous obtenez une traduction et lettres de un mot, mais elles sont
+Vous obtenez une traduction et lettres d'un mot, mais elles sont
 mélangées. Vous devez entrer correctement le mot.
 
 ### Écoute
