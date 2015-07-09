@@ -20,7 +20,7 @@
 (set-ui-language
  "Français"
  :arg-parser-failed
- "[Impossible](err) de analyser [\"~\"](inc) comme [~](typ)"
+ "[Impossible](err) de analyser [« ~ »](inc) comme [~](typ)"
  :ask-save-dict
  "Voudriez-vous enregistrer les modifications de votre dictionnaire faites
 dans cette session ?"
@@ -41,10 +41,10 @@ dans cette session ?"
  :correct
  "[Bonne réponse !](crc)"
  :cmd-add-l
- "Ajouter nouvel élément de type type [TYPE](arg) (voir
-[lexemes](cmd)). L'élément aura formulaire par défaut
-[DEFAULT-FORM](arg). Si l'élément existe déjà dans le dictionnaire, cette
-commande n'aura pas d'effet."
+ "Ajouter nouvel élément de type [TYPE](arg) (voir
+[lexemes](cmd)). L'élément aura forme principale [DEFAULT-FORM](arg). Si
+l'élément existe déjà dans le dictionnaire, cette commande n'aura pas
+d'effet."
  :cmd-add-s
  "Ajouter nouvel élément au dictionnaire."
  :cmd-audio-l
@@ -54,96 +54,97 @@ est pertinent au texte donné [TEXT](arg). Notez que vous pouvez utiliser
  :cmd-audio-s
  "Jouter audio qui est pertinent au texte donné."
  :cmd-clear-l
- "Effacer le dictionnaire suppriment tous ses éléments."
+ "Effacer le dictionnaire supprimant tous ses éléments."
  :cmd-clear-s
  "Effacer le dictionnaire."
  :cmd-conj-l
- "Présenter conjugaison de verbe donné [VERB](arg), possiblement avec aide
+ "Présenter conjugaison du verbe donné [VERB](arg), possiblement avec aide
 d'un programme externe."
  :cmd-conj-s
  "Présenter conjugaison de verbe donné."
  :cmd-const-l
- "Word constructor exercise. You are given translation and letters of the
-word, but they are shuffled. You need to enter the word correctly, letter by
-letter. Argument [PROGRESS](arg), denotes progress you would like to
-make (as number of correct answers)."
+ "Le constructeur de mots. Vous obtenez une traduction et lettres d'un mot,
+mais elles sont mélangées. Vous devez entrer correctement le mot. L'argument
+[PROGRESS](arg), désigne le progrès que vous voudriez faire (comme nombre de
+réponses correctes)."
  :cmd-const-s
- "Word constructor exercise."
+ "Le constructeur de mots."
  :cmd-crosswd-l
- "Crossword exercise. This crossword doesn't show you visual representation
-of the crossing words. It doesn't really matter if such representation can
-be drawn or not. You cycle through various words and try to enter them
-correctly by their description. If you don't know a word, you can skip
-it. If you enter a word correctly, some letters of other words that coincide
-with the letters of the entered word are revealed. This exercise picks
-[WORDS](arg) words from your dictionary."
+ "Exercice « Mots croisés ». Dans cet exercice, vous ne voyez pas
+représentation visuelle de mots croisés. Peu importe que telle
+représentation peut être dessinée ou non. Vous faites défiler divers mots et
+essayez les entrer par leurs désignations. Si vous ne savez pas un mot vous
+pouvez le passer. Lorsque vous entrez un mot correctement, certains lettres
+d'autres mots coïncidant avec les lettres du mot entré sont révélées. Cet
+exercice utilise [WORDS](arg) mots de votre dictionnaire."
  :cmd-crosswd-s
- "Crossword exercise."
+ "Exercice « Mots croisés »."
  :cmd-dict-l
- "Print information about the dictionary. If [PREFIX](arg) argument is
-given, show detailed information regarding every dictionary item which
-default form (zero-indexed) starts with given prefix. Otherwise print
-general information about the entire dictionary."
+ "Imprimer information concernant le dictionnaire. Si l'argument
+[PREFIX](arg) est donné, présenter information détaillée concernant chaque
+élément dans le dictionnaire qui a forme principale commençant avec le
+préfixe donné. Autrement, imprimer information générale autour du
+dictionnaire complet."
  :cmd-dict-s
- "Print information about the dictionary."
+ "Imprimer information concernant le dictionnaire."
  :cmd-eform-l
- "Edit dictionary item changing one of its forms. Target item is identified
-by [TYPE](arg) and [DEFAULT-FORM](arg). Selected form at [FORM-INDEX](arg)
-will be replaced with [NEW-FORM](arg). To get information about form indexes
-try [forms](cmd) command."
+ "Changer forme d'élément spécifié dans le dictionnaire. L'élément est
+identifié par son [TYPE](arg) et [DEFAULT-FORM](arg) (forme principale). La
+forme choisie à [FORM-INDEX](arg) sera remplacée par [NEW-FORM](arg). Pour
+obtenir information concernant les indexes, essayez [forms](cmd) commande."
  :cmd-eform-s
- "Change form of specified dictionary item."
+ "Changer forme d'élément spécifié dans le dictionnaire."
  :cmd-etrans-l
- "Edit dictionary item changing its translation. Target item is identified
-by [TYPE](arg) and [DEFAULT-FORM](arg)."
+ "Changer traduction d'élément dans le dictionnaire. L'élément est identifié
+par son [TYPE](arg) et [DEFAULT-FORM](arg) (forme principale)."
  :cmd-etrans-s
- "Change translation of dictionary item."
+ "Changer traduction d'élément dans le dictionnaire."
  :cmd-forms-l
- "Print table with indexed forms of given [LEXEME](arg). You can get list of
-all defined lexemes with [lexemes](cmd) command."
+ "Imprimer formes du lexème donné [LEXEME](arg). Vous pouvez obtenir la
+liste de tous lexèmes définis avec [lexemes](cmd) commande."
  :cmd-forms-s
- "Print forms of given lexeme."
+ "Imprimer formes de lexème donné."
  :cmd-help-l
- "When invoked without arguments, it prints information about all available
-commands. When [COMMAND](arg) argument given, it prints detailed description
-of the specific command."
+ "Lorsque cette commande est appelée sans des arguments, imprimer
+information concernant toutes commandes interactives disponibles. Lorsque
+l'argument [COMMAND](arg) est donné, imprimer description détaillé de la
+commande spécifiée."
  :cmd-help-s
- "Print info about commands."
+ "Imprimer information autour des commandes interactives."
  :cmd-history-l
- "Print current session history. Argument [ITEMS](arg) denotes how many
-history items should be printed."
+ "Imprimer l'histoire de la session. L'argument [ITEMS](arg) désigne combien
+éléments de l'histoire doivent être imprimés."
  :cmd-history-s
- "Print history."
+ "Imprimer l'histoire de la session."
  :cmd-lang-l
- "The [lang](cmd) command prints name of the language that you're learning
-in the current Шτookωвiнα session. It's useful for troubleshooting."
+ "Imprimer le nom de la langue que vous apprenez."
  :cmd-lang-s
- "Print name of the language you're learning."
+ "Imprimer le nom de la langue que vous apprenez."
  :cmd-learned-l
- "Mark specified dictionary item as learned. The dictionary item is
-identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
+ "Marquer élément spécifié comme appris. L'élément est identifié par son
+[TYPE](arg) et [DEFAULT-FORM](arg) (forme principale)."
  :cmd-learned-s
- "Mark specified item as learned."
+ "Marquer élément spécifié comme appris."
  :cmd-lexemes-l
- "Print a table of all lexemes defined for target language."
+ "Imprimer un tableau de tous lexèmes définis dans la langue ciblée."
  :cmd-lexemes-s
- "Print all lexemes."
+ "Imprimer un tableau de tous lexèmes."
  :cmd-listen-l
- "Listening comprehension exercise. Some relevant audio is played to you,
-you should recognize dictionary item and enter it correctly. Argument
-[PROGRESS](arg) denotes progress you would like to make (as number of
-correct answers)."
+ "Exercice « Écoute ». Certain audio pertinent est joué, vous devez
+reconnaître entrée de dictionnaire et l'entrer correctement. L'argument
+[PROGRESS](arg), désigne le progrès que vous voudriez faire (comme nombre de
+réponses correctes)."
  :cmd-listen-s
- "Listening comprehension exercise."
+ "Exercice « Écoute »."
  :cmd-query-l
- "Show information about (and translation of) given [WORD](arg)."
+ "Présenter information concernant le mot donné [WORD](arg)."
  :cmd-query-s
- "Show translation of given word."
+ "Présenter information concernant le mot donné."
  :cmd-quit-l
- "Quit the Шτookωвiнα REPL."
+ "Quitter Шτookωвiнα."
  :cmd-quit-s
- "Quit the Шτookωвiнα REPL."
- :cmd-rem-l
+ "Quitter Шτookωвiнα."
+ :cmd-rem-l ;; NEXT
  "Remove specified dictionary item. The dictionary item is identified by its
 [TYPE](arg) and [DEFAULT-FORM](arg)."
  :cmd-rem-s
@@ -193,13 +194,13 @@ denotes progress you would like to make (as number of correct answers)."
  :dict-item-learned
  "[~](typ) [~](arg) has been marked as fully learned"
  :dict-item-removed
- "[~](typ) [~](arg) removed from your dictionary"
+ "[~](typ) [~](arg) est removed from your dictionary" ;; <---
  :dict-item-reset
- "progress of [~](typ) [~](arg) was reset"
+ "Progrès de [~](typ) [~](arg) a été réinitialisé"
  :dict-no-such-item
- "[Cannot](err) find [~](typ) [~](arg), no such item"
+ "[Impossible](err) de trouver [~](typ) [~](arg), il n'y a pas de tel élément"
  :dict-trans-changed
- "Changed translation of [~](typ) [~](arg)"
+ "Traduction de [~](typ) [~](arg) a été changée."
  :exercise-constructor
  "Enter the word letter by letter (hint: you are given all letters of the
 word in the prompt, but they are shuffled):"
@@ -215,7 +216,7 @@ exercises continues until you enter all words correctly."
  :exercise-translation
  "Select correct translation of given dictionary item:"
  :failed-audio-query
- "[Cannot](err) find any relevant audio for [\"~\"](arg)"
+ "[Cannot](err) find any relevant audio for [« ~ »](arg)"
  :help-command-reminder
  "For information about the command use: [help](cmd) [~](arg)"
  :incorrect
@@ -227,7 +228,7 @@ exercises continues until you enter all words correctly."
  :lexeme-forms
  "Lexeme Forms"
  :name
- "Name"
+ "Nom"
  :no-such-lexeme
  "[Cannot](err) find definition of the [~](arg) lexeme"
  :not-enough-forms
@@ -237,7 +238,7 @@ exercises continues until you enter all words correctly."
  :progress
  "%"
  :proposed-audio
- "Proposed audio: [\"~\"](arg)"
+ "Audio proposé : [« ~ »](arg)"
  :tutorial-0
  "[Welcome to Шτookωвiнα](hdr), program that will help you to learn
 [~](arg). In Шτookωвiнα you enter commands and their arguments to make
@@ -292,9 +293,9 @@ end. To exit the interactive environment use [quit](cmd). Good luck!"
  :unknown-form-query
  "[~](typ) [~](arg) ~ is [unknown](err), fill it out to continue:"
  :value
- "Value"
+ "Valeur"
  :where
- "where "
+ "où "
  :wizard-audio-query
  "Please select how Шτookωвiнα should play FLAC files:"
  :wizard-audio-query-manually
@@ -311,14 +312,14 @@ system. You can download audio recordings for your language from official
 site of Shtooka project [<http://download.shtooka.net/>](typ). Untar them
 and put into one directory, then enter path to the directory here:"
  :wizard-shtooka-dirs-bad
- "Directory [\"~\"](arg) does not exist or it's empty, try again."
+ "Directory [« ~ »](arg) does not exist or it's empty, try again."
  :wizard-shtooka-dirs-ok
  "Added directories"
  :wizard-ui-lang
  "Please select language that will be used for user interface. Enter two
-letters, for example [\"en\"](arg) for English."
+letters, for example [« en »](arg) for English."
  :wizard-ui-lang-bad
- "This your input [\"~\"](arg) doesn't designate any defined language, try
+ "This your input [« ~ »](arg) doesn't designate any defined language, try
 again."
  :wizard-ui-lang-ok
- "OK, using [~](arg) for user interface.")
+ "OK, utilisant [~](arg) comme la langue d'interface utilisateur.")
