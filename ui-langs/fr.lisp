@@ -33,7 +33,7 @@ dans cette session ?"
  :aspect-writing
  "Écriture"
  :available-commands
- "Commandes disponibles:"
+ "Commandes disponibles :"
  :command
  "Commande"
  :command-invalid-call
@@ -144,102 +144,106 @@ réponses correctes)."
  "Quitter Шτookωвiнα."
  :cmd-quit-s
  "Quitter Шτookωвiнα."
- :cmd-rem-l ;; NEXT
- "Remove specified dictionary item. The dictionary item is identified by its
-[TYPE](arg) and [DEFAULT-FORM](arg)."
+ :cmd-rem-l
+ "Supprimer élément spécifié. L'élément est identifié par son [TYPE](arg) et
+[DEFAULT-FORM](arg) (forme principale)."
  :cmd-rem-s
- "Remove specified dictionary item."
+ "Supprimer élément spécifié."
  :cmd-reset-l
- "Reset progress of specified dictionary item. The dictionary item is
-identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
+ "Remettre le progrès de élément spécifie. L'élément est identifié par son
+[TYPE](arg) et [DEFAULT-FORM](arg) (forme principale)."
  :cmd-reset-s
- "Reset progress of specified dictionary item."
+ "Remettre le progrès de élément spécifie."
  :cmd-train-l
- "Comprehensive training. It includes all sorts of exercises: translation,
+ "Formation complète. It includes all sorts of exercises : translation,
 writing, and audition in right order. It's recommended to use this command
 for all training."
  :cmd-train-s
- "Comprehensive training."
+ "Formation complète."
  :cmd-trans-l
- "This is translation exercise. In this exercise you are given a
-word (either in interface language or target language) and four possible
-translations. You should select correct one. Argument [PROGRESS](arg)
-denotes progress you would like to make (as number of correct answers)."
+ "Exercice « Traduction ». Dans cet exercice, vous obtenez un mot (en la
+langue de l'interface utilisateur ou ce que vous apprenez) et quatre
+traductions possibles. Choisissez la meilleure traduction. L'argument
+[PROGRESS](arg), désigne le progrès que vous voudriez faire (comme nombre de
+réponses correctes)."
  :cmd-trans-s
- "Translation exercise."
+ "Exercice « Traduction »."
  :cmd-ui-lang-l
- "Print name of user interface language."
+ "Imprimer le nom de la langue d'interface utilisateur."
  :cmd-ui-lang-s
- "Print name of user interface language."
+ "Imprimer le nom de la langue d'interface utilisateur."
  :current-language
- "You are learning [~](arg)"
+ "Vous apprenez [~](arg)"
  :current-ui-language
- "User interface is in [~](arg)"
+ "La langue d'interface utilisateur est [~](arg)"
  :default-form
- "default form"
+ "forme principale"
  :description
  "Description"
  :dict-cleared
- "The dictionary is cleared, [~](arg) item(s) removed"
+ "Le dictionnaire est dégagé, [~](arg) élément(s) supprimé(s)"
  :dict-entry-header
  "[~](arg), [~](typ) — ~ [[~](arg) %]"
  :dict-general
- "[~](arg) word(s) in the dictionary, overall progress [~](arg) %"
+ "[~](arg) mot(s) dans le dictionnaire, progrès total [~](arg) %"
  :dict-form-changed
- "Changed [~](typ) [~](arg) ~"
+ "[~](typ) [~](arg) ~ a été changé"
  :dict-item-added
- "[~](typ) [~](arg) added to your dictionary"
+ "[~](typ) [~](arg) a été ajouté à votre dictionnaire"
  :dict-item-already-exists
- "[Cannot](err) add [~](typ) [~](arg), it's already present in your dictionary"
+ "[Impossible](err) de ajouter [~](typ) [~](arg), parce qu'il existe déjà
+dans votre dictionnaire"
  :dict-item-learned
- "[~](typ) [~](arg) has been marked as fully learned"
+ "[~](typ) [~](arg) a été marqué comme appris"
  :dict-item-removed
- "[~](typ) [~](arg) est removed from your dictionary" ;; <---
+ "[~](typ) [~](arg) a été supprimé"
  :dict-item-reset
  "Progrès de [~](typ) [~](arg) a été réinitialisé"
  :dict-no-such-item
  "[Impossible](err) de trouver [~](typ) [~](arg), il n'y a pas de tel élément"
  :dict-trans-changed
- "Traduction de [~](typ) [~](arg) a été changée."
+ "Traduction de [~](typ) [~](arg) a été changée"
  :exercise-constructor
- "Enter the word letter by letter (hint: you are given all letters of the
-word in the prompt, but they are shuffled):"
+ "Entrez les lettres du mot (on vous donne les lettres du mot, mais elles
+sont mélangées) :"
  :exercise-crossword
- "Cycle through various words and try to enter them correctly by their
-description. If you don't know a word, you can skip it (press [Enter](typ)
-entering empty line). If you enter a word correctly, some letters of other
-words that coincide with the letters of the entered word are revealed. The
-exercises continues until you enter all words correctly."
+ "Faites défiler divers mots et essayez les entrer par leurs
+désignations. Si vous ne savez pas un mot vous pouvez le passer (appuyez sur
+[Entrée](typ) entrant une ligne vide). Lorsque vous entrez un mot
+correctement, certains lettres d'autres mots coïncidant avec les lettres du
+mot entré sont révélées. L'exercice continue jusqu'à vous entriez tous les
+mots correctement."
  :exercise-listening
- "Listen to some recordings, recognize and enter target word (press
-[Ctrl-o](typ) to hear audio recording again):"
+ "Certain audio pertinent est joué, vous devez reconnaître entrée de
+dictionnaire et l'entrer correctement (appuyez sur [Ctrl-o](typ) pour
+écouter audio à nouveau) :"
  :exercise-translation
- "Select correct translation of given dictionary item:"
+ "Choisissez bonne traduction du élément donné :"
  :failed-audio-query
- "[Cannot](err) find any relevant audio for [« ~ »](arg)"
+ "[Impossible](err) de trouver audio pertinent pour [« ~ »](arg)"
  :help-command-reminder
- "For information about the command use: [help](cmd) [~](arg)"
+ "Pour information concernant la commande, essayez : [help](cmd) [~](arg)"
  :incorrect
- "[Incorrect answer.](inc)"
+ "[Mauvaise réponse.](inc)"
  :index
  "Index"
  :lexemes
- "Defined Lexemes"
+ "Lexèmes définis"
  :lexeme-forms
- "Lexeme Forms"
+ "Les formes du lexème"
  :name
  "Nom"
  :no-such-lexeme
- "[Cannot](err) find definition of the [~](arg) lexeme"
+ "[Impossible](err) de trouver la définition du lexème [~](arg)"
  :not-enough-forms
- "There is [not enough](err) words in the dictionary"
+ "Il [n'y a pas assez de mots](err) dans le dictionnaire"
  :possible-corrections
- "Possible corrections for [~](cmd):"
+ "Corrections possibles pour [~](cmd) :"
  :progress
  "%"
  :proposed-audio
  "Audio proposé : [« ~ »](arg)"
- :tutorial-0
+ :tutorial-0 ;; NEXT
  "[Welcome to Шτookωвiнα](hdr), program that will help you to learn
 [~](arg). In Шτookωвiнα you enter commands and their arguments to make
 various things happen. This way you can add words to your dictionary and
@@ -268,7 +272,7 @@ share common prefix. Pass that prefix as first argument to [dict](cmd)
 command to use this functionality."
  :tutorial-4
  "[12 words should be enough](hdr) to start our training. Шτookωвiнα has
-several exercises to train different aspects of word recognition:
+several exercises to train different aspects of word recognition :
 [translation](typ), [writing](typ), and [listening](typ). It even has some
 sort of crossword game! You can use specific commands to start any of these
 exercises, but we advise you use [train](cmd) command that tries to provide
@@ -291,13 +295,13 @@ end. To exit the interactive environment use [quit](cmd). Good luck!"
  :uncorrectable-command
  "[Cannot](err) correct command [~](cmd)"
  :unknown-form-query
- "[~](typ) [~](arg) ~ is [unknown](err), fill it out to continue:"
+ "[~](typ) [~](arg) ~ is [unknown](err), fill it out to continue :"
  :value
  "Valeur"
  :where
  "où "
  :wizard-audio-query
- "Please select how Шτookωвiнα should play FLAC files:"
+ "Please select how Шτookωвiнα should play FLAC files :"
  :wizard-audio-query-manually
  "OK, define hook [:audio-query](typ) yourself in your configuration file."
  :wizard-conj-ext
@@ -310,7 +314,7 @@ activate [query](cmd) command."
  "Шτookωвiнα needs to know where Shtooka audio bases are located in your
 system. You can download audio recordings for your language from official
 site of Shtooka project [<http://download.shtooka.net/>](typ). Untar them
-and put into one directory, then enter path to the directory here:"
+and put into one directory, then enter path to the directory here :"
  :wizard-shtooka-dirs-bad
  "Directory [« ~ »](arg) does not exist or it's empty, try again."
  :wizard-shtooka-dirs-ok
