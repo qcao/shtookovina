@@ -77,7 +77,7 @@ Le processus d'installation est très simple :
    $ make
    ```
 
-6. Vous devez maintenant avoir fichier exécutable de Шτookωвiнα dans la
+6. Vous devez maintenant avoir fichier exécutable de Шτookωвiнα dans le
    répertoire `build/`, vous pouvez l'installer de cette façon :
 
    ```
@@ -130,7 +130,7 @@ Troisièmement, l'assistant vous demandera comment vous voudriez jouer
 audio. Vous devez choisir entre options cotées.
 
 Finalement, pour utiliser `query` et `conj` commandes, vous devez éditer
-manuellement certain hameçons dans votre fichier de configuration, puisque
+manuellement certain crochets dans votre fichier de configuration, puisque
 nous ne pouvons pas savoir quel service web vous préférez, et donc nous ne
 pouvons pas savoir comment composer URL pour requête.
 
@@ -196,11 +196,11 @@ avec les lettres du mot entré sont révélées.
 
 Nous avons besoin de votre aide. Il y a plusieurs moyens aider le projet :
 
-* définissez votre langue si elle est manquante, voir la répertoire `langs`
+* définissez votre langue si elle est manquante, voir le répertoire `langs`
   pour obtenir des instructions et des exemples (c'est en anglais
   seulement);
 
-* traduisez l'interface utilisateur, voir la répertoire `ui-langs` pour
+* traduisez l'interface utilisateur, voir le répertoire `ui-langs` pour
   obtenir des instructions et des exemples ;
 
 * traduisez ce fichier `README.md`, ajoutez code à deux caractères de votre

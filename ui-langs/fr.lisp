@@ -290,40 +290,43 @@ online dictionaries. You can also reprogram Шτookωвiнα putting some code
 into your configuration file. You can even define new commands, etc. This
 tutorial has shown you very basic commands and I fear it's come to its
 end. To exit the interactive environment use [quit](cmd). Good luck!"
- :tutorial-try-again
- "[Too bad.](inc) Try again."
+ :tutorial-try-again ;; OKAY ↓
+ "[Dommage.](inc) Essayez de nouveau."
  :uncorrectable-command
- "[Cannot](err) correct command [~](cmd)"
+ "[Impossible](err) de corriger la commande [~](cmd)"
  :unknown-form-query
- "[~](typ) [~](arg) ~ is [unknown](err), fill it out to continue :"
+ "[~](typ) [~](arg) ~ est [inconnu](err), replissez-le pour continuer :"
  :value
  "Valeur"
  :where
  "où "
  :wizard-audio-query
- "Please select how Шτookωвiнα should play FLAC files :"
+ "Choisissez comment Шτookωвiнα doit jouer fichier FLAC, s'il vous plaît :"
  :wizard-audio-query-manually
- "OK, define hook [:audio-query](typ) yourself in your configuration file."
+ "Bon, définissez le hameçon [:audio-query](typ) vous-même dans votre
+fichier de configuration."
  :wizard-conj-ext
- "Edit example of [:conj-ext](typ) hook in your configuration file to
-activate [conj](cmd) command."
+ "Éditer l'exemple de le crochet [:conj-ext](typ) dans votre fichier de
+configuration pour activer la commande [conj](cmd)."
  :wizard-query-ext
- "Edit example of [:query-ext](typ) hook in your configuration file to
-activate [query](cmd) command."
+ "Éditer l'exemple de le crochet [:query-ext](typ) dans votre fichier de
+configuration pour activer la commande [query](cmd)."
  :wizard-shtooka-dirs
- "Шτookωвiнα needs to know where Shtooka audio bases are located in your
-system. You can download audio recordings for your language from official
-site of Shtooka project [<http://download.shtooka.net/>](typ). Untar them
-and put into one directory, then enter path to the directory here :"
+ "Шτookωвiнα doit savoir où enregistrements sonores sont situés dans votre
+système. Vous pouvez obtenir la base de données ici
+[<http://download.shtooka.net/>](typ). Décompressez les archives et les
+placez dans seul répertoire, alors entrez le chemin d'accès au répertoire
+ici :"
  :wizard-shtooka-dirs-bad
- "Directory [« ~ »](arg) does not exist or it's empty, try again."
+ "Le répertoire [« ~ »](arg) n'existe pas ou elle est vide, essayez de
+nouveau, s'il vous plaît."
  :wizard-shtooka-dirs-ok
- "Added directories"
+ "Les répertoires ajoutés"
  :wizard-ui-lang
- "Please select language that will be used for user interface. Enter two
-letters, for example [« en »](arg) for English."
+ "Choisissez la langue d'interface utilisateur, s'il vous plaît. Entrez deux
+lettres, [« en »](arg) par exemple (pour choisir anglaise)."
  :wizard-ui-lang-bad
- "This your input [« ~ »](arg) doesn't designate any defined language, try
-again."
+ "Votre saisie [« ~ »](arg) ne désigne pas quelque langue définie, essayez
+de nouveau."
  :wizard-ui-lang-ok
- "OK, utilisant [~](arg) comme la langue d'interface utilisateur.")
+ "Bon, utilisant [~](arg) comme la langue d'interface utilisateur.")
