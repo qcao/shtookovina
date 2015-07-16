@@ -44,29 +44,29 @@
 will have default form [DEFAULT-FORM](arg). If the item already exists in
 the dictionary, this command has no effect."
  :cmd-add-s
- "Add new item to the dicitonary."
+ "Add new item to the dictionary"
  :cmd-audio-l
  "Search Shtooka databases, pick and play some audio file that's relevant to
 given [TEXT](arg). Note that you can use [Ctrl-o](typ) to repeat the last
 audio query."
  :cmd-audio-s
- "Play audio that's relevant to given text."
+ "Play audio that's relevant to given text"
  :cmd-clear-l
  "Clear the dictionary deleting all its items."
  :cmd-clear-s
- "Clear the dictionary."
+ "Clear the dictionary"
  :cmd-conj-l
  "Show conjugation of given [VERB](arg), possibly with help of an external
 program."
  :cmd-conj-s
- "Show conjugation of given verb."
+ "Show conjugation of given verb"
  :cmd-const-l
  "Word constructor exercise. You are given translation and letters of the
 word, but they are shuffled. You need to enter the word correctly, letter by
 letter. Argument [PROGRESS](arg), denotes progress you would like to
 make (as number of correct answers)."
  :cmd-const-s
- "Word constructor exercise."
+ "Word constructor exercise"
  :cmd-crosswd-l
  "Crossword exercise. This crossword doesn't show you visual representation
 of the crossing words. It doesn't really matter if such representation can
@@ -76,98 +76,98 @@ it. If you enter a word correctly, some letters of other words that coincide
 with the letters of the entered word are revealed. This exercise picks
 [WORDS](arg) words from your dictionary."
  :cmd-crosswd-s
- "Crossword exercise."
+ "Crossword exercise"
  :cmd-dict-l
  "Print information about the dictionary. If [PREFIX](arg) argument is
 given, show detailed information regarding every dictionary item which
 default form (zero-indexed) starts with given prefix. Otherwise print
 general information about the entire dictionary."
  :cmd-dict-s
- "Print information about the dictionary."
+ "Print information about the dictionary"
  :cmd-eform-l
  "Edit dictionary item changing one of its forms. Target item is identified
 by [TYPE](arg) and [DEFAULT-FORM](arg). Selected form at [FORM-INDEX](arg)
 will be replaced with [NEW-FORM](arg). To get information about form indexes
 try [forms](cmd) command."
  :cmd-eform-s
- "Change form of specified dictionary item."
+ "Change form of specified dictionary item"
  :cmd-etrans-l
  "Edit dictionary item changing its translation. Target item is identified
 by [TYPE](arg) and [DEFAULT-FORM](arg)."
  :cmd-etrans-s
- "Change translation of dictionary item."
+ "Change translation of dictionary item"
  :cmd-forms-l
  "Print table with indexed forms of given [LEXEME](arg). You can get list of
 all defined lexemes with [lexemes](cmd) command."
  :cmd-forms-s
- "Print forms of given lexeme."
+ "Print forms of given lexeme"
  :cmd-help-l
  "When invoked without arguments, it prints information about all available
 commands. When [COMMAND](arg) argument given, it prints detailed description
 of the specific command."
  :cmd-help-s
- "Print info about commands."
+ "Print info about commands"
  :cmd-history-l
  "Print current session history. Argument [ITEMS](arg) denotes how many
 history items should be printed."
  :cmd-history-s
- "Print history."
+ "Print history"
  :cmd-lang-l
  "The [lang](cmd) command prints name of the language that you're learning
 in the current Шτookωвiнα session. It's useful for troubleshooting."
  :cmd-lang-s
- "Print name of the language you're learning."
+ "Print name of the language you're learning"
  :cmd-learned-l
  "Mark specified dictionary item as learned. The dictionary item is
 identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  :cmd-learned-s
- "Mark specified item as learned."
+ "Mark specified item as learned"
  :cmd-lexemes-l
  "Print a table of all lexemes defined for target language."
  :cmd-lexemes-s
- "Print all lexemes."
+ "Print all lexemes"
  :cmd-listen-l
  "Listening comprehension exercise. Some relevant audio is played to you,
 you should recognize dictionary item and enter it correctly. Argument
 [PROGRESS](arg) denotes progress you would like to make (as number of
 correct answers)."
  :cmd-listen-s
- "Listening comprehension exercise."
+ "Listening comprehension exercise"
  :cmd-query-l
  "Show information about (and translation of) given [WORD](arg)."
  :cmd-query-s
- "Show translation of given word."
+ "Show translation of given word"
  :cmd-quit-l
  "Quit the Шτookωвiнα REPL."
  :cmd-quit-s
- "Quit the Шτookωвiнα REPL."
+ "Quit the Шτookωвiнα REPL"
  :cmd-rem-l
  "Remove specified dictionary item. The dictionary item is identified by its
 [TYPE](arg) and [DEFAULT-FORM](arg)."
  :cmd-rem-s
- "Remove specified dictionary item."
+ "Remove specified dictionary item"
  :cmd-reset-l
  "Reset progress of specified dictionary item. The dictionary item is
 identified by its [TYPE](arg) and [DEFAULT-FORM](arg)."
  :cmd-reset-s
- "Reset progress of specified dictionary item."
+ "Reset progress of specified dictionary item"
  :cmd-train-l
  "Comprehensive training. It includes all sorts of exercises: translation,
 writing, and audition in right order. It's recommended to use this command
 for all training."
  :cmd-train-s
- "Comprehensive training."
+ "Comprehensive training"
  :cmd-trans-l
  "This is translation exercise. In this exercise you are given a
 word (either in interface language or target language) and four possible
 translations. You should select correct one. Argument [PROGRESS](arg)
 denotes progress you would like to make (as number of correct answers)."
  :cmd-trans-s
- "Translation exercise."
+ "Translation exercise"
  :cmd-ui-lang-l
  "Print name of user interface language."
  :cmd-ui-lang-s
- "Print name of user interface language."
+ "Print name of user interface language"
  :current-language
  "You are learning [~](arg)"
  :current-ui-language

@@ -46,29 +46,29 @@ dans cette session ?"
 l'élément existe déjà dans le dictionnaire, cette commande n'aura pas
 d'effet."
  :cmd-add-s
- "Ajouter nouvel élément au dictionnaire."
+ "Ajouter nouvel élément au dictionnaire"
  :cmd-audio-l
  "Rechercher base de données de Shtooka projet et jouer un fichier audio qui
 est pertinent au texte donné [TEXT](arg). Notez que vous pouvez utiliser
 [Ctrl-o](typ) à répéter le dernier requête audio."
  :cmd-audio-s
- "Jouter audio qui est pertinent au texte donné."
+ "Jouter audio qui est pertinent au texte donné"
  :cmd-clear-l
  "Effacer le dictionnaire supprimant tous ses éléments."
  :cmd-clear-s
- "Effacer le dictionnaire."
+ "Effacer le dictionnaire"
  :cmd-conj-l
  "Présenter conjugaison du verbe donné [VERB](arg), possiblement avec aide
 d'un programme externe."
  :cmd-conj-s
- "Présenter conjugaison de verbe donné."
+ "Présenter conjugaison de verbe donné"
  :cmd-const-l
  "Le constructeur de mots. Vous obtenez une traduction et lettres d'un mot,
 mais elles sont mélangées. Vous devez entrer correctement le mot. L'argument
 [PROGRESS](arg), désigne le progrès que vous voudriez faire (comme nombre de
 réponses correctes)."
  :cmd-const-s
- "Le constructeur de mots."
+ "Le constructeur de mots"
  :cmd-crosswd-l
  "Exercice « Mots croisés ». Dans cet exercice, vous ne voyez pas
 représentation visuelle de mots croisés. Peu importe que telle
@@ -78,7 +78,7 @@ pouvez le passer. Lorsque vous entrez un mot correctement, certains lettres
 d'autres mots coïncidant avec les lettres du mot entré sont révélées. Cet
 exercice utilise [WORDS](arg) mots de votre dictionnaire."
  :cmd-crosswd-s
- "Exercice « Mots croisés »."
+ "Exercice « Mots croisés »"
  :cmd-dict-l
  "Imprimer information concernant le dictionnaire. Si l'argument
 [PREFIX](arg) est donné, présenter information détaillée concernant chaque
@@ -86,80 +86,80 @@ exercice utilise [WORDS](arg) mots de votre dictionnaire."
 préfixe donné. Autrement, imprimer information générale autour du
 dictionnaire complet."
  :cmd-dict-s
- "Imprimer information concernant le dictionnaire."
+ "Imprimer information concernant le dictionnaire"
  :cmd-eform-l
  "Changer forme d'élément spécifié dans le dictionnaire. L'élément est
 identifié par son [TYPE](arg) et [DEFAULT-FORM](arg) (forme principale). La
 forme choisie à [FORM-INDEX](arg) sera remplacée par [NEW-FORM](arg). Pour
 obtenir information concernant les indexes, essayez [forms](cmd) commande."
  :cmd-eform-s
- "Changer forme d'élément spécifié dans le dictionnaire."
+ "Changer forme d'élément spécifié dans le dictionnaire"
  :cmd-etrans-l
  "Changer traduction d'élément dans le dictionnaire. L'élément est identifié
 par son [TYPE](arg) et [DEFAULT-FORM](arg) (forme principale)."
  :cmd-etrans-s
- "Changer traduction d'élément dans le dictionnaire."
+ "Changer traduction d'élément dans le dictionnaire"
  :cmd-forms-l
  "Imprimer formes du lexème donné [LEXEME](arg). Vous pouvez obtenir la
 liste de tous lexèmes définis avec [lexemes](cmd) commande."
  :cmd-forms-s
- "Imprimer formes de lexème donné."
+ "Imprimer formes de lexème donné"
  :cmd-help-l
  "Lorsque cette commande est appelée sans des arguments, imprimer
 information concernant toutes commandes interactives disponibles. Lorsque
 l'argument [COMMAND](arg) est donné, imprimer description détaillé de la
 commande spécifiée."
  :cmd-help-s
- "Imprimer information autour des commandes interactives."
+ "Imprimer information autour des commandes interactives"
  :cmd-history-l
  "Imprimer l'histoire de la session. L'argument [ITEMS](arg) désigne combien
 éléments de l'histoire doivent être imprimés."
  :cmd-history-s
- "Imprimer l'histoire de la session."
+ "Imprimer l'histoire de la session"
  :cmd-lang-l
  "Imprimer le nom de la langue que vous apprenez."
  :cmd-lang-s
- "Imprimer le nom de la langue que vous apprenez."
+ "Imprimer le nom de la langue que vous apprenez"
  :cmd-learned-l
  "Marquer élément spécifié comme appris. L'élément est identifié par son
 [TYPE](arg) et [DEFAULT-FORM](arg) (forme principale)."
  :cmd-learned-s
- "Marquer élément spécifié comme appris."
+ "Marquer élément spécifié comme appris"
  :cmd-lexemes-l
  "Imprimer un tableau de tous lexèmes définis dans la langue ciblée."
  :cmd-lexemes-s
- "Imprimer un tableau de tous lexèmes."
+ "Imprimer un tableau de tous lexèmes"
  :cmd-listen-l
  "Exercice « Écoute ». Certain audio pertinent est joué, vous devez
 reconnaître entrée de dictionnaire et l'entrer correctement. L'argument
 [PROGRESS](arg), désigne le progrès que vous voudriez faire (comme nombre de
 réponses correctes)."
  :cmd-listen-s
- "Exercice « Écoute »."
+ "Exercice « Écoute »"
  :cmd-query-l
  "Présenter information concernant le mot donné [WORD](arg)."
  :cmd-query-s
- "Présenter information concernant le mot donné."
+ "Présenter information concernant le mot donné"
  :cmd-quit-l
  "Quitter Шτookωвiнα."
  :cmd-quit-s
- "Quitter Шτookωвiнα."
+ "Quitter Шτookωвiнα"
  :cmd-rem-l
  "Supprimer élément spécifié. L'élément est identifié par son [TYPE](arg) et
 [DEFAULT-FORM](arg) (forme principale)."
  :cmd-rem-s
- "Supprimer élément spécifié."
+ "Supprimer élément spécifié"
  :cmd-reset-l
  "Remettre le progrès de élément spécifie. L'élément est identifié par son
 [TYPE](arg) et [DEFAULT-FORM](arg) (forme principale)."
  :cmd-reset-s
- "Remettre le progrès de élément spécifie."
+ "Remettre le progrès de élément spécifie"
  :cmd-train-l
  "Formation complète. It includes all sorts of exercises : translation,
 writing, and audition in right order. It's recommended to use this command
 for all training."
  :cmd-train-s
- "Formation complète."
+ "Formation complète"
  :cmd-trans-l
  "Exercice « Traduction ». Dans cet exercice, vous obtenez un mot (en la
 langue de l'interface utilisateur ou ce que vous apprenez) et quatre
@@ -167,11 +167,11 @@ traductions possibles. Choisissez la meilleure traduction. L'argument
 [PROGRESS](arg), désigne le progrès que vous voudriez faire (comme nombre de
 réponses correctes)."
  :cmd-trans-s
- "Exercice « Traduction »."
+ "Exercice « Traduction »"
  :cmd-ui-lang-l
  "Imprimer le nom de la langue d'interface utilisateur."
  :cmd-ui-lang-s
- "Imprimer le nom de la langue d'interface utilisateur."
+ "Imprimer le nom de la langue d'interface utilisateur"
  :current-language
  "Vous apprenez [~](arg)"
  :current-ui-language
