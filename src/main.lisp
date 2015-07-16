@@ -193,6 +193,7 @@ success and NIL on failure."
             (rl:register-function :complete #'session-std-complete)
             (rl:bind-keyseq "\\C-o" #'repeat-audio-query)
             (session)
-            (ask-and-save-dict local-target))))
+            (when *dictionary-modified*
+              (ask-and-save-dict local-target)))))
     (condition (condition)
       (term:print "[Fatal](err): ~" :args (princ-to-string condition)))))

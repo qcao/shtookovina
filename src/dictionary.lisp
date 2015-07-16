@@ -26,6 +26,10 @@
   "Hash table that allows to get dictionary item by its type and string
 representation of the main form (they should be CONSed to get key).")
 
+(defparameter *dictionary-modified* nil
+  "This variable is bound to non-NIL value if the dictionary has been
+modified in the current session.")
+
 (defvar *initial-weight* 100
   "When the user gives right answer when training a word, the weight is
 decreased, otherwise it's increased. This is upper limit of the weight.")
@@ -110,6 +114,7 @@ mainly serializes contents of `*dictionary*' and `*weight-sums*' variables."
                           :element-type '(unsigned-byte 8))
     (cl-store:store *dictionary* stream)
     (cl-store:store *weight-sums* stream)
+    (setf *dictionary-modified* nil)
     filename))
 
 (defun load-dictionary (filename)
@@ -123,6 +128,7 @@ returns T on success and NIL on failure."
     (when stream
       (setf *dictionary* (cl-store:restore stream)
             *weight-sums* (cl-store:restore stream))
+      (setf *dictionary-modified* nil)
       t)))
 
 (defun rem-item (type default-form)
@@ -133,7 +139,8 @@ NIL otherwise."
       (dotimes (form-index (length (forms it)))
         (dotimes (aspect-index +aspects-count+)
           (alter-weight it form-index aspect-index 0))))
-    (remhash (cons type default-form) *dictionary*)))
+    (prog1 (remhash (cons type default-form) *dictionary*)
+      (setf *dictionary-modified* t))))
 
 (defun add-item (type default-form translation)
   "Add item to the dictionary. The item will have type TYPE (according to
@@ -146,17 +153,20 @@ otherwise."
           (make-instance 'dictionary-item
                          :type type
                          :default-form default-form
-                         :translation translation))))
+                         :translation translation))
+    (setf *dictionary-modified* t)))
 
 (defun clear-dictionary ()
   "Clear dictionary removing all its elements. Return number of removed
 dictionary items."
   (let ((total (hash-table-count *dictionary*)))
-    (maphash-keys
-     (lambda (key)
-       (destructuring-bind (type . default-form) key
-         (rem-item type default-form)))
-     *dictionary*)
+    (when (plusp total)
+      (maphash-keys
+       (lambda (key)
+         (destructuring-bind (type . default-form) key
+           (rem-item type default-form)))
+       *dictionary*)
+      (setf *dictionary-modified* t))
     total))
 
 (defun edit-item-form (type default-form new-form &optional (form-index 0))
@@ -170,6 +180,7 @@ otherwise."
       (remhash (cons type default-form) *dictionary*)
       (setf (gethash (cons type new-form) *dictionary*)
             it))
+    (setf *dictionary-modified* t)
     new-form))
 
 (defun edit-item-translation (type default-form new-translation)
@@ -177,7 +188,9 @@ otherwise."
 by TYPE and DEFAULT-FORM. Return NIL if there is no such item in the
 dictionary and NEW-TRANSLATION otherwise."
   (awhen (gethash (cons type default-form) *dictionary*)
-    (setf (translation it) new-translation)))
+    (setf (translation it)      new-translation
+          *dictionary-modified* t)
+    new-translation))
 
 (defun item-translation (type default-form)
   "Return translation of specified dictionary item."
@@ -187,13 +200,15 @@ dictionary and NEW-TRANSLATION otherwise."
   "Decrease weight of ASPECT-INDEX aspect of form at FORM-INDEX of item
 identified by TYPE and DEFAULT-FORM in the dictionary."
   (awhen (gethash (cons type default-form) *dictionary*)
-    (alter-weight it form-index aspect-index (- *weight-step*))))
+    (prog1 (alter-weight it form-index aspect-index (- *weight-step*))
+      (setf *dictionary-modified* t))))
 
 (defun item-inc-weight (type default-form form-index aspect-index)
   "Increase weight of ASPECT-INDEX aspect of form at FORM-INDEX of item
 identified by TYPE and DEFAULT-FORM in the dictionary."
   (awhen (gethash (cons type default-form) *dictionary*)
-    (alter-weight it form-index aspect-index *weight-step*)))
+    (prog1 (alter-weight it form-index aspect-index *weight-step*)
+      (setf *dictionary-modified* t))))
 
 (defun item-reset-progress (type default-form)
   "Set all weights for all forms to `*initial-weight*' value (= 0 %
@@ -202,7 +217,7 @@ learned). Return NIL if there is no such dictionary item and T otherwise."
     (dotimes (form-index (length (forms it)))
       (dotimes (aspect-index +aspects-count+)
         (alter-weight it form-index aspect-index *initial-weight*)))
-    t))
+    (setf *dictionary-modified* t)))
 
 (defun item-mark-as-learned (type default-form)
   "Set all weights for all forms to `*base-weight*' value (= 100 %
@@ -211,7 +226,7 @@ learned). Return NIL if there is no such dictionary item and T otherwise."
     (dotimes (form-index (length (forms it)))
       (dotimes (aspect-index +aspects-count+)
         (alter-weight it form-index aspect-index (- *initial-weight*))))
-    t))
+    (setf *dictionary-modified* t)))
 
 (defun dictionary-item-count ()
   "Returns total number of dictionary items in the dictionary."
@@ -279,8 +294,9 @@ with `get-next-form'. Big values of NUMBER are not recommended."
 
 (defun (setf form) (new-form item form-index)
   "Set form of given item ITEM at FORM-INDEX."
-  (setf (aref (forms item) form-index)
-        new-form))
+  (setf (aref (forms item) form-index) new-form
+        *dictionary-modified* t)
+  new-form)
 
 (defun item-form (type default-form form-index)
   "The same as FORM, but takes TYPE and DEFAULT-FORM instead of item."
@@ -289,9 +305,10 @@ with `get-next-form'. Big values of NUMBER are not recommended."
 
 (defun (setf item-form) (new-form type default-form form-index)
   "Set form at FORM-INDEX of given item identified by TYPE and DEFAULT-FORM."
-  (setf (form (gethash (cons type default-form) *dictionary*)
-              form-index)
-        new-form))
+  (setf (form (gethash (cons type default-form) *dictionary*) form-index)
+        new-form
+        *dictionary-modified* t)
+  new-form)
 
 (defun unknown-form-p (type default-form form-index)
   "Check if specified form of dictionary item is unknown."
